@@ -12,6 +12,7 @@ Currently, macli is heavily under development so there are no pre-built binaries
 ACCESS_TOKEN={your token here}
 ```
 (a token can be generated easily with [this python script.](https://github.com/MikunoNaka/mal-authtoken-generator))
+
 3. Run macli with `./macli`
 
 NOTE: currently, it looks for the .env file in the PWD, but a token can also be passed with
