@@ -21,17 +21,23 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/ui"
+	"strings"
 )
 
 // searchCmd represents the search command
-var searchCmd = &cobra.Command{
+var searchCmd = &cobra.Command {
 	Use:   "search",
 	Short: "Search for an anime.",
 	Long: `
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		searchInput := ui.TextInput("Search Anime:", "Search can't be blank.")
+		// read searchInput from command
+		searchInput := strings.Join(args, " ")
+		// if blank, ask for input
+		if searchInput == "" {
+		  searchInput = ui.TextInput("Search Anime:", "Search can't be blank.")
+		}
 		animeId := ui.SearchAndGetID("Select Anime", searchInput)
 		action := ui.ActionMenu()
 		action(animeId)
