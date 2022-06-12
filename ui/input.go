@@ -16,24 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package mal
+package ui
 
 import (
-  _ "github.com/joho/godotenv/autoload"
-  "os"
-
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  ua "github.com/MikunoNaka/MAL2Go/user/anime"
+  "errors"
+  "log"
+  p "github.com/manifoldco/promptui"
 )
 
-var animeClient a.Client
-var userAnimeClient ua.Client
+func TextInput(label, errMessage string) string {
+  validate := func(input string) error {
+    if input == "" {
+      return errors.New(errMessage)
+    }
+    return nil
+  }
 
-func init() {
-  // TODO: don't load access token from .env
-  var accessToken = os.Getenv("ACCESS_TOKEN")
+  prompt := p.Prompt {
+    Label: label,
+    Validate: validate,
+  }
 
-  // initialise MAL2Go Client(s)
-  animeClient.AuthToken = "Bearer " + accessToken
-  userAnimeClient.AuthToken = "Bearer " + accessToken
+  res, err := prompt.Run()
+  if err != nil {
+    log.Fatal("Failed to run TextInput Prompt.")
+  }
+
+  return res
 }

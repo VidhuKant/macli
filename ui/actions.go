@@ -22,47 +22,59 @@ import (
   "strings"
   "log"
   p "github.com/manifoldco/promptui"
-  mal "github.com/MikunoNaka/macli/mal"
+  // mal "github.com/MikunoNaka/macli/mal"
 )
 
+type Action struct {
+  Label       string
+  Description string
+  Method      func(int)
+}
+
 // only search animes probably only now
-func SearchAndGetID(label, searchString string) int {
+func ActionMenu() func(animeId int) {
   // TODO: load promptLength from config
   promptLength := 5
 
-  animes := mal.SearchAnime(searchString)
+  options := []Action {
+    {"Set Status",          "Set status for an anime (watching, dropped, etc)", StatusMenu},
+    {"Set Episodes",        "Set number of episodes watched", StatusMenu},
+    {"Set Score",           "Set score", StatusMenu},
+    {"Set Rewatching",      "Set if rewatching", StatusMenu},
+    {"Set Times Rewatched", "Set number of times rewatched", StatusMenu},
+  }
 
   template := &p.SelectTemplates {
-    Label: "{{ . }}",
-    Active: "{{ .Title | magenta }}",
-    Inactive: "{{ .Title }}",
-    Selected: "{{ .Title }}",
+    Label: "{{ .Label }}",
+    Active: "{{ .Label | magenta }} {{ .Description | faint }}",
+    Inactive: "{{ .Label }}",
+    Selected: "{{ .Label }}",
     Details: `
---------- {{ .Title }} ----------
-More Details To Be Added Later
+-------------------
+{{ .Description }}
 `,
   }
 
   // returns true if input == anime title
   searcher := func(input string, index int) bool {
-    title := strings.Replace(strings.ToLower(animes[index].Title), " ", "", -1)
+    action := strings.Replace(strings.ToLower(options[index].Label), " ", "", -1)
     input = strings.Replace(strings.ToLower(input), " ", "", -1)
-    return strings.Contains(title, input)
+    return strings.Contains(action, input)
   }
 
   prompt := p.Select {
-    Label: label,
-    Items: animes,
+    Label: "Select Action: ",
+    Items: options,
     Templates: template,
     Searcher: searcher,
     Size: promptLength,
   }
 
-  animeIndex, _, err := prompt.Run()
+  res, _, err := prompt.Run()
   if err != nil {
     log.Println(err)
-    return 0
+    return nil
   }
 
-  return animes[animeIndex].Id
+  return options[res].Method
 }

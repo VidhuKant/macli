@@ -19,13 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
-
-	"errors"
 	"github.com/spf13/cobra"
-	"log"
-    p "github.com/manifoldco/promptui"
-
 	"github.com/MikunoNaka/macli/ui"
 )
 
@@ -37,25 +31,10 @@ var searchCmd = &cobra.Command{
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-        validate := func(input string) error {
-			if input == "" {
-				return errors.New("Search can't be blank")
-			}
-
-			return nil
-	    }
-
-		prompt := p.Prompt {
-		    Label: "Search Anime: ",
-			Validate: validate,
-		}
-
-		res, err := prompt.Run()
-		if err != nil {
-			log.Fatal("Failed to run prompt.", err)
-		}
-
-		fmt.Println(ui.SearchAndGetID("Select Anime", res))
+		searchInput := ui.TextInput("Search Anime:", "Search can't be blank.")
+		animeId := ui.SearchAndGetID("Select Anime", searchInput)
+		action := ui.ActionMenu()
+		action(animeId)
 	},
 }
 

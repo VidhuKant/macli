@@ -21,48 +21,52 @@ package ui
 import (
   "strings"
   "log"
+  "github.com/MikunoNaka/macli/mal"
   p "github.com/manifoldco/promptui"
-  mal "github.com/MikunoNaka/macli/mal"
 )
 
-// only search animes probably only now
-func SearchAndGetID(label, searchString string) int {
-  // TODO: load promptLength from config
-  promptLength := 5
+type StatusOption struct {
+  Label  string
+  Status string
+}
 
-  animes := mal.SearchAnime(searchString)
+// only search animes probably only now
+func StatusMenu(animeId int) {
+  options := []StatusOption {
+    {"Watching", "watching"},
+    {"Completed", "completed"},
+    {"On Hold", "on_hold"},
+    {"Dropped", "dropped"},
+    {"Plan to Watch", "plan_to_watch"},
+  }
 
   template := &p.SelectTemplates {
-    Label: "{{ . }}",
-    Active: "{{ .Title | magenta }}",
-    Inactive: "{{ .Title }}",
-    Selected: "{{ .Title }}",
-    Details: `
---------- {{ .Title }} ----------
-More Details To Be Added Later
-`,
+    Label: "{{ .Label }}",
+    Active: "{{ .Label | magenta }}",
+    Inactive: "{{ .Label }}",
+    Selected: "{{ .Label }}",
   }
 
   // returns true if input == anime title
   searcher := func(input string, index int) bool {
-    title := strings.Replace(strings.ToLower(animes[index].Title), " ", "", -1)
+    status := strings.Replace(strings.ToLower(options[index].Label), " ", "", -1)
     input = strings.Replace(strings.ToLower(input), " ", "", -1)
-    return strings.Contains(title, input)
+    return strings.Contains(status, input)
   }
 
   prompt := p.Select {
-    Label: label,
-    Items: animes,
+    Label: "Set Status:",
+    Items: options,
     Templates: template,
     Searcher: searcher,
-    Size: promptLength,
+    Size: 5,
   }
 
-  animeIndex, _, err := prompt.Run()
+  res, _, err := prompt.Run()
   if err != nil {
     log.Println(err)
-    return 0
+    return
   }
 
-  return animes[animeIndex].Id
+  mal.SetStatus(animeId, options[res].Status)
 }

@@ -19,21 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  _ "github.com/joho/godotenv/autoload"
-  "os"
-
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  ua "github.com/MikunoNaka/MAL2Go/user/anime"
+  "log"
 )
 
-var animeClient a.Client
-var userAnimeClient ua.Client
-
-func init() {
-  // TODO: don't load access token from .env
-  var accessToken = os.Getenv("ACCESS_TOKEN")
-
-  // initialise MAL2Go Client(s)
-  animeClient.AuthToken = "Bearer " + accessToken
-  userAnimeClient.AuthToken = "Bearer " + accessToken
+func SetStatus(animeId int, status string) {
+  resp, _ := userAnimeClient.SetStatus(animeId, status)
+  log.Println(resp.Error, resp.Message)
 }
