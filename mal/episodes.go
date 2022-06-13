@@ -20,11 +20,29 @@ package mal
 
 import (
   "log"
+  "strconv"
 )
 
-func SetStatus(animeId int, status string) {
-  resp, _ := userAnimeClient.SetStatus(animeId, status)
-  if resp.Error != "" {
-    log.Println("MyAnimeList reported error on SetStatus", resp.Error, resp.Message)
+func SetEpisodes(animeId int, ep string) {
+  epValue, err := strconv.Atoi(ep)
+  if err != nil {
+    log.Fatal("Error while parsing episode input", err)
   }
+
+  sign := ep[0:1]
+  if sign == "+" || sign == "-" {
+    log.Printf("Cannot increment/decrement watched episodes by %d\n. Currently that doesn't wokr", epValue)
+    return
+  }
+
+  userAnimeClient.SetWatchedEpisodes(animeId, epValue)
+}
+
+func SetChapters(mangaId int, ch string) {
+  chValue, err := strconv.Atoi(ch)
+  if err != nil {
+    log.Fatal("Error while parsing chapter input", err)
+  }
+
+  log.Printf("peeepee%s%d", ch[0:1], chValue)
 }

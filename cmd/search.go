@@ -22,9 +22,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/ui"
 	"strings"
+	"fmt"
 )
 
-// searchCmd represents the search command
 var searchCmd = &cobra.Command {
 	Use:   "search",
 	Short: "Search for an anime.",
@@ -34,26 +34,31 @@ var searchCmd = &cobra.Command {
 	Run: func(cmd *cobra.Command, args []string) {
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
-		// if blank, ask for input
-		if searchInput == "" {
-		  searchInput = ui.TextInput("Search Anime:", "Search can't be blank.")
+		mangaMode, _ := cmd.Flags().GetBool("manga")
+
+		if mangaMode {
+			searchManga(searchInput)
+		} else {
+			searchAnime(searchInput)
 		}
-		animeId := ui.SearchAndGetID("Select Anime", searchInput)
-		action := ui.ActionMenu()
-		action(animeId)
 	},
+}
+
+func searchManga(searchInput string) {
+	if searchInput == "" {
+		searchInput = ui.TextInput("Search Manga:", "Search can't be blank.")
+	}
+    fmt.Printf("You typed in \"%s\" but macli doesn't search manga yet.\n", searchInput)
+}
+
+func searchAnime(searchInput string) {
+	if searchInput == "" {
+		searchInput = ui.TextInput("Search Anime:", "Search can't be blank.")
+	}
+	animeId := ui.SearchAndGetID("Select Anime", searchInput)
+	ui.ActionMenu()(animeId)
 }
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// searchCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// searchCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
