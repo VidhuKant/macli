@@ -52,11 +52,15 @@ func searchManga(searchInput string) {
 }
 
 func searchAnime(searchInput string) {
+	animeIsAdded := false
 	if searchInput == "" {
 		searchInput = ui.TextInput("Search Anime:", "Search can't be blank.")
 	}
-	animeId := ui.SearchAndGetID("Select Anime", searchInput)
-	ui.ActionMenu()(animeId)
+	anime := ui.AnimeSearch("Select Anime", searchInput)
+	if anime.MyListStatus.Status != "" {
+		animeIsAdded = true
+	}
+	ui.ActionMenu(animeIsAdded)(anime)
 }
 
 func init() {

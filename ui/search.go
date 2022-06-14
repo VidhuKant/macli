@@ -20,23 +20,26 @@ package ui
 
 import (
   "strings"
-  "log"
+  "fmt"
+  "os"
   p "github.com/manifoldco/promptui"
   mal "github.com/MikunoNaka/macli/mal"
+  a "github.com/MikunoNaka/MAL2Go/anime"
 )
 
 // only search animes probably only now
-func SearchAndGetID(label, searchString string) int {
+func AnimeSearch(label, searchString string) a.Anime {
   // TODO: load promptLength from config
   promptLength := 5
 
-  animes := mal.SearchAnime(searchString)
+  extraFields := []string{"my_list_status"}
+  animes := mal.SearchAnime(searchString, extraFields)
 
   template := &p.SelectTemplates {
     Label: "{{ . }}",
     Active: "{{ .Title | magenta }}",
     Inactive: "{{ .Title }}",
-    Selected: "{{ .Title }}",
+    Selected: "{{ .Title | blue }}",
     Details: `
 --------- {{ .Title }} ----------
 More Details To Be Added Later
@@ -58,11 +61,13 @@ More Details To Be Added Later
     Size: promptLength,
   }
 
+  var anime a.Anime
   animeIndex, _, err := prompt.Run()
   if err != nil {
-    log.Println(err)
-    return 0
+    fmt.Println("Error running search menu.", err.Error())
+    os.Exit(1)
   }
 
-  return animes[animeIndex].Id
+  anime = animes[animeIndex]
+  return anime
 }

@@ -20,8 +20,10 @@ package ui
 
 import (
   "strings"
-  "log"
+  "fmt"
+  "os"
   "github.com/MikunoNaka/macli/mal"
+  a "github.com/MikunoNaka/MAL2Go/anime"
   p "github.com/manifoldco/promptui"
 )
 
@@ -31,7 +33,7 @@ type StatusOption struct {
 }
 
 // only search animes probably only now
-func StatusMenu(animeId int) {
+func StatusMenu(anime a.Anime) {
   options := []StatusOption {
     {"Watching", "watching"},
     {"Completed", "completed"},
@@ -40,11 +42,21 @@ func StatusMenu(animeId int) {
     {"Plan to Watch", "plan_to_watch"},
   }
 
+  // highlight current status (if any)
+  animeStatus := anime.MyListStatus.Status
+  if animeStatus != "" {
+    for i := range options {
+      if options[i].Status == animeStatus {
+        options[i].Label = options[i].Label + " \x1b[35m\U00002714\x1b[0m"
+      }
+    }
+  }
+
   template := &p.SelectTemplates {
     Label: "{{ .Label }}",
     Active: "{{ .Label | magenta }}",
     Inactive: "{{ .Label }}",
-    Selected: "{{ .Label }}",
+    Selected: "{{ .Label | cyan }}",
   }
 
   // returns true if input == anime title
@@ -54,8 +66,13 @@ func StatusMenu(animeId int) {
     return strings.Contains(status, input)
   }
 
+  promptLabel := "Set Status: "
+  if anime.MyListStatus.Status != "" {
+    promptLabel = promptLabel + "(current - " + anime.MyListStatus.Status + ")"
+  }
+
   prompt := p.Select {
-    Label: "Set Status:",
+    Label: promptLabel,
     Items: options,
     Templates: template,
     Searcher: searcher,
@@ -64,9 +81,9 @@ func StatusMenu(animeId int) {
 
   res, _, err := prompt.Run()
   if err != nil {
-    log.Println(err)
-    return
+    fmt.Println("Error running status prompt.", err.Error())
+    os.Exit(1)
   }
 
-  mal.SetStatus(animeId, options[res].Status)
+  mal.SetStatus(anime.Id, options[res].Status)
 }

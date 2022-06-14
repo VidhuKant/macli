@@ -23,10 +23,14 @@ import (
   a "github.com/MikunoNaka/MAL2Go/anime"
 )
 
-func SearchAnime(searchString string) []a.Anime {
+func SearchAnime(searchString string, extraFields []string) []a.Anime {
   // TODO: load limit, offset and (maybe) fields from config
   limit, offset := 10, 0
+
   fields := []string{"title", "id"}
+  for _, i := range extraFields {
+    fields = append(fields, i)
+  }
 
   res, err := animeClient.SearchAnime(searchString, limit, offset, fields)
   if err != nil {

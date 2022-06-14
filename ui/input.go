@@ -20,7 +20,8 @@ package ui
 
 import (
   "errors"
-  "log"
+  "fmt"
+  "os"
   p "github.com/manifoldco/promptui"
 )
 
@@ -39,7 +40,8 @@ func TextInput(label, errMessage string) string {
 
   res, err := prompt.Run()
   if err != nil {
-    log.Fatal("Failed to run TextInput Prompt.")
+    fmt.Println("Failed to run TextInput Prompt.", err.Error())
+    os.Exit(1)
   }
 
   return res

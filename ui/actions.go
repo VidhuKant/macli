@@ -20,35 +20,44 @@ package ui
 
 import (
   "strings"
-  "log"
+  "fmt"
+  "os"
   p "github.com/manifoldco/promptui"
-  // mal "github.com/MikunoNaka/macli/mal"
+  a "github.com/MikunoNaka/MAL2Go/anime"
 )
 
 type Action struct {
   Label       string
   Description string
-  Method      func(int)
+  Method      func(a.Anime)
 }
 
 // only search animes probably only now
-func ActionMenu() func(animeId int) {
+func ActionMenu(animeIsAdded bool) func(a.Anime) {
   // TODO: load promptLength from config
   promptLength := 5
 
   options := []Action {
     {"Set Status",          "Set status for an anime (watching, dropped, etc)", StatusMenu},
-    {"Set Episodes",        "Set number of episodes watched", StatusMenu},
+    {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
     {"Set Score",           "Set score", StatusMenu},
     {"Set Rewatching",      "Set if rewatching", StatusMenu},
     {"Set Times Rewatched", "Set number of times rewatched", StatusMenu},
+  }
+
+  // if anime not in list
+  if animeIsAdded {
+    options = append(
+      options,
+      Action{"Delete Anime", "Delete Anime From Your MyAnimeList List.", StatusMenu},
+    )
   }
 
   template := &p.SelectTemplates {
     Label: "{{ .Label }}",
     Active: "{{ .Label | magenta }} {{ .Description | faint }}",
     Inactive: "{{ .Label }}",
-    Selected: "{{ .Label }}",
+    Selected: "{{ .Label | magenta }}",
     Details: `
 -------------------
 {{ .Description }}
@@ -72,8 +81,8 @@ func ActionMenu() func(animeId int) {
 
   res, _, err := prompt.Run()
   if err != nil {
-    log.Println(err)
-    return nil
+    fmt.Println("Error running actions menu.", err.Error())
+    os.Exit(1)
   }
 
   return options[res].Method
