@@ -19,12 +19,18 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  "log"
+  "fmt"
+  "os"
 )
 
 func SetStatus(animeId int, status string) {
-  resp, _ := userAnimeClient.SetStatus(animeId, status)
+  resp, err := userAnimeClient.SetStatus(animeId, status)
+  if err != nil {
+    fmt.Println("Error while parsing status:", err.Error())
+    os.Exit(1)
+  }
   if resp.Error != "" {
-    log.Println("MyAnimeList reported error on SetStatus", resp.Error, resp.Message)
+    fmt.Println("MyAnimeList reported error on SetStatus", resp.Error, resp.Message)
+    os.Exit(1)
   }
 }

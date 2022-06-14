@@ -37,5 +37,5 @@ func Execute() {
 }
 
 func init() {
-    rootCmd.PersistentFlags().BoolP("manga", "m", false, "Use Manga Mode.")
+    rootCmd.PersistentFlags().BoolP("manga", "m", false, "use manga mode")
 }

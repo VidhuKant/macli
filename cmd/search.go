@@ -27,7 +27,7 @@ import (
 
 var searchCmd = &cobra.Command {
 	Use:   "search",
-	Short: "Search for an anime.",
+	Short: "Search for an anime/manga",
 	Long: `
 -- help/description to be added later
 `,
@@ -54,9 +54,9 @@ func searchManga(searchInput string) {
 func searchAnime(searchInput string) {
 	animeIsAdded := false
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Anime:", "Search can't be blank.")
+		searchInput = ui.TextInput("Search Anime", "Search can't be blank.")
 	}
-	anime := ui.AnimeSearch("Select Anime", searchInput)
+	anime := ui.AnimeSearch("Select Anime:", searchInput)
 	if anime.MyListStatus.Status != "" {
 		animeIsAdded = true
 	}
