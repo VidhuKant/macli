@@ -1,25 +1,23 @@
 # macli
 Unofficial CLI-Based MyAnimeList Client
 
-## How to use
-Currently, macli is heavily under development so there are no pre-built binaries available.
+### Notice:
+macli is currently highly under development and only 3 commands work as of now.
+It can search for anime, update episodes and set status.
 
-### To compile macli, 
+## How to install
+macli is available on the AUR. But I can't guarantee if it works right now.
 
-1. Clone this repo
-2. Create a .env file with the following data:
-```
-ACCESS_TOKEN={your token here}
-```
-(a token can be generated easily with [this python script.](https://github.com/MikunoNaka/mal-authtoken-generator))
+To compile macli, simply clone this repo, and install the dependencies `go` and `gnome-keyring` (linux only)
 
-3. Run macli with `./macli`
+Then, run `go build` to build the binary, and move the macli executable to your path for global usage.
 
-NOTE: currently, it looks for the .env file in the PWD, but a token can also be passed with
-``` shell
-export ACCESS_TOKEN={your token here}
-```
-for use inside other directories. (this way of handling the token is going to change)
+## Logging in
+Currently there is no support to generate an access token,
+
+but it can be generated with [this python script.](https://github.com/MikunoNaka/mal-authtoken-generator)
+
+simply generate one using my script, and then run `macli login` then paste the token.
 
 ## Licence
 Licenced under GNU General Public Licence V3
