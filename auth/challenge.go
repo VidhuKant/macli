@@ -16,22 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package cmd
+package auth
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/MikunoNaka/macli/auth"
+  "time"
+  "math/rand"
 )
 
-var loginCmd = &cobra.Command {
-	Use:   "login",
-	Short: "Login with your MyAnimeList client secret",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		auth.Login()
-	},
-}
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
-func init() {
-	rootCmd.AddCommand(loginCmd)
+func codeChallenge() string {
+    rand.Seed(time.Now().UnixNano())
+    b := make([]rune, 128)
+    for i := range b {
+        b[i] = letterRunes[rand.Intn(len(letterRunes))]
+    }
+    return string(b)
 }

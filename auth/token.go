@@ -16,38 +16,38 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package ui
+package auth
 
 import (
-  "errors"
-  "fmt"
   "os"
-  p "github.com/manifoldco/promptui"
+  "fmt"
+  "github.com/zalando/go-keyring"
 )
 
-func TextInput(label, errMessage string) string {
-  validate := func(input string) error {
-    if input == "" {
-      return errors.New(errMessage)
-    }
-    return nil
-  }
-
-  template := &p.PromptTemplates {
-    Valid: "\x1b[0m{{ . | magenta }}",
-    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
-    Success: "{{ . | cyan }}",
-  }
-
-  prompt := p.Prompt {
-    Label: label,
-    Validate: validate,
-    Templates: template,}
-  res, err := prompt.Run()
+func GetToken() string {
+  secret, err := keyring.Get(serviceName, userName)
   if err != nil {
-    fmt.Println("Failed to run input prompt.", err.Error())
+    fmt.Println("\x1b[31mError while reading access token from keychain:", err.Error(), "\x1b[0m")
+    fmt.Println("Run `macli login` first to authenticate with your MyAnimeList API Token")
     os.Exit(1)
   }
 
-  return res
+  return secret
+}
+
+func setToken(secret string) {
+  err := keyring.Set(serviceName, userName, secret)
+  if err != nil {
+    fmt.Println("Error while writing access token to keychain", err)
+    os.Exit(1)
+  }
+}
+
+func deleteToken() {
+  err := keyring.Delete(serviceName, userName)
+  // TODO: if secret doesnt exist dont show error
+  if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
 }

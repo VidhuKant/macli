@@ -16,22 +16,42 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package cmd
+package auth
 
 import (
-	"github.com/spf13/cobra"
-	"github.com/MikunoNaka/macli/auth"
+  "os"
+  "fmt"
+  "errors"
+  p "github.com/manifoldco/promptui"
 )
 
-var loginCmd = &cobra.Command {
-	Use:   "login",
-	Short: "Login with your MyAnimeList client secret",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		auth.Login()
-	},
-}
+// because importing macli/ui causes import cycle
+func secretInput(label, errMessage string) string {
+  validate := func(input string) error {
+    if input == "" {
+      return errors.New(errMessage)
+    }
+    return nil
+  }
 
-func init() {
-	rootCmd.AddCommand(loginCmd)
+  template := &p.PromptTemplates {
+    Valid: "{{ . | cyan }}",
+    Invalid: "{{ . | cyan }}",
+    Success: "{{ . | blue }}",
+  }
+
+  prompt := p.Prompt {
+    Label: label,
+    Templates: template,
+    Validate: validate,
+    Mask: '*',
+  }
+
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Failed to run secret input prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  return res
 }

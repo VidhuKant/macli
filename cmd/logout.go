@@ -23,15 +23,17 @@ import (
 	"github.com/MikunoNaka/macli/auth"
 )
 
-var loginCmd = &cobra.Command {
-	Use:   "login",
-	Short: "Login with your MyAnimeList client secret",
-	Long: ``,
+var logoutCmd = &cobra.Command {
+	Use:   "logout",
+	Short: "Logout from macli",
+	Long: `Logout from macli
+This will delete the Auth Token and Client ID from system's keyring.
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		auth.Login()
+		auth.Logout()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(loginCmd)
+	rootCmd.AddCommand(logoutCmd)
 }

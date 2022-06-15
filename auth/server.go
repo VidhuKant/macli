@@ -16,22 +16,20 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package cmd
+package auth
 
-import (
-	"github.com/spf13/cobra"
-	"github.com/MikunoNaka/macli/auth"
-)
-
-var loginCmd = &cobra.Command {
-	Use:   "login",
-	Short: "Login with your MyAnimeList client secret",
-	Long: ``,
-	Run: func(cmd *cobra.Command, args []string) {
-		auth.Login()
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(loginCmd)
-}
+// import (
+//   "net/http"
+//   "os"
+//   "fmt"
+// )
+//
+// func listen() {
+//   http.HandleFunc("/", getRoot)
+//
+//   err := http.ListenAndServe(":8000", nil)
+//   if err != nil {
+//     fmt.Println("There was an error initialising the server", err.Error())
+//     os.Exit(1)
+//   }
+// }
