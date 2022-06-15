@@ -16,27 +16,31 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package mal
+package cmd
 
 import (
-  "github.com/MikunoNaka/macli/auth"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
-  ua "github.com/MikunoNaka/MAL2Go/user/anime"
-  um "github.com/MikunoNaka/MAL2Go/user/manga"
+	"github.com/spf13/cobra"
+	"github.com/MikunoNaka/macli/ui"
+	"github.com/MikunoNaka/macli/auth"
 )
 
-var animeClient a.Client
-var mangaClient m.Client
-var userAnimeClient ua.Client
-var userMangaClient um.Client
+var loginCmd = &cobra.Command {
+	Use:   "login",
+	Short: "Login with your MyAnimeList client secret",
+	Long: `
+Currently, macli doesn't support logging in.
+You need to manually generate an access token/client secret to authorise
+macli with your MyAnimeList account.
 
-func Init() {
-  secret := auth.GetToken()
+An easy way to generate a token is to use my python script:
+https://github.com/MikunoNaka/mal-authtoken-generator
+`,
+	Run: func(cmd *cobra.Command, args []string) {
+		secret := ui.PasswordInput("Enter your client secret: ", "Client secret can't be empty")
+		auth.Login(secret)
+	},
+}
 
-  // initialise MAL2Go Client(s)
-  animeClient.AuthToken = "Bearer " + secret
-  mangaClient.AuthToken = "Bearer " + secret
-  userAnimeClient.AuthToken = "Bearer " + secret
-  userMangaClient.AuthToken = "Bearer " + secret
+func init() {
+	rootCmd.AddCommand(loginCmd)
 }
