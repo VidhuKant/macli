@@ -23,14 +23,26 @@ import (
   "os"
 )
 
-func SetStatus(animeId int, status string) {
+func SetAnimeStatus(animeId int, status string) {
   resp, err := userAnimeClient.SetStatus(animeId, status)
   if err != nil {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
   if resp.Error != "" {
-    fmt.Println("MyAnimeList reported error on SetStatus", resp.Error, resp.Message)
+    fmt.Println("MyAnimeList reported error on setting anime status", resp.Error, resp.Message)
+    os.Exit(1)
+  }
+}
+
+func SetMangaStatus(mangaId int, status string) {
+  resp, err := userMangaClient.SetStatus(mangaId, status)
+  if err != nil {
+    fmt.Println("Error while parsing status:", err.Error())
+    os.Exit(1)
+  }
+  if resp.Error != "" {
+    fmt.Println("MyAnimeList reported error on setting manga status", resp.Error, resp.Message)
     os.Exit(1)
   }
 }

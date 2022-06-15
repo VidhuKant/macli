@@ -1,7 +1,21 @@
 /*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
+macli - Unofficial CLI-Based MyAnimeList Client
+Copyright © 2022 Vidhu Kant Sharma <vidhukant@vidhukant.xyz>
 
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
+
 package cmd
 
 import (
@@ -21,6 +35,7 @@ var statusCmd = &cobra.Command{
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+		mal.Init() // needs to be manually called else it won't let you login
 		searchInput := strings.Join(args, " ")
 
 		statusInput, err := cmd.Flags().GetString("status")
@@ -34,8 +49,7 @@ var statusCmd = &cobra.Command{
 		}
 
 		if mangaMode {
-			// setMangaStatus(statusInput, searchInput)
-			fmt.Println("Manga mode coming soon")
+			setMangaStatus(statusInput, searchInput)
 		} else {
 			setAnimeStatus(statusInput, searchInput)
 		}
@@ -45,16 +59,31 @@ var statusCmd = &cobra.Command{
 
 func setAnimeStatus(statusInput, searchInput string) {
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Anime To Update", "Search can't be blank.")
+		searchInput = ui.TextInput("Search Anime To Update: ", "Search can't be blank.")
 	}
 
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
 
 	if statusInput == "" {
-		ui.StatusMenu(anime)
+		ui.AnimeStatusMenu(anime)
 	} else {
-		mal.SetStatus(anime.Id, statusInput)
-		fmt.Printf("Successfully set \"%s\" to \"%s\"", anime.Title, statusInput)
+		mal.SetAnimeStatus(anime.Id, statusInput)
+		fmt.Printf("Successfully set \"%s\" to \"%s\"\n", anime.Title, statusInput)
+	}
+}
+
+func setMangaStatus(statusInput, searchInput string) {
+	if searchInput == "" {
+		searchInput = ui.TextInput("Search Manga To Update: ", "Search can't be blank.")
+	}
+
+	manga := ui.MangaSearch("Select Manga:", searchInput)
+
+	if statusInput == "" {
+		ui.MangaStatusMenu(manga)
+	} else {
+		mal.SetAnimeStatus(manga.Id, statusInput)
+		fmt.Printf("Successfully set \"%s\" to \"%s\"\n", manga.Title, statusInput)
 	}
 }
 

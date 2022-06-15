@@ -24,32 +24,97 @@ import (
   "os"
   p "github.com/manifoldco/promptui"
   a "github.com/MikunoNaka/MAL2Go/anime"
+  m "github.com/MikunoNaka/MAL2Go/manga"
 )
 
-type Action struct {
+type AnimeAction struct {
   Label       string
   Description string
   Method      func(a.Anime)
 }
 
-// only search animes probably only now
-func ActionMenu(animeIsAdded bool) func(a.Anime) {
+type MangaAction struct {
+  Label       string
+  Description string
+  Method      func(m.Manga)
+}
+
+func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
   // TODO: load promptLength from config
   promptLength := 5
 
-  options := []Action {
-    {"Set Status",          "Set status for an anime (watching, dropped, etc)", StatusMenu},
+  options := []AnimeAction {
+    {"Set Status",          "Set status for an anime (watching, dropped, etc)", AnimeStatusMenu},
     {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
-    {"Set Score",           "Set score", StatusMenu},
-    {"Set Rewatching",      "Set if rewatching", StatusMenu},
-    {"Set Times Rewatched", "Set number of times rewatched", StatusMenu},
+    // these only temporarily run AnimeStatusMenu
+    // because that functionality doesnt exist yet
+    {"Set Score",           "Set score", AnimeStatusMenu},
+    {"Set Re-watching",      "Set if re-watching", AnimeStatusMenu},
+    {"Set Times Re-watched", "Set number of times re-watched", AnimeStatusMenu},
   }
 
   // if anime not in list
   if animeIsAdded {
     options = append(
       options,
-      Action{"Delete Anime", "Delete Anime From Your MyAnimeList List.", StatusMenu},
+      AnimeAction{"Delete Anime", "Delete Anime From Your MyAnimeList List.", AnimeStatusMenu},
+    )
+  }
+
+  template := &p.SelectTemplates {
+    Label: "{{ .Label }}",
+    Active: "{{ .Label | magenta }} {{ .Description | faint }}",
+    Inactive: "{{ .Label }}",
+    Selected: "{{ .Label | magenta }}",
+    Details: `
+-------------------
+{{ .Description }}
+`,
+  }
+
+  // returns true if input == anime title
+  searcher := func(input string, index int) bool {
+    action := strings.Replace(strings.ToLower(options[index].Label), " ", "", -1)
+    input = strings.Replace(strings.ToLower(input), " ", "", -1)
+    return strings.Contains(action, input)
+  }
+
+  prompt := p.Select {
+    Label: "Select Action: ",
+    Items: options,
+    Templates: template,
+    Searcher: searcher,
+    Size: promptLength,
+  }
+
+  res, _, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error running actions menu.", err.Error())
+    os.Exit(1)
+  }
+
+  return options[res].Method
+}
+
+func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
+  // TODO: load promptLength from config
+  promptLength := 5
+
+  options := []MangaAction {
+    {"Set Status",        "Set status for a manga (reading, dropped, etc)", MangaStatusMenu},
+    {"Set Chapters",      "Set number of chapters read", ChapterInput},
+    // these only temporarily run MangaStatusMenu
+    // because that functionality doesnt exist yet
+    {"Set Score",         "Set score", MangaStatusMenu},
+    {"Set Re-reading",    "Set if re-reading", MangaStatusMenu},
+    {"Set Times Re-read", "Set number of times re-read", MangaStatusMenu},
+  }
+
+  // if manga not in list
+  if mangaIsAdded {
+    options = append(
+      options,
+      MangaAction{"Delete Manga", "Delete Manga From Your MyAnimeList List.", MangaStatusMenu},
     )
   }
 

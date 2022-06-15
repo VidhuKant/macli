@@ -19,10 +19,10 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"strings"
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/ui"
-	"strings"
-	"fmt"
+	"github.com/MikunoNaka/macli/mal"
 )
 
 var searchCmd = &cobra.Command {
@@ -32,6 +32,7 @@ var searchCmd = &cobra.Command {
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+		mal.Init() // needs to be manually called else it won't let you login
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
 		mangaMode, _ := cmd.Flags().GetBool("manga")
@@ -45,22 +46,27 @@ var searchCmd = &cobra.Command {
 }
 
 func searchManga(searchInput string) {
+	mangaIsAdded := false
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Manga:", "Search can't be blank.")
+		searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
 	}
-    fmt.Printf("You typed in \"%s\" but macli doesn't search manga yet.\n", searchInput)
+    manga := ui.MangaSearch("Select Manga:", searchInput)
+	if manga.MyListStatus.Status != "" {
+		mangaIsAdded = true
+	}
+	ui.MangaActionMenu(mangaIsAdded)(manga)
 }
 
 func searchAnime(searchInput string) {
 	animeIsAdded := false
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Anime", "Search can't be blank.")
+		searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
 	}
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
 	if anime.MyListStatus.Status != "" {
 		animeIsAdded = true
 	}
-	ui.ActionMenu(animeIsAdded)(anime)
+	ui.AnimeActionMenu(animeIsAdded)(anime)
 }
 
 func init() {

@@ -33,14 +33,49 @@ func TextInput(label, errMessage string) string {
     return nil
   }
 
+  template := &p.PromptTemplates {
+    Valid: "\x1b[0m{{ . | magenta }}",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
+    Success: "{{ . | cyan }}",
+  }
+
   prompt := p.Prompt {
     Label: label,
     Validate: validate,
+    Templates: template,}
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Failed to run input prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  return res
+}
+
+func PasswordInput(label, errMessage string) string {
+  validate := func(input string) error {
+    if input == "" {
+      return errors.New(errMessage)
+    }
+    return nil
+  }
+
+  template := &p.PromptTemplates {
+    Valid: "{{ . | cyan }}",
+    Invalid: "{{ . | cyan }}",
+    Success: "{{ . | blue }}",
+  }
+
+  prompt := p.Prompt {
+    Label: label,
+    Templates: template,
+    Validate: validate,
+    Mask: '*',
   }
 
   res, err := prompt.Run()
   if err != nil {
-    fmt.Println("Failed to run TextInput Prompt.", err.Error())
+    fmt.Println("Failed to run input prompt.", err.Error())
     os.Exit(1)
   }
 

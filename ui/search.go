@@ -25,15 +25,14 @@ import (
   p "github.com/manifoldco/promptui"
   mal "github.com/MikunoNaka/macli/mal"
   a "github.com/MikunoNaka/MAL2Go/anime"
+  m "github.com/MikunoNaka/MAL2Go/manga"
 )
 
 // only search animes probably only now
 func AnimeSearch(label, searchString string) a.Anime {
   // TODO: load promptLength from config
   promptLength := 5
-
-  extraFields := []string{"my_list_status"}
-  animes := mal.SearchAnime(searchString, extraFields)
+  animes := mal.SearchAnime(searchString)
 
   template := &p.SelectTemplates {
     Label: "{{ . }}",
@@ -61,13 +60,51 @@ More Details To Be Added Later
     Size: promptLength,
   }
 
-  var anime a.Anime
   animeIndex, _, err := prompt.Run()
   if err != nil {
     fmt.Println("Error running search menu.", err.Error())
     os.Exit(1)
   }
 
-  anime = animes[animeIndex]
-  return anime
+  return animes[animeIndex]
+}
+
+func MangaSearch(label, searchString string) m.Manga {
+  // TODO: load promptLength from config
+  promptLength := 5
+  mangas := mal.SearchManga(searchString)
+
+  template := &p.SelectTemplates {
+    Label: "{{ . }}",
+    Active: "{{ .Title | magenta }}",
+    Inactive: "{{ .Title }}",
+    Selected: "{{ .Title | blue }}",
+    Details: `
+--------- {{ .Title }} ----------
+More Details To Be Added Later
+`,
+  }
+
+  // returns true if input == anime title
+  searcher := func(input string, index int) bool {
+    title := strings.Replace(strings.ToLower(mangas[index].Title), " ", "", -1)
+    input = strings.Replace(strings.ToLower(input), " ", "", -1)
+    return strings.Contains(title, input)
+  }
+
+  prompt := p.Select {
+    Label: label,
+    Items: mangas,
+    Templates: template,
+    Searcher: searcher,
+    Size: promptLength,
+  }
+
+  mangaIndex, _, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error running search menu.", err.Error())
+    os.Exit(1)
+  }
+
+  return mangas[mangaIndex]
 }

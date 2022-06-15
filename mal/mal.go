@@ -23,11 +23,15 @@ import (
   "os"
 
   a "github.com/MikunoNaka/MAL2Go/anime"
+  m "github.com/MikunoNaka/MAL2Go/manga"
   ua "github.com/MikunoNaka/MAL2Go/user/anime"
+  um "github.com/MikunoNaka/MAL2Go/user/manga"
 )
 
 var animeClient a.Client
+var mangaClient m.Client
 var userAnimeClient ua.Client
+var userMangaClient um.Client
 
 func init() {
   // TODO: don't load access token from .env
@@ -35,5 +39,7 @@ func init() {
 
   // initialise MAL2Go Client(s)
   animeClient.AuthToken = "Bearer " + accessToken
+  mangaClient.AuthToken = "Bearer " + accessToken
   userAnimeClient.AuthToken = "Bearer " + accessToken
+  userMangaClient.AuthToken = "Bearer " + accessToken
 }

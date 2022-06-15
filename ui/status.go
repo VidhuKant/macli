@@ -24,6 +24,7 @@ import (
   "os"
   "github.com/MikunoNaka/macli/mal"
   a "github.com/MikunoNaka/MAL2Go/anime"
+  m "github.com/MikunoNaka/MAL2Go/manga"
   p "github.com/manifoldco/promptui"
 )
 
@@ -32,8 +33,7 @@ type StatusOption struct {
   Status string
 }
 
-// only search animes probably only now
-func StatusMenu(anime a.Anime) {
+func AnimeStatusMenu(anime a.Anime) {
   options := []StatusOption {
     {"Watching", "watching"},
     {"Completed", "completed"},
@@ -67,8 +67,8 @@ func StatusMenu(anime a.Anime) {
   }
 
   promptLabel := "Set Status: "
-  if anime.MyListStatus.Status != "" {
-    promptLabel = promptLabel + "(current - " + anime.MyListStatus.Status + ")"
+  if animeStatus != "" {
+    promptLabel = promptLabel + "(current - " + animeStatus + ")"
   }
 
   prompt := p.Select {
@@ -85,5 +85,60 @@ func StatusMenu(anime a.Anime) {
     os.Exit(1)
   }
 
-  mal.SetStatus(anime.Id, options[res].Status)
+  mal.SetAnimeStatus(anime.Id, options[res].Status)
+}
+
+func MangaStatusMenu(manga m.Manga) {
+  options := []StatusOption {
+    {"Reading", "reading"},
+    {"Completed", "completed"},
+    {"On Hold", "on_hold"},
+    {"Dropped", "dropped"},
+    {"Plan to Read", "plan_to_read"},
+  }
+
+  // highlight current status (if any)
+  mangaStatus := manga.MyListStatus.Status
+  if mangaStatus != "" {
+    for i := range options {
+      if options[i].Status == mangaStatus {
+        options[i].Label = options[i].Label + " \x1b[35m\U00002714\x1b[0m"
+      }
+    }
+  }
+
+  template := &p.SelectTemplates {
+    Label: "{{ .Label }}",
+    Active: "{{ .Label | magenta }}",
+    Inactive: "{{ .Label }}",
+    Selected: "{{ .Label | cyan }}",
+  }
+
+  // returns true if input == anime title
+  searcher := func(input string, index int) bool {
+    status := strings.Replace(strings.ToLower(options[index].Label), " ", "", -1)
+    input = strings.Replace(strings.ToLower(input), " ", "", -1)
+    return strings.Contains(status, input)
+  }
+
+  promptLabel := "Set Status: "
+  if mangaStatus != "" {
+    promptLabel = promptLabel + "(current - " + mangaStatus + ")"
+  }
+
+  prompt := p.Select {
+    Label: promptLabel,
+    Items: options,
+    Templates: template,
+    Searcher: searcher,
+    Size: 5,
+  }
+
+  res, _, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error running status prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  mal.SetMangaStatus(manga.Id, options[res].Status)
 }

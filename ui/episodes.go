@@ -25,7 +25,7 @@ import (
   "errors"
   "github.com/MikunoNaka/macli/mal"
   a "github.com/MikunoNaka/MAL2Go/anime"
-  // m "github.com/MikunoNaka/MAL2Go/manga"
+  m "github.com/MikunoNaka/MAL2Go/manga"
   p "github.com/manifoldco/promptui"
 )
 
@@ -62,4 +62,39 @@ func EpisodeInput(anime a.Anime) {
   }
 
   mal.SetEpisodes(anime.Id, res)
+}
+
+func ChapterInput(manga m.Manga) {
+  validate := func(input string) error {
+    if _, err := strconv.ParseFloat(input, 64); err != nil {
+      return errors.New("Input must be a number.")
+    }
+    return nil
+  }
+
+  template := &p.PromptTemplates {
+    Valid: "\x1b[0m{{ . | magenta }}",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m ",
+    Success: "{{ . | cyan }}",
+  }
+
+  prompt := p.Prompt {
+    Label: "Set Chapter Number: ",
+    Templates: template,
+    Validate:  validate,
+  }
+
+  // print current chapter number if any
+  chNum := manga.MyListStatus.ChaptersRead
+  if chNum != 0 {
+    fmt.Printf("\x1b[33mYou currently have read %d chapters.\n\x1b[0m", chNum)
+  }
+
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error Running chapter input Prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  mal.SetChapters(manga.Id, res)
 }

@@ -19,30 +19,40 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  "log"
+  "fmt"
+  "os"
   "strconv"
 )
 
 func SetEpisodes(animeId int, ep string) {
   epValue, err := strconv.Atoi(ep)
   if err != nil {
-    log.Fatal("Error while parsing episode input", err)
+    fmt.Println("Error while parsing episode input", err)
+    os.Exit(1)
   }
 
   sign := ep[0:1]
   if sign == "+" || sign == "-" {
-    log.Printf("Cannot increment/decrement watched episodes by %d\n. Currently that doesn't wokr", epValue)
-    return
+    fmt.Printf("Cannot increment/decrement watched episodes by %d\n. Currently that doesn't wokr", epValue)
+    os.Exit(2)
   }
 
   userAnimeClient.SetWatchedEpisodes(animeId, epValue)
 }
 
+
 func SetChapters(mangaId int, ch string) {
   chValue, err := strconv.Atoi(ch)
   if err != nil {
-    log.Fatal("Error while parsing chapter input", err)
+    fmt.Println("Error while parsing chapter input", err)
+    os.Exit(1)
   }
 
-  log.Printf("peeepee%s%d", ch[0:1], chValue)
+  sign := ch[0:1]
+  if sign == "+" || sign == "-" {
+    fmt.Printf("Cannot increment/decrement read chapters by %d\n. Currently that doesn't wokr", chValue)
+    os.Exit(2)
+  }
+
+  userMangaClient.SetChaptersRead(mangaId, chValue)
 }
