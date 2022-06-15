@@ -24,6 +24,9 @@ import (
   "github.com/zalando/go-keyring"
 )
 
+var refreshPrefix string = "-refresh-token"
+var expiresPrefix string = "-expires-in"
+
 func GetToken() string {
   secret, err := keyring.Get(serviceName, userName)
   if err != nil {
@@ -45,9 +48,72 @@ func setToken(secret string) {
 
 func deleteToken() {
   err := keyring.Delete(serviceName, userName)
-  // TODO: if secret doesnt exist dont show error
+  // if secret doesnt exist dont show error
   if err != nil {
-    fmt.Println(err)
+    if err.Error() != "secret not found in keyring" {
+      fmt.Println("Error while deleting authentication token", err.Error())
+      os.Exit(1)
+    }
+  }
+}
+
+// currently refreshtoken has no use
+func setRefreshToken(secret string) {
+  err := keyring.Set(serviceName + refreshPrefix, userName, secret)
+  if err != nil {
+    fmt.Println("Error while writing access token to keychain", err)
     os.Exit(1)
+  }
+}
+
+func getRefreshToken() string {
+  secret, err := keyring.Get(serviceName + refreshPrefix, userName)
+  if err != nil {
+    fmt.Println("\x1b[31mError while reading refresh token from keychain:", err.Error(), "\x1b[0m")
+    fmt.Println("Your access token won't be automatically refreshed. If you have problems using macli please run `macli login` to log in again.")
+    os.Exit(1)
+  }
+
+  return secret
+}
+
+func deleteRefreshToken() {
+  err := keyring.Delete(serviceName + refreshPrefix, userName)
+  // if secret doesnt exist dont show error
+  if err != nil {
+    if err.Error() != "secret not found in keyring" {
+      fmt.Println("Error while deleting refresh token", err.Error())
+      os.Exit(1)
+    }
+  }
+}
+
+func setExpiresIn(secret string) {
+  err := keyring.Set(serviceName + expiresPrefix, userName, secret)
+  if err != nil {
+    fmt.Println("Error while writing token expire time to keychain", err)
+    os.Exit(1)
+  }
+}
+
+func getExpiresIn() string {
+  secret, err := keyring.Get(serviceName + expiresPrefix, userName)
+  if err != nil {
+    fmt.Println("\x1b[31mError while reading token expire time from keychain:", err.Error(), "\x1b[0m")
+    fmt.Println("Please log in again using `macli login` if problems occour")
+    // os.Exit(1)
+  }
+
+  return secret
+}
+
+func deleteExpiresIn() {
+  err := keyring.Delete(serviceName + expiresPrefix, userName)
+  // if secret doesnt exist dont show error
+  if err != nil {
+    if err.Error() != "secret not found in keyring" {
+      fmt.Println("Error while deleting token expires in data", err.Error())
+      os.Exit(1)
+    }
   }
 }

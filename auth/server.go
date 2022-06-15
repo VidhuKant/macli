@@ -18,18 +18,61 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 package auth
 
-// import (
-//   "net/http"
-//   "os"
-//   "fmt"
-// )
-//
-// func listen() {
-//   http.HandleFunc("/", getRoot)
-//
-//   err := http.ListenAndServe(":8000", nil)
-//   if err != nil {
-//     fmt.Println("There was an error initialising the server", err.Error())
-//     os.Exit(1)
-//   }
-// }
+import (
+  "net/http"
+  "net/url"
+  "encoding/json"
+  "os"
+  "fmt"
+	// "io/ioutil"
+)
+
+func listen(clientId, verifier string) {
+  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    query := r.URL.Query()
+
+	code, codePresent := query["code"]
+	if !codePresent {
+	  // TODO: check if error message present
+	  fmt.Println("Error: response from MyAnimeList doesn't contain required code.")
+	  os.Exit(1)
+	}
+
+	accessToken, refreshToken, expiresIn := requestToken(clientId, verifier, code[0])
+
+	if accessToken != "" {
+	  w.WriteHeader(200)
+	  w.Write([]byte("<h1>You have successfully logged into macli.</h1>"))
+	}
+
+	setToken(accessToken)
+	setRefreshToken(refreshToken)
+	setExpiresIn(expiresIn)
+  })
+
+  err := http.ListenAndServe(":8000", nil)
+  if err != nil {
+    fmt.Println("There was an error initialising the server", err.Error())
+    os.Exit(1)
+  }
+}
+
+func requestToken(clientId, verifier, code string) (string, string, string) {
+  data := url.Values{
+	"client_id": {clientId},
+	"code_verifier": {verifier},
+	"grant_type": {"authorization_code"},
+	"code": {code},
+  }
+
+  resp, err := http.PostForm("https://myanimelist.net/v1/oauth2/token", data)
+  if err != nil {
+    fmt.Println("Error while requesting an access token:", err)
+	os.Exit(1)
+  }
+
+  var res map[string]interface{}
+  json.NewDecoder(resp.Body).Decode(&res)
+
+  return fmt.Sprintf("%v", res["access_token"]), fmt.Sprintf("%v", res["refresh_token"]), fmt.Sprintf("%v", res["expires_in"])
+}

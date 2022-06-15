@@ -40,10 +40,12 @@ func setClientId(clientId string) {
 
 func deleteClientId() {
   err := keyring.Delete(serviceName + clientSuffix, userName)
-  // TODO: if secret doesnt exist dont show error
+  // if secret doesnt exist dont show error
   if err != nil {
-    fmt.Println(err)
-    os.Exit(1)
+    if err.Error() != "secret not found in keyring" {
+      fmt.Println("Error while deleting Client ID", err.Error())
+      os.Exit(1)
+    }
   }
 }
 
