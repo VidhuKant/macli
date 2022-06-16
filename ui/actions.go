@@ -25,6 +25,7 @@ import (
   p "github.com/manifoldco/promptui"
   a "github.com/MikunoNaka/MAL2Go/anime"
   m "github.com/MikunoNaka/MAL2Go/manga"
+  "github.com/MikunoNaka/macli/mal"
 )
 
 type AnimeAction struct {
@@ -48,16 +49,16 @@ func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
     {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
     // these only temporarily run AnimeStatusMenu
     // because that functionality doesnt exist yet
-    {"Set Score",           "Set score", AnimeStatusMenu},
-    {"Set Re-watching",      "Set if re-watching", AnimeStatusMenu},
-    {"Set Times Re-watched", "Set number of times re-watched", AnimeStatusMenu},
+    // {"Set Score",           "Set score", AnimeStatusMenu},
+    // {"Set Re-watching",      "Set if re-watching", AnimeStatusMenu},
+    // {"Set Times Re-watched", "Set number of times re-watched", AnimeStatusMenu},
   }
 
   // if anime not in list
   if animeIsAdded {
     options = append(
       options,
-      AnimeAction{"Delete Anime", "Delete Anime From Your MyAnimeList List.", AnimeStatusMenu},
+      AnimeAction{"Delete Anime", "Delete Anime From Your MyAnimeList List.", mal.DeleteAnime},
     )
   }
 
@@ -105,16 +106,16 @@ func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
     {"Set Chapters",      "Set number of chapters read", ChapterInput},
     // these only temporarily run MangaStatusMenu
     // because that functionality doesnt exist yet
-    {"Set Score",         "Set score", MangaStatusMenu},
-    {"Set Re-reading",    "Set if re-reading", MangaStatusMenu},
-    {"Set Times Re-read", "Set number of times re-read", MangaStatusMenu},
+    // {"Set Score",         "Set score", MangaStatusMenu},
+    // {"Set Re-reading",    "Set if re-reading", MangaStatusMenu},
+    // {"Set Times Re-read", "Set number of times re-read", MangaStatusMenu},
   }
 
   // if manga not in list
   if mangaIsAdded {
     options = append(
       options,
-      MangaAction{"Delete Manga", "Delete Manga From Your MyAnimeList List.", MangaStatusMenu},
+      MangaAction{"Delete Manga", "Delete Manga From Your MyAnimeList List.", mal.DeleteManga},
     )
   }
 

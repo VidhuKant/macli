@@ -46,26 +46,20 @@ var searchCmd = &cobra.Command {
 }
 
 func searchManga(searchInput string) {
-	mangaIsAdded := false
 	if searchInput == "" {
 		searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
 	}
     manga := ui.MangaSearch("Select Manga:", searchInput)
-	if manga.MyListStatus.Status != "" {
-		mangaIsAdded = true
-	}
+	mangaIsAdded := manga.MyListStatus.Status != ""
 	ui.MangaActionMenu(mangaIsAdded)(manga)
 }
 
 func searchAnime(searchInput string) {
-	animeIsAdded := false
 	if searchInput == "" {
 		searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
 	}
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
-	if anime.MyListStatus.Status != "" {
-		animeIsAdded = true
-	}
+	animeIsAdded := anime.MyListStatus.Status != ""
 	ui.AnimeActionMenu(animeIsAdded)(anime)
 }
 
