@@ -19,27 +19,9 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  "github.com/MikunoNaka/macli/auth"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
   u "github.com/MikunoNaka/MAL2Go/user"
-  ua "github.com/MikunoNaka/MAL2Go/user/anime"
-  um "github.com/MikunoNaka/MAL2Go/user/manga"
 )
 
-var animeClient a.Client
-var mangaClient m.Client
-var userClient u.Client
-var userAnimeClient ua.Client
-var userMangaClient um.Client
-
-func Init() {
-  secret := auth.GetToken()
-
-  // initialise MAL2Go Client(s)
-  animeClient.AuthToken = "Bearer " + secret
-  mangaClient.AuthToken = "Bearer " + secret
-  userClient.AuthToken = "Bearer " + secret
-  userAnimeClient.AuthToken = "Bearer " + secret
-  userMangaClient.AuthToken = "Bearer " + secret
+func GetUserInfo() u.UserInfo {
+  return userClient.GetSelfUserInfo()
 }

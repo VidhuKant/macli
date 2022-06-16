@@ -55,7 +55,7 @@ func generateLink(clientId, challenge string) string {
 }
 
 func openInBrowser(url string) {
-  fmt.Println("Attempting to launch \x1b[36m" + url + "\x1b[0m in your default web browser. If it doesn't launch please manually copy-paste the link.")
+  fmt.Println("Attempting to launch \033[36m" + url + "\033[0m in your default web browser. If it doesn't launch please manually copy-paste the link.")
 
   var err error
   switch runtime.GOOS {
