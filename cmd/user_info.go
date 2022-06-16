@@ -29,7 +29,7 @@ var userInfoCmd = &cobra.Command {
 	Short: "Shows logged-in user's info",
 	Long:
 `Print logged-in user's profile information.
-Currently, MyAnimeList doesn't allow reading of other users' profiles
+Currently, MyAnimeList doesn't allow reading of other users' profiles.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		userInfo := mal.GetUserInfo()

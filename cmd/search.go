@@ -27,9 +27,12 @@ import (
 var searchCmd = &cobra.Command {
 	Use:   "search",
 	Short: "Search for an anime/manga",
-	Long: `
--- help/description to be added later
-`,
+	Long: "Search for an anime or a manga on MyAnimeList\n" +
+	"\n" +
+    "Example Usage:\n" +
+	"\t\x1b[33m`macli search <anime-name>`\x1b[0m searches for an anime\n" +
+	"\t\x1b[33m`macli search -m <manga-name>`\x1b[0m searches for a manga\n" +
+	"\t\x1b[33m`macli search`\x1b[0m interactively asks for an anime to search for (same for manga with -m/--manga flag)\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")

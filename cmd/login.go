@@ -25,8 +25,18 @@ import (
 
 var loginCmd = &cobra.Command {
 	Use:   "login",
-	Short: "Login with your MyAnimeList account.",
-	Long: ``,
+	Short: "Login with your MyAnimeList account",
+	Long: "To authenticate with macli, a Client ID is required.\n" +
+	"If you have logged in before and ran `macli logout`, you may not need to enter your Client ID again unless you specifically deleted it.\n" +
+	"\n" +
+	"\x1b[31;1mHow to generate a Client ID:\x1b[0m\n" +
+	" - Go to \x1b[36mhttps://myanimelist.net/apiconfig\x1b[0m\n" +
+	" - Click on \x1b[33m\"Create ID\"\x1b[0m\n" +
+	" - Inside the form you can set all the details to whatever you'd like\n" +
+	" - For macli to work properly, you only need to set \x1b[33m\"App Redirect Url\"\x1b[0m to \x1b[36mhttp://localhost:8000\x1b[0m\n" +
+	" - After that, hit submit, then copy your Client ID, run `macli login` and paste in your Client ID.\n" +
+	" - \x1b[31mIf after running `macli login` it opens a dialogue box in the browser asking for credentials,\n   and not the MyAnimeList login page, that means you have entered your Client ID wrong.\x1b[0m\n" +
+	"",
 	Run: func(cmd *cobra.Command, args []string) {
 		auth.Login()
 	},

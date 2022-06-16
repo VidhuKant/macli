@@ -27,7 +27,7 @@ var logoutCmd = &cobra.Command {
 	Use:   "logout",
 	Short: "Logout from macli",
 	Long: `Logout from macli
-This will delete the Auth Token and Client ID from system's keyring.
+This will delete the Auth Token and Client ID (if prompted) from system's keyring.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		auth.Logout()

@@ -31,9 +31,11 @@ import (
 var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "Set an anime/manga's status",
-	Long: `
--- help/description to be added later
-`,
+	Long: "Set an anime's status\n" +
+	"\n" +
+    "Example Usage:\n" +
+	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
+	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		searchInput := strings.Join(args, " ")
 
