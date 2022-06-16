@@ -61,12 +61,16 @@ func openInBrowser(url string) {
   switch runtime.GOOS {
   case "linux":
     err = exec.Command("xdg-open", url).Start()
+    break
   case "windows":
     err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+    break
   case "darwin":
     err = exec.Command("open", url).Start()
+    break
   default:
     err = errors.New("<failed to detect platform>")
+    break
   }
 
   if err != nil {
@@ -78,6 +82,8 @@ func openInBrowser(url string) {
 
 func Logout() {
   deleteToken()
+  deleteExpiresIn()
+  deleteRefreshToken()
   fmt.Println("Deleted user credentials.")
   if confirmInput("Delete your Client ID? [y/N] ") {
     fmt.Println("Deleting Client ID...")
