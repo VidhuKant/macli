@@ -22,6 +22,7 @@ import (
   "os"
   "fmt"
   "errors"
+  "strings"
   p "github.com/manifoldco/promptui"
 )
 
@@ -54,4 +55,43 @@ func secretInput(label, errMessage string) string {
   }
 
   return res
+}
+
+// ask yes/no with no as default
+func confirmInput(label string) bool {
+  validResponses := []string{"y", "yes", "n", "no", ""}
+
+  validate := func(input string) error {
+    lowerInput := strings.ToLower(input)
+    for _, i := range validResponses {
+      if lowerInput == i {
+        return nil
+      }
+    }
+    return errors.New("answer can only be y(es) or n(o)")
+  }
+
+  template := &p.PromptTemplates {
+    Valid: "{{ . | cyan }}",
+    Invalid: "{{ . | cyan }}",
+    Success: "{{ . | blue }}",
+  }
+
+  prompt := p.Prompt {
+    Label: label,
+    Templates: template,
+    Validate: validate,
+  }
+
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Failed to run confirm prompt.", err.Error(), err)
+    os.Exit(1)
+  }
+
+  if res == "y" || res == "yes" {
+    return true
+  }
+
+  return false
 }

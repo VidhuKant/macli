@@ -70,12 +70,17 @@ func openInBrowser(url string) {
   }
 
   if err != nil {
-    fmt.Println("There was an error while launching your browser.", err)
+    fmt.Println("There was an error while launching your browser.")
     fmt.Println("Please manually copy and paste the above URL into your web browser.")
+    fmt.Println(err)
   }
 }
 
 func Logout() {
-  deleteClientId()
   deleteToken()
+  fmt.Println("Deleted user credentials.")
+  if confirmInput("Delete your Client ID? [y/N] ") {
+    fmt.Println("Deleting Client ID...")
+    deleteClientId()
+  }
 }

@@ -29,25 +29,17 @@ import (
 
 func listen(clientId, verifier string) {
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    query := r.URL.Query()
+	  code, codeExists := r.URL.Query()["code"]
 
-	code, codePresent := query["code"]
-	if !codePresent {
-	  // TODO: check if error message present
-	  fmt.Println("Error: response from MyAnimeList doesn't contain required code.")
-	  os.Exit(1)
-	}
-
-	accessToken, refreshToken, expiresIn := requestToken(clientId, verifier, code[0])
-
-	if accessToken != "" {
-	  w.WriteHeader(200)
-	  w.Write([]byte("<h1>You have successfully logged into macli.</h1>"))
-	}
-
-	setToken(accessToken)
-	setRefreshToken(refreshToken)
-	setExpiresIn(expiresIn)
+		if codeExists {
+	    accessToken, refreshToken, expiresIn := requestToken(clientId, verifier, code[0])
+		  setToken(accessToken)
+		  setRefreshToken(refreshToken)
+      setExpiresIn(expiresIn)
+			fmt.Println("\x1b[32mYou have successfully logged into macli.\x1b[0m")
+			fmt.Println("\x1b[32mYou can close the web browser tab now.\x1b[0m")
+			os.Exit(0)
+		}
   })
 
   err := http.ListenAndServe(":8000", nil)
