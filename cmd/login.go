@@ -25,7 +25,7 @@ import (
 
 var loginCmd = &cobra.Command {
 	Use:   "login",
-	Short: "Login with your MyAnimeList client secret",
+	Short: "Login with your MyAnimeList account.",
 	Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		auth.Login()

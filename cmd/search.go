@@ -22,7 +22,6 @@ import (
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/mal"
 )
 
 var searchCmd = &cobra.Command {
@@ -32,7 +31,6 @@ var searchCmd = &cobra.Command {
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		mal.Init() // needs to be manually called else it won't let you login
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
 		mangaMode, _ := cmd.Flags().GetBool("manga")

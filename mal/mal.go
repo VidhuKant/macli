@@ -33,7 +33,7 @@ var userClient u.Client
 var userAnimeClient ua.Client
 var userMangaClient um.Client
 
-func Init() {
+func init() {
   secret := auth.GetToken()
 
   // initialise MAL2Go Client(s)

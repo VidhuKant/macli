@@ -35,7 +35,6 @@ var statusCmd = &cobra.Command{
 -- help/description to be added later
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		mal.Init() // needs to be manually called else it won't let you login
 		searchInput := strings.Join(args, " ")
 
 		statusInput, err := cmd.Flags().GetString("status")
