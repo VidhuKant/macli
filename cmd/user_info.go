@@ -34,14 +34,14 @@ Currently, MyAnimeList doesn't allow reading of other users' profiles.
 	Run: func(cmd *cobra.Command, args []string) {
 		userInfo := mal.GetUserInfo()
 
-		fmt.Printf("\x1b[1;34mUsername: %s\n\x1b[0m", userInfo.Name)
-		fmt.Printf("\x1b[1;34mProfile Picture: %s\n\x1b[0m", userInfo.Picture)
-		fmt.Printf("\x1b[1;34mGender: %s\n\x1b[0m", userInfo.Gender)
-		fmt.Printf("\x1b[1;34mLocation: %s\n\x1b[0m", userInfo.Location)
-		fmt.Printf("\x1b[1;34mBirthday: %s\n\x1b[0m", userInfo.Birthday)
-		fmt.Printf("\x1b[1;34mTime Zone: %s\n\x1b[0m", userInfo.TimeZone)
-		fmt.Printf("\x1b[1;34mJoined At: %s\n\x1b[0m", userInfo.JoinedAt)
-		fmt.Printf("\x1b[1;34mUser ID: %d\n\x1b[0m", userInfo.Id)
+		fmt.Printf("\x1b[1;34mUsername: \x1b[0m%s\n", userInfo.Name)
+		fmt.Printf("\x1b[1;34mProfile Picture: \x1b[0m%s\n\x1b[0m", userInfo.Picture)
+		fmt.Printf("\x1b[1;34mGender: \x1b[0m%s\n", userInfo.Gender)
+		fmt.Printf("\x1b[1;34mLocation: \x1b[0m%s\n", userInfo.Location)
+		fmt.Printf("\x1b[1;34mBirthday: \x1b[0m%s\n", userInfo.Birthday)
+		fmt.Printf("\x1b[1;34mTime Zone: \x1b[0m%s\n", userInfo.TimeZone)
+		fmt.Printf("\x1b[1;34mJoined At: \x1b[0m%s\n", userInfo.JoinedAt)
+		fmt.Printf("\x1b[1;34mUser ID: \x1b[0m%d\n", userInfo.Id)
 
 		if userInfo.IsSupporter {
 		  fmt.Printf("\x1b[33mYou are a MyAnimeList Supporter.\n\x1b[0m")
