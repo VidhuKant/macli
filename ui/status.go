@@ -51,6 +51,11 @@ func getColorCodeByStatus(status string) string {
   }
 }
 
+// very short name I know
+func CreateStatusUpdateConfirmationMessage(title, status string) string {
+  return "Set \x1b[35m" + title + "\x1b[0m status to " + getColorCodeByStatus(status) + status + "\x1b[0m"
+}
+
 func AnimeStatusMenu(anime a.Anime) {
   options := []StatusOption {
     {"Watching", "watching"},
@@ -104,7 +109,7 @@ func AnimeStatusMenu(anime a.Anime) {
   }
 
   resp := mal.SetAnimeStatus(anime.Id, options[res].Status)
-  fmt.Println("Set \x1b[35m" + anime.Title + "\x1b[0m status to " + getColorCodeByStatus(resp.Status) + resp.Status + "\x1b[0m")
+  fmt.Println(CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
 }
 
 func MangaStatusMenu(manga m.Manga) {
@@ -160,5 +165,5 @@ func MangaStatusMenu(manga m.Manga) {
   }
 
   resp := mal.SetMangaStatus(manga.Id, options[res].Status)
-  fmt.Println("Set \x1b[35m" + manga.Title + "\x1b[0m status to " + getColorCodeByStatus(resp.Status) + resp.Status + "\x1b[0m")
+  fmt.Println(CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
 }

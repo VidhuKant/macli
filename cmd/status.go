@@ -68,8 +68,8 @@ func setAnimeStatus(statusInput, searchInput string) {
 	if statusInput == "" {
 		ui.AnimeStatusMenu(anime)
 	} else {
-		mal.SetAnimeStatus(anime.Id, statusInput)
-		fmt.Printf("Successfully set \"%s\" to \"%s\"\n", anime.Title, statusInput)
+		resp := mal.SetAnimeStatus(anime.Id, statusInput)
+		fmt.Println(ui.CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
 	}
 }
 
@@ -83,8 +83,8 @@ func setMangaStatus(statusInput, searchInput string) {
 	if statusInput == "" {
 		ui.MangaStatusMenu(manga)
 	} else {
-		mal.SetAnimeStatus(manga.Id, statusInput)
-		fmt.Printf("Successfully set \"%s\" to \"%s\"\n", manga.Title, statusInput)
+		resp := mal.SetAnimeStatus(manga.Id, statusInput)
+		fmt.Println(ui.CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
 	}
 }
 
