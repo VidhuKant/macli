@@ -33,6 +33,24 @@ type StatusOption struct {
   Status string
 }
 
+// to print dropped in red color, etc
+func getColorCodeByStatus(status string) string {
+  switch status {
+    case "watching", "reading":
+      return "\x1b[32m"
+    case "completed":
+      return "\x1b[34m"
+    case "on_hold":
+      return "\x1b[33m"
+    case "dropped":
+      return "\x1b[31m"
+    case "plan_to_watch", "plan_to_read":
+      return "\x1b[36m"
+    default:
+      return ""
+  }
+}
+
 func AnimeStatusMenu(anime a.Anime) {
   options := []StatusOption {
     {"Watching", "watching"},
@@ -85,7 +103,8 @@ func AnimeStatusMenu(anime a.Anime) {
     os.Exit(1)
   }
 
-  mal.SetAnimeStatus(anime.Id, options[res].Status)
+  resp := mal.SetAnimeStatus(anime.Id, options[res].Status)
+  fmt.Println("Set \x1b[35m" + anime.Title + "\x1b[0m status to " + getColorCodeByStatus(resp.Status) + resp.Status + "\x1b[0m")
 }
 
 func MangaStatusMenu(manga m.Manga) {
@@ -140,5 +159,6 @@ func MangaStatusMenu(manga m.Manga) {
     os.Exit(1)
   }
 
-  mal.SetMangaStatus(manga.Id, options[res].Status)
+  resp := mal.SetMangaStatus(manga.Id, options[res].Status)
+  fmt.Println("Set \x1b[35m" + manga.Title + "\x1b[0m status to " + getColorCodeByStatus(resp.Status) + resp.Status + "\x1b[0m")
 }

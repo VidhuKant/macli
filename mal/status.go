@@ -21,36 +21,24 @@ package mal
 import (
   "fmt"
   "os"
+  a "github.com/MikunoNaka/MAL2Go/v2/user/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/user/manga"
 )
 
-func SetAnimeStatus(animeId int, status string) {
+func SetAnimeStatus(animeId int, status string) a.UpdateResponse {
   resp, err := userAnimeClient.SetStatus(animeId, status)
   if err != nil {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  // TODO: do something with resp
-  fmt.Println(resp)
-
-  // not needed with MAL2Go v2.... probably
-  // if resp.Error != "" {
-  //   fmt.Println("MyAnimeList reported error on setting anime status", resp.Error, resp.Message)
-  //   os.Exit(1)
-  // }
+  return resp
 }
 
-func SetMangaStatus(mangaId int, status string) {
+func SetMangaStatus(mangaId int, status string) m.UpdateResponse {
   resp, err := userMangaClient.SetStatus(mangaId, status)
   if err != nil {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  // TODO: do something with resp
-  fmt.Println(resp)
-
-  // not needed with MAL2Go v2.... probably
-  // if resp.Error != "" {
-  //   fmt.Println("MyAnimeList reported error on setting manga status", resp.Error, resp.Message)
-  //   os.Exit(1)
-  // }
+  return resp
 }
