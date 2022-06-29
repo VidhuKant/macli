@@ -2,22 +2,16 @@
 Unofficial CLI-Based MyAnimeList Client
 
 ### Notice:
-macli is currently highly under development and only 3 commands work as of now.
-It can search for anime, update episodes and set status.
+macli is currently highly under development, so many obvious features may not be present.
 
 ## How to install
-macli is available on the AUR. But I can't guarantee if it works right now.
+If you have go installed on your system, simply run `go install github.com/MikunoNaka/macli@latest`
 
-To compile macli, simply clone this repo, and install the dependencies `go` and `gnome-keyring` (linux only)
+Make sure you have your $GOPATH set up properly if you have issues running `macli` globally
 
-Then, run `go build` to build the binary, and move the macli executable to your path for global usage.
+If you use an Arch-based distro and too lazy to set up your $GOPATH you can use the AUR package `macli-git` but I won't guarantee that it would build without any problems.
 
-## Logging in
-Currently there is no support to generate an access token,
-
-but it can be generated with [this python script.](https://github.com/MikunoNaka/mal-authtoken-generator)
-
-simply generate one using my script, and then run `macli login` then paste the token.
+Visit the [macli](https://www.vidhukant.xyz/projects/macli) page on my website for more info.
 
 ## Licence
 Licenced under GNU General Public Licence V3
