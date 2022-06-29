@@ -21,34 +21,26 @@ package mal
 import (
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v2/anime"
   m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
 )
 
-func SearchAnime(searchString string) []a.Anime {
-  // TODO: read limit, offset from flags
-  limit, offset := 10, 0
-  fields := []string{"title", "id", "my_list_status", "num_episodes"}
-
-  res, err := animeClient.SearchAnime(searchString, limit, offset, fields)
+// because MAL2Go/Anime.SearchAnime won't give us all the data sometimes
+func GetAnimeData(animeId int, fields []string) a.Anime {
+  data, err := animeClient.GetAnimeById(animeId, fields)
   if err != nil {
-    fmt.Println("MyAnimeList reported error while searching:", err.Error())
+    fmt.Println("Error while fetching data about anime:", err)
     os.Exit(1)
   }
-
-  return res
+  return data
 }
 
-func SearchManga(searchString string) []m.Manga {
-  // TODO: read limit, offset from flags
-  limit, offset := 10, 0
-  fields := []string{"title", "id", "my_list_status"}
-
-  res, err := mangaClient.SearchManga(searchString, limit, offset, fields)
+// because MAL2Go/Manga.SearchManga won't give us all the data sometimes
+func GetMangaData(mangaId int, fields []string) m.Manga {
+  data, err := mangaClient.GetMangaById(mangaId, fields)
   if err != nil {
-    fmt.Println("MyAnimeList reported error while searching:", err.Error())
+    fmt.Println("Error while fetching data about manga:", err)
     os.Exit(1)
   }
-
-  return res
+  return data
 }

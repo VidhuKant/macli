@@ -30,6 +30,11 @@ import (
 )
 
 func EpisodeInput(anime a.Anime) {
+  // fetch number of total episodes, number of watched episodes from the API
+  animeData := mal.GetAnimeData(anime.Id, []string{"num_episodes", "my_list_status"})
+  epWatchedNum := animeData.MyListStatus.EpWatched
+  epTotalNum := animeData.NumEpisodes
+
   validate := func(input string) error {
     if _, err := strconv.ParseFloat(input, 64); err != nil {
       return errors.New("Input must be a number.")
@@ -44,15 +49,9 @@ func EpisodeInput(anime a.Anime) {
   }
 
   prompt := p.Prompt {
-    Label: "Set Episode Number: ",
+    Label: fmt.Sprintf("Set Episode Number (%d/%d watched):", epWatchedNum, epTotalNum),
     Templates: template,
     Validate:  validate,
-  }
-
-  // print current episode number if any
-  epNum := anime.MyListStatus.EpWatched
-  if epNum != 0 {
-    fmt.Printf("\x1b[33mYou currently have watched %d episodes.\n\x1b[0m", epNum)
   }
 
   res, err := prompt.Run()
@@ -61,10 +60,16 @@ func EpisodeInput(anime a.Anime) {
     os.Exit(1)
   }
 
+  // TODO: read resp and show confirmation message
   mal.SetEpisodes(anime.Id, res)
 }
 
 func ChapterInput(manga m.Manga) {
+  // fetch number of total chapters, number of read chapters from the API
+  animeData := mal.GetMangaData(manga.Id, []string{"num_chapters", "my_list_status"})
+  chReadNum := animeData.MyListStatus.ChaptersRead
+  chTotalNum := animeData.NumChapters
+
   validate := func(input string) error {
     if _, err := strconv.ParseFloat(input, 64); err != nil {
       return errors.New("Input must be a number.")
@@ -79,15 +84,9 @@ func ChapterInput(manga m.Manga) {
   }
 
   prompt := p.Prompt {
-    Label: "Set Chapter Number: ",
+    Label: fmt.Sprintf("Set Chapter Number (%d/%d read):", chReadNum, chTotalNum),
     Templates: template,
     Validate:  validate,
-  }
-
-  // print current chapter number if any
-  chNum := manga.MyListStatus.ChaptersRead
-  if chNum != 0 {
-    fmt.Printf("\x1b[33mYou currently have read %d chapters.\n\x1b[0m", chNum)
   }
 
   res, err := prompt.Run()
@@ -96,5 +95,6 @@ func ChapterInput(manga m.Manga) {
     os.Exit(1)
   }
 
+  // TODO: read resp and show confirmation message
   mal.SetChapters(manga.Id, res)
 }
