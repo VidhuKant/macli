@@ -20,11 +20,11 @@ package mal
 
 import (
   "github.com/MikunoNaka/macli/auth"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
-  u "github.com/MikunoNaka/MAL2Go/user"
-  ua "github.com/MikunoNaka/MAL2Go/user/anime"
-  um "github.com/MikunoNaka/MAL2Go/user/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  u "github.com/MikunoNaka/MAL2Go/v2/user"
+  ua "github.com/MikunoNaka/MAL2Go/v2/user/anime"
+  um "github.com/MikunoNaka/MAL2Go/v2/user/manga"
 )
 
 var animeClient a.Client

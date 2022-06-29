@@ -21,8 +21,8 @@ package mal
 import (
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/manga"
 )
 
 func SearchAnime(searchString string) []a.Anime {
@@ -36,7 +36,7 @@ func SearchAnime(searchString string) []a.Anime {
     os.Exit(1)
   }
 
-  return res.Animes
+  return res
 }
 
 func SearchManga(searchString string) []m.Manga {
@@ -50,5 +50,5 @@ func SearchManga(searchString string) []m.Manga {
     os.Exit(1)
   }
 
-  return res.Mangas
+  return res
 }

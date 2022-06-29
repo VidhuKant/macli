@@ -19,9 +19,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  u "github.com/MikunoNaka/MAL2Go/user"
+  u "github.com/MikunoNaka/MAL2Go/v2/user"
+  "fmt"
+  "os"
 )
 
 func GetUserInfo() u.UserInfo {
-  return userClient.GetSelfUserInfo()
+  userInfo, err := userClient.GetSelfUserInfo()
+  if err != nil {
+    fmt.Println("Error fetching User Information:", err)
+    os.Exit(1)
+  }
+  return userInfo
 }

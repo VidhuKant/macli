@@ -29,10 +29,14 @@ func SetAnimeStatus(animeId int, status string) {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  if resp.Error != "" {
-    fmt.Println("MyAnimeList reported error on setting anime status", resp.Error, resp.Message)
-    os.Exit(1)
-  }
+  // TODO: do something with resp
+  fmt.Println(resp)
+
+  // not needed with MAL2Go v2.... probably
+  // if resp.Error != "" {
+  //   fmt.Println("MyAnimeList reported error on setting anime status", resp.Error, resp.Message)
+  //   os.Exit(1)
+  // }
 }
 
 func SetMangaStatus(mangaId int, status string) {
@@ -41,8 +45,12 @@ func SetMangaStatus(mangaId int, status string) {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  if resp.Error != "" {
-    fmt.Println("MyAnimeList reported error on setting manga status", resp.Error, resp.Message)
-    os.Exit(1)
-  }
+  // TODO: do something with resp
+  fmt.Println(resp)
+
+  // not needed with MAL2Go v2.... probably
+  // if resp.Error != "" {
+  //   fmt.Println("MyAnimeList reported error on setting manga status", resp.Error, resp.Message)
+  //   os.Exit(1)
+  // }
 }

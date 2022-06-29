@@ -1,5 +1,5 @@
-github.com/MikunoNaka/MAL2Go v1.0.4 h1:kK2dJQpycACbiw4ePLzVy121AhGF3rNJzFDhT96uVyA=
-github.com/MikunoNaka/MAL2Go v1.0.4/go.mod h1:3dRnAROv0KVmgVk3ln2t0u8x+DGQpsPuzPY5nz4TP6A=
+github.com/MikunoNaka/MAL2Go/v2 v2.0.3 h1:T3hSc2QL51zi5xZ71l2JwcqO1t7cfFuMvmU9WhOYIlo=
+github.com/MikunoNaka/MAL2Go/v2 v2.0.3/go.mod h1:x+DAqTvsWCuETE7q3ndXvaM4epQ3OJ6QauowQ+ftQFQ=
 github.com/alessio/shellescape v1.4.1 h1:V7yhSDDn8LP4lc4jS8pFkt0zCnzVJlG5JXy9BVKJUX0=
 github.com/alessio/shellescape v1.4.1/go.mod h1:PZAiSCk0LJaZkiCSkPv8qIobYglO3FPpyFjDCtHLS30=
 github.com/chzyer/logex v1.1.10 h1:Swpa1K6QvQznwJRcfTfQJmTE72DqScAa40E+fbHEXEE=

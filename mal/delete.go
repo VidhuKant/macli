@@ -21,19 +21,25 @@ package mal
 import (
   "fmt"
   // "os"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/manga"
 )
 
 func DeleteAnime(anime a.Anime) {
-  res := userAnimeClient.DeleteAnime(anime.Id)
+  res, err := userAnimeClient.DeleteAnime(anime.Id)
+  if err != nil {
+    fmt.Println("Error While Deleting " + anime.Title + ":", err)
+  }
   if res != "200" {
     fmt.Println("Error: MyAnimeList Returned " + res + " while deleting " + anime.Title)
   }
 }
 
 func DeleteManga(manga m.Manga) {
-  res := userMangaClient.DeleteManga(manga.Id)
+  res, err := userMangaClient.DeleteManga(manga.Id)
+  if err != nil {
+    fmt.Println("Error While Deleting " + manga.Title + ":", err)
+  }
   if res != "200" {
     fmt.Println("Error: MyAnimeList Returned " + res + " while deleting " + manga.Title)
   }

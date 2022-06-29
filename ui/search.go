@@ -24,8 +24,8 @@ import (
   "os"
   p "github.com/manifoldco/promptui"
   mal "github.com/MikunoNaka/macli/mal"
-  a "github.com/MikunoNaka/MAL2Go/anime"
-  m "github.com/MikunoNaka/MAL2Go/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/manga"
 )
 
 // only search animes probably only now
