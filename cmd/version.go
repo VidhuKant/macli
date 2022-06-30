@@ -20,17 +20,18 @@ package cmd
 
 import (
 	"fmt"
+  "runtime"
 	"github.com/spf13/cobra"
 )
 
-var version string = "v1.4.2"
+var version string = "v1.4.3"
 
 var versionCmd = &cobra.Command {
 	Use:   "version",
 	Short: "Shows current version",
 	Long: "Shows current version of macli",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("macli", version)
+		fmt.Println("macli version", version, runtime.GOOS + "/" + runtime.GOARCH)
 	},
 }
 
