@@ -28,43 +28,41 @@ import (
 )
 
 // statusCmd represents the status command
-var episodesCmd = &cobra.Command{
-	Use:   "episodes",
-	Short: "Set the number of episodes watched",
-	Long: "Set the number of episodes watched" +
+var chaptersCmd = &cobra.Command{
+	Use:   "chapters",
+	Short: "Set the number of chapters read",
+	Long: "Set the number of chapters read" +
 	"\n" +
     "Example Usage:\n" +
-	" - \x1b[33m`macli episodes <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
-	" - \x1b[33m`macli episodes -s 4 <anime-name>`\x1b[0m to set the episodes to 4\n" +
-	" - \x1b[33m`macli episodes -s +1 <anime-name>`\x1b[0m to increment the episodes by 1\n" +
-	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
+	" - \x1b[33m`macli chapters <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
+	" - \x1b[33m`macli chapters -s 4 <anime-name>`\x1b[0m to set the chapters to 4\n" +
+	" - \x1b[33m`macli chapters -s +1 <anime-name>`\x1b[0m to increment the chapters by 1\n" +
+	" - \x1b[33m`macli chapters -s -2 <anime-name>`\x1b[0m to decrement the chapters by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		searchInput := strings.Join(args, " ")
 	    if searchInput == "" {
-	    	searchInput = ui.TextInput("Search Anime To Set Episodes For: ", "Search can't be blank.")
+	    	searchInput = ui.TextInput("Search Manga To Set Chapters For: ", "Search can't be blank.")
 	    }
 
-		epInput, err := cmd.Flags().GetString("set-value")
+		chInput, err := cmd.Flags().GetString("set-value")
 		if err != nil {
 			fmt.Println("Error while reading --set-value flag.", err.Error())
 		}
 
-	    anime := ui.AnimeSearch("Select Anime:", searchInput)
-		animeData := mal.GetAnimeData(anime.Id, []string{"my_list_status"})
-		prevEpWatched := animeData.MyListStatus.EpWatched
+	    manga := ui.MangaSearch("Select Manga:", searchInput)
+		mangaData := mal.GetMangaData(manga.Id, []string{"my_list_status"})
+		prevChRead := mangaData.MyListStatus.ChaptersRead
 
-		if epInput == "" {
-			ui.EpisodeInput(anime)
+		if chInput == "" {
+			ui.ChapterInput(manga)
 		} else {
-			resp := mal.SetEpisodes(anime.Id, prevEpWatched, epInput)
-		    fmt.Println(ui.CreateEpisodeUpdateConfirmationMessage(anime.Title, prevEpWatched, resp.EpWatched))
+			resp := mal.SetChapters(manga.Id, prevChRead, chInput)
+		    fmt.Println(ui.CreateChapterUpdateConfirmationMessage(manga.Title, prevChRead, resp.ChaptersRead))
 		}
-
-
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(episodesCmd)
-    episodesCmd.Flags().StringP("set-value", "s", "", "Number of episodes")
+	rootCmd.AddCommand(chaptersCmd)
+    chaptersCmd.Flags().StringP("set-value", "s", "", "Number of chapters")
 }

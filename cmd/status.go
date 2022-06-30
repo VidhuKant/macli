@@ -90,5 +90,5 @@ func setMangaStatus(statusInput, searchInput string) {
 
 func init() {
 	rootCmd.AddCommand(statusCmd)
-    statusCmd.Flags().StringP("status", "s", "", "status to be set")
+    statusCmd.Flags().StringP("set-value", "s", "", "status to be set")
 }

@@ -50,18 +50,20 @@ func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
   return res
 }
 
-
 func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
-  chValue, err := strconv.Atoi(ch)
+  chInt, err := strconv.Atoi(ch)
   if err != nil {
     fmt.Println("Error while parsing chapter input", err)
     os.Exit(1)
   }
 
-  sign := ch[0:1]
-  if sign == "+" || sign == "-" {
-    fmt.Printf("Cannot increment/decrement read chapters by %d\n. Currently that doesn't wokr", chValue)
-    os.Exit(2)
+  var chValue int
+  switch ch[0:1] {
+  case "+", "-":
+    // works both for increment and decrement
+    chValue = prevValue + chInt
+  default:
+    chValue = chInt
   }
 
   res, err := userMangaClient.SetChaptersRead(mangaId, chValue)

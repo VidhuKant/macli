@@ -34,6 +34,9 @@ func CreateEpisodeUpdateConfirmationMessage(title string, prevEpNum, epNum int) 
   return fmt.Sprintf("Set Episodes Watched for \x1b[35m%s\x1b[0m from \x1b[1;33m%d\x1b[0m to \x1b[1;36m%d\x1b[0m.", title, prevEpNum, epNum)
 }
 
+func CreateChapterUpdateConfirmationMessage(title string, prevChNum, chNum int) string {
+  return fmt.Sprintf("Set Chapters Read for \x1b[35m%s\x1b[0m from \x1b[1;33m%d\x1b[0m to \x1b[1;36m%d\x1b[0m.", title, prevChNum, chNum)
+}
 
 func EpisodeInput(anime a.Anime) {
   // fetch number of total episodes, number of watched episodes from the API
