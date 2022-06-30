@@ -110,7 +110,7 @@ func setMangaScore(scoreInput int, searchInput string) {
 	}
 
     if scoreInput < 0 {
-		ui.ScoreInput(manga.Id, selectedManga.MyListStatus.Score, manga.Title, false)
+		ui.ScoreInput(manga.Id, selectedManga.MyListStatus.Score, manga.Title, true)
     } else {
     	resp := mal.SetAnimeScore(manga.Id, scoreInput)
     	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
