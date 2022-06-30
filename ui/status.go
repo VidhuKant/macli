@@ -47,7 +47,7 @@ func GetColorCodeByStatus(status string) string {
     case "plan_to_watch", "plan_to_read":
       return "\x1b[36m"
     case "":
-      return "\x1b[38;5;7m"
+      return "\x1b[37m"
     default:
       return ""
   }

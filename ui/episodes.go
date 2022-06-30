@@ -31,11 +31,11 @@ import (
 
 // very short name I know
 func CreateEpisodeUpdateConfirmationMessage(title string, prevEpNum, epNum int) string {
-  return fmt.Sprintf("Set Episodes Watched for \x1b[35m%s\x1b[0m from \x1b[1;33m%d\x1b[0m to \x1b[1;36m%d\x1b[0m.", title, prevEpNum, epNum)
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Episodes :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevEpNum, epNum)
 }
 
 func CreateChapterUpdateConfirmationMessage(title string, prevChNum, chNum int) string {
-  return fmt.Sprintf("Set Chapters Read for \x1b[35m%s\x1b[0m from \x1b[1;33m%d\x1b[0m to \x1b[1;36m%d\x1b[0m.", title, prevChNum, chNum)
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Chapters :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevChNum, chNum)
 }
 
 func EpisodeInput(anime a.Anime) {

@@ -16,25 +16,26 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package cmd
+package mal
 
 import (
-	"fmt"
-  "runtime"
-	"github.com/spf13/cobra"
+  "fmt"
+  a "github.com/MikunoNaka/MAL2Go/v2/user/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/user/manga"
 )
 
-var version string = "v1.5.0"
-
-var versionCmd = &cobra.Command {
-	Use:   "version",
-	Short: "Shows current version",
-	Long: "Shows current version of macli",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("macli version", version, runtime.GOOS + "/" + runtime.GOARCH)
-	},
+func SetAnimeScore(animeId, score int) a.UpdateResponse {
+  resp, err := userAnimeClient.SetScore(animeId, score)
+  if err != nil {
+    fmt.Println("MyAnimeList returned error while updating anime score:", err)
+  }
+  return resp
 }
 
-func init() {
-	rootCmd.AddCommand(versionCmd)
+func SetMangaScore(mangaId, score int) m.UpdateResponse {
+  resp, err := userMangaClient.SetScore(mangaId, score)
+  if err != nil {
+    fmt.Println("MyAnimeList returned error while updating manga score:", err)
+  }
+  return resp
 }
