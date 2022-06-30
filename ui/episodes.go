@@ -29,6 +29,12 @@ import (
   p "github.com/manifoldco/promptui"
 )
 
+// very short name I know
+func CreateEpisodeUpdateConfirmationMessage(title string, prevEpNum, epNum int) string {
+  return fmt.Sprintf("Set Episodes Watched for \x1b[35m%s\x1b[0m from \x1b[1;36m%d\x1b[0m to \x1b[1;33m%d\x1b[0m.", title, prevEpNum, epNum)
+}
+
+
 func EpisodeInput(anime a.Anime) {
   // fetch number of total episodes, number of watched episodes from the API
   animeData := mal.GetAnimeData(anime.Id, []string{"num_episodes", "my_list_status"})
@@ -60,8 +66,8 @@ func EpisodeInput(anime a.Anime) {
     os.Exit(1)
   }
 
-  // TODO: read resp and show confirmation message
-  mal.SetEpisodes(anime.Id, res)
+  resp := mal.SetEpisodes(anime.Id, epWatchedNum, res)
+  fmt.Println(CreateEpisodeUpdateConfirmationMessage(anime.Title, epWatchedNum, resp.EpWatched))
 }
 
 func ChapterInput(manga m.Manga) {
@@ -96,5 +102,5 @@ func ChapterInput(manga m.Manga) {
   }
 
   // TODO: read resp and show confirmation message
-  mal.SetChapters(manga.Id, res)
+  mal.SetChapters(manga.Id, chReadNum, res)
 }

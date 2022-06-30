@@ -22,26 +22,36 @@ import (
   "fmt"
   "os"
   "strconv"
+  a "github.com/MikunoNaka/MAL2Go/v2/user/anime"
+  m "github.com/MikunoNaka/MAL2Go/v2/user/manga"
 )
 
-func SetEpisodes(animeId int, ep string) {
-  epValue, err := strconv.Atoi(ep)
+func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
+  epInt, err := strconv.Atoi(ep)
   if err != nil {
     fmt.Println("Error while parsing episode input", err)
     os.Exit(1)
   }
 
-  sign := ep[0:1]
-  if sign == "+" || sign == "-" {
-    fmt.Printf("Cannot increment/decrement watched episodes by %d\n. Currently that doesn't wokr", epValue)
-    os.Exit(2)
+  var epValue int
+  switch ep[0:1] {
+  case "+", "-":
+    // works both for increment and decrement
+    epValue = prevValue + epInt
+  default:
+    epValue = epInt
   }
 
-  userAnimeClient.SetWatchedEpisodes(animeId, epValue)
+  res, err := userAnimeClient.SetWatchedEpisodes(animeId, epValue)
+  if err != nil {
+    fmt.Println("MyAnimeList returned error while updating episodes:", err)
+    os.Exit(1)
+  }
+  return res
 }
 
 
-func SetChapters(mangaId int, ch string) {
+func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
   chValue, err := strconv.Atoi(ch)
   if err != nil {
     fmt.Println("Error while parsing chapter input", err)
@@ -54,5 +64,10 @@ func SetChapters(mangaId int, ch string) {
     os.Exit(2)
   }
 
-  userMangaClient.SetChaptersRead(mangaId, chValue)
+  res, err := userMangaClient.SetChaptersRead(mangaId, chValue)
+  if err != nil {
+    fmt.Println("MyAnimeList returned error while updating chapters:", err)
+    os.Exit(1)
+  }
+  return res
 }
