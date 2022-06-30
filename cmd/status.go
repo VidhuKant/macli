@@ -39,7 +39,7 @@ var statusCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		searchInput := strings.Join(args, " ")
 
-		statusInput, err := cmd.Flags().GetString("status")
+		statusInput, err := cmd.Flags().GetString("set-value")
 		if err != nil {
 			fmt.Println("Error while reading status flag.", err.Error())
 		}
