@@ -30,12 +30,14 @@ import (
 // statusCmd represents the status command
 var episodesCmd = &cobra.Command{
 	Use:   "episodes",
-	Short: "Set an anime/manga's status",
-	Long: "Set an anime's status\n" +
+	Short: "Set the number of episodes watched",
+	Long: "Set the number of episodes watched" +
 	"\n" +
     "Example Usage:\n" +
-	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
-	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
+	" - \x1b[33m`macli episodes <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
+	" - \x1b[33m`macli episodes -s 4 <anime-name>`\x1b[0m to set the episodes to 4\n" +
+	" - \x1b[33m`macli episodes -s +1 <anime-name>`\x1b[0m to increment the episodes by 1\n" +
+	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		searchInput := strings.Join(args, " ")
 	    if searchInput == "" {

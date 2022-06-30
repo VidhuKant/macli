@@ -31,7 +31,7 @@ import (
 
 // very short name I know
 func CreateEpisodeUpdateConfirmationMessage(title string, prevEpNum, epNum int) string {
-  return fmt.Sprintf("Set Episodes Watched for \x1b[35m%s\x1b[0m from \x1b[1;36m%d\x1b[0m to \x1b[1;33m%d\x1b[0m.", title, prevEpNum, epNum)
+  return fmt.Sprintf("Set Episodes Watched for \x1b[35m%s\x1b[0m from \x1b[1;33m%d\x1b[0m to \x1b[1;36m%d\x1b[0m.", title, prevEpNum, epNum)
 }
 
 
@@ -55,7 +55,7 @@ func EpisodeInput(anime a.Anime) {
   }
 
   prompt := p.Prompt {
-    Label: fmt.Sprintf("Set Episode Number (%d/%d watched):", epWatchedNum, epTotalNum),
+    Label: fmt.Sprintf("Set Episode Number (%d/%d watched): ", epWatchedNum, epTotalNum),
     Templates: template,
     Validate:  validate,
   }
@@ -90,7 +90,7 @@ func ChapterInput(manga m.Manga) {
   }
 
   prompt := p.Prompt {
-    Label: fmt.Sprintf("Set Chapter Number (%d/%d read):", chReadNum, chTotalNum),
+    Label: fmt.Sprintf("Set Chapter Number (%d/%d read): ", chReadNum, chTotalNum),
     Templates: template,
     Validate:  validate,
   }
