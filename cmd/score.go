@@ -105,14 +105,14 @@ func setMangaScore(scoreInput int, searchInput string) {
 	currentScore := selectedManga.MyListStatus.Score
 
 	if queryOnlyMode {
-		fmt.Printf("\x1b[35m%s\x1b[0m :: Score -> %s\n", manga.Title, ui.FormatScore(currentScore))
+		fmt.Printf("\x1b[35m%s\x1b[0m Score :: %s\n", manga.Title, ui.FormatScore(currentScore))
 		os.Exit(0)
 	}
 
     if scoreInput < 0 {
 		ui.ScoreInput(manga.Id, selectedManga.MyListStatus.Score, manga.Title, true)
     } else {
-    	resp := mal.SetAnimeScore(manga.Id, scoreInput)
+    	resp := mal.SetMangaScore(manga.Id, scoreInput)
     	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
     }
 }
