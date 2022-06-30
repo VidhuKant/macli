@@ -19,11 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"strings"
-	"github.com/spf13/cobra"
+
+	"github.com/MikunoNaka/macli/mal"
 	"github.com/MikunoNaka/macli/ui"
+	"github.com/spf13/cobra"
 )
 
 var searchCmd = &cobra.Command {
@@ -57,8 +59,9 @@ func searchManga(searchInput string) {
 		searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
 	}
     manga := ui.MangaSearch("Select Manga:", searchInput)
-	mangaIsAdded := manga.MyListStatus.Status != ""
-	ui.MangaActionMenu(mangaIsAdded)(manga)
+	selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status", "num_chapters"})
+	mangaIsAdded := selectedManga.MyListStatus.Status != ""
+	ui.MangaActionMenu(mangaIsAdded)(selectedManga)
 }
 
 func searchAnime(searchInput string) {
@@ -66,8 +69,9 @@ func searchAnime(searchInput string) {
 		searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
 	}
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
-	animeIsAdded := anime.MyListStatus.Status != ""
-	ui.AnimeActionMenu(animeIsAdded)(anime)
+	selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status", "num_episodes"})
+	animeIsAdded := selectedAnime.MyListStatus.Status != ""
+	ui.AnimeActionMenu(animeIsAdded)(selectedAnime)
 }
 
 func init() {
