@@ -30,7 +30,7 @@ var versionCmd = &cobra.Command {
 	Short: "Shows current version",
 	Long: "Shows current version of macli",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("macli ::", version)
+		fmt.Println("macli ", version)
 	},
 }
 
