@@ -68,7 +68,7 @@ var episodesCmd = &cobra.Command{
 		prevEpWatched := selectedAnime.MyListStatus.EpWatched
 
 		if queryOnlyMode {
-			fmt.Printf("You Have watched \x1b[1;36m%d\x1b[0m out of \x1b[1;33m%d\x1b[0m episodes from \x1b[35m%s\x1b[0m\n", prevEpWatched, selectedAnime.NumEpisodes, anime.Title)
+			fmt.Printf("You Have Watched \x1b[1;36m%d\x1b[0m Out Of \x1b[1;33m%d\x1b[0m Wpisodes From \x1b[35m%s\x1b[0m.\n", prevEpWatched, selectedAnime.NumEpisodes, anime.Title)
 			os.Exit(0)
 		}
 
