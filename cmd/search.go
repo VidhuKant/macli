@@ -19,6 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"os"
+	"fmt"
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/ui"
@@ -36,7 +38,11 @@ var searchCmd = &cobra.Command {
 	Run: func(cmd *cobra.Command, args []string) {
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
-		mangaMode, _ := cmd.Flags().GetBool("manga")
+		mangaMode, err := cmd.Flags().GetBool("manga")
+		if err != nil {
+			fmt.Println("Error while reading \x1b[33m--manga\x1b[0m flag.", err.Error())
+			os.Exit(1)
+		}
 
 		if mangaMode {
 			searchManga(searchInput)

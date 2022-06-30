@@ -20,6 +20,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
@@ -41,12 +42,14 @@ var statusCmd = &cobra.Command{
 
 		statusInput, err := cmd.Flags().GetString("set-value")
 		if err != nil {
-			fmt.Println("Error while reading status flag.", err.Error())
+			fmt.Println("Error while reading \x1b[33m--set-value\x1b[0m flag.", err.Error())
+			os.Exit(1)
 		}
 
 		mangaMode, err := cmd.Flags().GetBool("manga")
 		if err != nil {
-			fmt.Println("Error while reading manga flag.", err.Error())
+			fmt.Println("Error while reading \x1b[33m--manga\x1b[0m flag.", err.Error())
+			os.Exit(1)
 		}
 
 		if mangaMode {

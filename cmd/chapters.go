@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"os"
 	"fmt"
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
@@ -41,20 +42,38 @@ var chaptersCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		searchInput := strings.Join(args, " ")
 	    if searchInput == "" {
-	    	searchInput = ui.TextInput("Search Manga To Set Chapters For: ", "Search can't be blank.")
+		    var promptText string
+			if queryOnlyMode {
+				promptText = "Search Manga to Get Amount of Chapters Read For: "
+			} else {
+				promptText = "Search Manga to Set Chapters For: "
+			}
+	    	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	    }
 
-		chInput, err := cmd.Flags().GetString("set-value")
-		if err != nil {
-			fmt.Println("Error while reading --set-value flag.", err.Error())
+		var (
+			chInput string
+			err     error
+		)
+		if !queryOnlyMode {
+		  chInput, err = cmd.Flags().GetString("set-value")
+		  if err != nil {
+		  	fmt.Println("Error while reading \x1b[33m--set-value\x1b[0m flag.", err.Error())
+		  	os.Exit(1)
+		  }
 		}
 
 	    manga := ui.MangaSearch("Select Manga:", searchInput)
-		mangaData := mal.GetMangaData(manga.Id, []string{"my_list_status"})
-		prevChRead := mangaData.MyListStatus.ChaptersRead
+		selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status", "num_chapters"})
+		prevChRead := selectedManga.MyListStatus.ChaptersRead
+
+		if queryOnlyMode {
+			fmt.Printf("You Have read \x1b[1;36m%d\x1b[0m out of \x1b[1;33m%d\x1b[0m chapters from \x1b[35m%s\x1b[0m\n", prevChRead, selectedManga.NumChapters, manga.Title)
+			os.Exit(0)
+		}
 
 		if chInput == "" {
-			ui.ChapterInput(manga)
+			ui.ChapterInput(selectedManga)
 		} else {
 			resp := mal.SetChapters(manga.Id, prevChRead, chInput)
 		    fmt.Println(ui.CreateChapterUpdateConfirmationMessage(manga.Title, prevChRead, resp.ChaptersRead))

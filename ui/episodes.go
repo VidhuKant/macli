@@ -39,10 +39,8 @@ func CreateChapterUpdateConfirmationMessage(title string, prevChNum, chNum int) 
 }
 
 func EpisodeInput(anime a.Anime) {
-  // fetch number of total episodes, number of watched episodes from the API
-  animeData := mal.GetAnimeData(anime.Id, []string{"num_episodes", "my_list_status"})
-  epWatchedNum := animeData.MyListStatus.EpWatched
-  epTotalNum := animeData.NumEpisodes
+  epWatchedNum := anime.MyListStatus.EpWatched
+  epTotalNum := anime.NumEpisodes
 
   validate := func(input string) error {
     if _, err := strconv.ParseFloat(input, 64); err != nil {
@@ -74,10 +72,8 @@ func EpisodeInput(anime a.Anime) {
 }
 
 func ChapterInput(manga m.Manga) {
-  // fetch number of total chapters, number of read chapters from the API
-  animeData := mal.GetMangaData(manga.Id, []string{"num_chapters", "my_list_status"})
-  chReadNum := animeData.MyListStatus.ChaptersRead
-  chTotalNum := animeData.NumChapters
+  chReadNum := manga.MyListStatus.ChaptersRead
+  chTotalNum := manga.NumChapters
 
   validate := func(input string) error {
     if _, err := strconv.ParseFloat(input, 64); err != nil {
@@ -104,6 +100,6 @@ func ChapterInput(manga m.Manga) {
     os.Exit(1)
   }
 
-  // TODO: read resp and show confirmation message
-  mal.SetChapters(manga.Id, chReadNum, res)
+  resp := mal.SetChapters(manga.Id, chReadNum, res)
+  fmt.Println(CreateChapterUpdateConfirmationMessage(manga.Title, chReadNum, resp.ChaptersRead))
 }

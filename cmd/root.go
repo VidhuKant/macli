@@ -24,6 +24,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var queryOnlyMode bool
+var mangaMode bool
+
 var rootCmd = &cobra.Command{
 	Use:   "macli",
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
@@ -48,5 +51,6 @@ func Execute() {
 }
 
 func init() {
-    rootCmd.PersistentFlags().BoolP("manga", "m", false, "use manga mode")
+    rootCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    rootCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
