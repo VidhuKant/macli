@@ -73,9 +73,10 @@ func setAnimeStatus(statusInput, searchInput string) {
 	}
 
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
+	selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status"})
 
 	if queryOnlyMode {
-		status := anime.MyListStatus.Status
+		status := selectedAnime.MyListStatus.Status
 		// fmt.Printf("Anime: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
 		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
 		os.Exit(0)
@@ -101,9 +102,10 @@ func setMangaStatus(statusInput, searchInput string) {
 	}
 
 	manga := ui.MangaSearch("Select Manga:", searchInput)
+	selectedManga := mal.GetAnimeData(manga.Id, []string{"my_list_status"})
 
 	if queryOnlyMode {
-		status := manga.MyListStatus.Status
+		status := selectedManga.MyListStatus.Status
 		// fmt.Printf("Manga: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
 		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
 		os.Exit(0)

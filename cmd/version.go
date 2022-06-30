@@ -23,14 +23,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var version string = "v1.4.0"
+var version string = "v1.4.1"
 
 var versionCmd = &cobra.Command {
 	Use:   "version",
 	Short: "Shows current version",
 	Long: "Shows current version of macli",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("macli ", version)
+		fmt.Println("macli", version)
 	},
 }
 
