@@ -68,7 +68,7 @@ var chaptersCmd = &cobra.Command{
 		prevChRead := selectedManga.MyListStatus.ChaptersRead
 
 		if queryOnlyMode {
-			fmt.Printf("You Have Read \x1b[1;36m%d\x1b[0m Out Of \x1b[1;33m%d\x1b[0m Chapters From \x1b[35m%s\x1b[0m.\n", prevChRead, selectedManga.NumChapters, manga.Title)
+			fmt.Printf("\x1b[35m%s\x1b[0m Chapters :: \x1b[1;36m%d\x1b[0m / \x1b[1;33m%d\x1b[0m Read\n", manga.Title, prevChRead, selectedManga.NumChapters)
 			os.Exit(0)
 		}
 
