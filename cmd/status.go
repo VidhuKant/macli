@@ -63,32 +63,59 @@ var statusCmd = &cobra.Command{
 
 func setAnimeStatus(statusInput, searchInput string) {
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Anime To Update: ", "Search can't be blank.")
+	    var promptText string
+		if queryOnlyMode {
+			promptText = "Search Anime to Get Status of: "
+		} else {
+			promptText = "Search Anime to Set Status of: "
+		}
+	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
 	anime := ui.AnimeSearch("Select Anime:", searchInput)
 
-	if statusInput == "" {
-		ui.AnimeStatusMenu(anime)
-	} else {
-		resp := mal.SetAnimeStatus(anime.Id, statusInput)
-		fmt.Println(ui.CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
+	if queryOnlyMode {
+		status := anime.MyListStatus.Status
+		// fmt.Printf("Anime: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+		os.Exit(0)
 	}
+
+    if statusInput == "" {
+    	ui.AnimeStatusMenu(anime)
+    } else {
+    	resp := mal.SetAnimeStatus(anime.Id, statusInput)
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
+    }
 }
 
 func setMangaStatus(statusInput, searchInput string) {
 	if searchInput == "" {
-		searchInput = ui.TextInput("Search Manga To Update: ", "Search can't be blank.")
+	    var promptText string
+		if queryOnlyMode {
+			promptText = "Search Manga to Get Status of: "
+		} else {
+			promptText = "Search Manga to Set Status of: "
+		}
+	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
 	manga := ui.MangaSearch("Select Manga:", searchInput)
 
-	if statusInput == "" {
-		ui.MangaStatusMenu(manga)
-	} else {
-		resp := mal.SetAnimeStatus(manga.Id, statusInput)
-		fmt.Println(ui.CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
+	if queryOnlyMode {
+		status := manga.MyListStatus.Status
+		// fmt.Printf("Manga: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+		os.Exit(0)
 	}
+
+    if statusInput == "" {
+    	ui.MangaStatusMenu(manga)
+    } else {
+    	resp := mal.SetMangaStatus(manga.Id, statusInput)
+		fmt.Println(resp.Status)
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
+    }
 }
 
 func init() {

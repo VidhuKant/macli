@@ -34,7 +34,7 @@ type StatusOption struct {
 }
 
 // to print dropped in red color, etc
-func getColorCodeByStatus(status string) string {
+func GetColorCodeByStatus(status string) string {
   switch status {
     case "watching", "reading":
       return "\x1b[32m"
@@ -46,6 +46,31 @@ func getColorCodeByStatus(status string) string {
       return "\x1b[31m"
     case "plan_to_watch", "plan_to_read":
       return "\x1b[36m"
+    case "":
+      return "\x1b[38;5;7m"
+    default:
+      return ""
+  }
+}
+
+func FormatStatus(status string) string {
+  switch status {
+    case "watching":
+      return "Watching"
+    case "reading":
+      return "Reading"
+    case "completed":
+      return "Completed"
+    case "on_hold":
+      return "On Hold"
+    case "dropped":
+      return "Dropped"
+    case "plan_to_watch":
+      return "Plan to Watch"
+    case "plan_to_read":
+      return "Plan to Read"
+    case "":
+      return "Not in List"
     default:
       return ""
   }
@@ -53,7 +78,7 @@ func getColorCodeByStatus(status string) string {
 
 // very short name I know
 func CreateStatusUpdateConfirmationMessage(title, status string) string {
-  return "Set \x1b[35m" + title + "\x1b[0m status to " + getColorCodeByStatus(status) + status + "\x1b[0m"
+  return "Set \x1b[35m" + title + "\x1b[0m status to " + GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
 }
 
 func AnimeStatusMenu(anime a.Anime) {

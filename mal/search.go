@@ -28,7 +28,7 @@ import (
 func SearchAnime(searchString string) []a.Anime {
   // TODO: read limit, offset from flags
   limit, offset := 10, 0
-  fields := []string{"title", "id", "my_list_status", "num_episodes"}
+  fields := []string{"title", "id", "my_list_status"}
 
   res, err := animeClient.SearchAnime(searchString, limit, offset, fields)
   if err != nil {
