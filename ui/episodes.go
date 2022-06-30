@@ -51,7 +51,7 @@ func EpisodeInput(anime a.Anime) {
 
   template := &p.PromptTemplates {
     Valid: "\x1b[0m{{ . | magenta }}",
-    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m ",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
     Success: "{{ . | cyan }}",
   }
 
@@ -84,7 +84,7 @@ func ChapterInput(manga m.Manga) {
 
   template := &p.PromptTemplates {
     Valid: "\x1b[0m{{ . | magenta }}",
-    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m ",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
     Success: "{{ . | cyan }}",
   }
 
