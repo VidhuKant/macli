@@ -83,7 +83,7 @@ func setAnimeStatus(statusInput, searchInput string) {
 	}
 
     if statusInput == "" {
-    	ui.AnimeStatusMenu(anime)
+    	ui.AnimeStatusMenu(selectedAnime)
     } else {
     	resp := mal.SetAnimeStatus(anime.Id, statusInput)
     	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
@@ -102,7 +102,7 @@ func setMangaStatus(statusInput, searchInput string) {
 	}
 
 	manga := ui.MangaSearch("Select Manga:", searchInput)
-	selectedManga := mal.GetAnimeData(manga.Id, []string{"my_list_status"})
+	selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status"})
 
 	if queryOnlyMode {
 		status := selectedManga.MyListStatus.Status
@@ -112,9 +112,9 @@ func setMangaStatus(statusInput, searchInput string) {
 	}
 
     if statusInput == "" {
-    	ui.MangaStatusMenu(manga)
+    	ui.MangaStatusMenu(selectedManga)
     } else {
-    	resp := mal.SetMangaStatus(manga.Id, statusInput)
+    	resp := mal.SetMangaStatus(selectedManga.Id, statusInput)
 		fmt.Println(resp.Status)
     	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
     }
