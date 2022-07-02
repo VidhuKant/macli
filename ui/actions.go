@@ -47,9 +47,7 @@ func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
   options := []AnimeAction {
     {"Set Status",          "Set status for an anime (watching, dropped, etc)", AnimeStatusMenu},
     {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
-    // these only temporarily run AnimeStatusMenu
-    // because that functionality doesnt exist yet
-    // {"Set Score",           "Set score", AnimeStatusMenu},
+    {"Set Score",           "Set score", AnimeScoreInput},
     // {"Set Re-watching",      "Set if re-watching", AnimeStatusMenu},
     // {"Set Times Re-watched", "Set number of times re-watched", AnimeStatusMenu},
   }
@@ -104,9 +102,7 @@ func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
   options := []MangaAction {
     {"Set Status",        "Set status for a manga (reading, dropped, etc)", MangaStatusMenu},
     {"Set Chapters",      "Set number of chapters read", ChapterInput},
-    // these only temporarily run MangaStatusMenu
-    // because that functionality doesnt exist yet
-    // {"Set Score",         "Set score", MangaStatusMenu},
+    {"Set Score",         "Set score", MangaScoreInput},
     // {"Set Re-reading",    "Set if re-reading", MangaStatusMenu},
     // {"Set Times Re-read", "Set number of times re-read", MangaStatusMenu},
   }

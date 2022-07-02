@@ -97,7 +97,7 @@ func setAnimeScore(scoreInput, searchInput string) {
 	}
 
     if scoreInput == "" {
-		ui.ScoreInput(anime.Id, selectedAnime.MyListStatus.Score, anime.Title, false)
+		ui.AnimeScoreInput(selectedAnime)
     } else {
 		score, err := validateScore(scoreInput, selectedAnime.MyListStatus.Score)
 		if err != nil {
@@ -130,7 +130,7 @@ func setMangaScore(scoreInput, searchInput string) {
 	}
 
     if scoreInput == "" {
-		ui.ScoreInput(manga.Id, selectedManga.MyListStatus.Score, manga.Title, true)
+		ui.MangaScoreInput(selectedManga)
     } else {
 		score, err := validateScore(scoreInput, selectedManga.MyListStatus.Score)
 		if err != nil {

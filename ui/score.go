@@ -25,7 +25,8 @@ import (
   "os"
   "github.com/MikunoNaka/macli/mal"
   "github.com/MikunoNaka/macli/util"
-  // m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  a "github.com/MikunoNaka/MAL2Go/v2/anime"
   p "github.com/manifoldco/promptui"
 )
 
@@ -68,7 +69,8 @@ func CreateScoreUpdateConfirmationMessage(title string, prevScore, score int) st
   return fmt.Sprintf("\x1b[35m%s\x1b[0m Score :: %s -> %s", title, FormatScore(prevScore), FormatScore(score))
 }
 
-func ScoreInput(id, currentScore int, title string, isManga bool) {
+func AnimeScoreInput(anime a.Anime) {
+  currentScore := anime.MyListStatus.Score
   validate := func(input string) error {
     i, err := strconv.ParseFloat(input, 64)
     if err != nil || i < -10 || i > 10 {
@@ -102,15 +104,46 @@ func ScoreInput(id, currentScore int, title string, isManga bool) {
     os.Exit(1)
   }
 
-  var newScore int
-  parsedScore := util.ParseNumeric(res, currentScore)
-  if isManga {
-    resp := mal.SetMangaScore(id, parsedScore)
-    newScore = resp.Score
-  } else {
-    resp := mal.SetAnimeScore(id, parsedScore)
-    newScore = resp.Score
+  resp := mal.SetAnimeScore(anime.Id, util.ParseNumeric(res, currentScore))
+  fmt.Println(CreateScoreUpdateConfirmationMessage(anime.Title, currentScore, resp.Score))
+}
+
+func MangaScoreInput(manga m.Manga) {
+  currentScore := manga.MyListStatus.Score
+
+  validate := func(input string) error {
+    i, err := strconv.ParseFloat(input, 64)
+    if err != nil || i < -10 || i > 10 {
+      return errors.New("Input must be a number within 0-10.")
+    }
+    newScore := util.ParseNumeric(input, currentScore)
+    if newScore < 0 {
+      return errors.New("Score out of range (" + strconv.Itoa(newScore) + " < 0)")
+    }
+    if newScore > 10 {
+      return errors.New("Score out of range (" + strconv.Itoa(newScore) + " > 10)")
+    }
+    return nil
   }
 
-  fmt.Println(CreateScoreUpdateConfirmationMessage(title, currentScore, newScore))
+  template := &p.PromptTemplates {
+    Valid: "\x1b[0m{{ . | magenta }}",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
+    Success: "{{ . | cyan }}",
+  }
+
+  prompt := p.Prompt {
+    Label: fmt.Sprintf("Set Score (Current: %d): ", currentScore),
+    Templates: template,
+    Validate:  validate,
+  }
+
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error Running score input Prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  resp := mal.SetMangaScore(manga.Id, util.ParseNumeric(res, currentScore))
+  fmt.Println(CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
 }
