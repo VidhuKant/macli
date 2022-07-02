@@ -32,6 +32,7 @@ var userInfoCmd = &cobra.Command {
 Currently, MyAnimeList doesn't allow reading of other users' profiles.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
+    mal.Init()
 		userInfo := mal.GetUserInfo()
 
 		fmt.Printf("\x1b[1;34mUsername: \x1b[0m%s\n", userInfo.Name)

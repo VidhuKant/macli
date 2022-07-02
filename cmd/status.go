@@ -38,6 +38,7 @@ var statusCmd = &cobra.Command{
 	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
 	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
 	Run: func(cmd *cobra.Command, args []string) {
+    mal.Init()
 		searchInput := strings.Join(args, " ")
 
 		statusInput, err := cmd.Flags().GetString("set-value")

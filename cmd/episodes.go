@@ -40,6 +40,7 @@ var episodesCmd = &cobra.Command{
 	" - \x1b[33m`macli episodes -s +1 <anime-name>`\x1b[0m to increment the episodes by 1\n" +
 	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
+    mal.Init()
 		searchInput := strings.Join(args, " ")
 	    if searchInput == "" {
 		    var promptText string

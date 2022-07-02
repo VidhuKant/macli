@@ -33,13 +33,15 @@ var userClient u.Client
 var userAnimeClient ua.Client
 var userMangaClient um.Client
 
-func init() {
+// init() would kill the program prematurely on `macli login` command
+func Init() {
   secret := auth.GetToken()
+  tk := "Bearer " + secret
 
   // initialise MAL2Go Client(s)
-  animeClient.AuthToken = "Bearer " + secret
-  mangaClient.AuthToken = "Bearer " + secret
-  userClient.AuthToken = "Bearer " + secret
-  userAnimeClient.AuthToken = "Bearer " + secret
-  userMangaClient.AuthToken = "Bearer " + secret
+  animeClient.AuthToken = tk
+  mangaClient.AuthToken = tk
+  userClient.AuthToken = tk
+  userAnimeClient.AuthToken = tk
+  userMangaClient.AuthToken = tk
 }
