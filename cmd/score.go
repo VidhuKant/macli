@@ -22,8 +22,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"strconv"
+	"errors"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
+	"github.com/MikunoNaka/macli/util"
 
 	"github.com/spf13/cobra"
 )
@@ -41,7 +44,7 @@ var scoreCmd = &cobra.Command{
 		mal.Init()
 		searchInput := strings.Join(args, " ")
 
-		scoreInput, err := cmd.Flags().GetInt("set-value")
+		scoreInput, err := cmd.Flags().GetString("set-value")
 		if err != nil {
 			fmt.Println("Error while reading \x1b[33m--set-value\x1b[0m flag.", err.Error())
 			os.Exit(1)
@@ -62,7 +65,18 @@ var scoreCmd = &cobra.Command{
 	},
 }
 
-func setAnimeScore(scoreInput int, searchInput string) {
+func validateScore(input string, currentScore int) (int, error) {
+	parsedScore := util.ParseNumeric(input, currentScore)
+	if parsedScore > 10 {
+        return currentScore, errors.New("\x1b[31mScore out of range (" + strconv.Itoa(parsedScore) + " > 10)\x1b[0m")
+	}
+	if parsedScore < 0 {
+        return currentScore, errors.New("\x1b[31mScore out of range (" + strconv.Itoa(parsedScore) + " < 0)\x1b[0m")
+	}
+	return parsedScore, nil
+}
+
+func setAnimeScore(scoreInput, searchInput string) {
 	if searchInput == "" {
 	    var promptText string
 		if queryOnlyMode {
@@ -82,15 +96,20 @@ func setAnimeScore(scoreInput int, searchInput string) {
 		os.Exit(0)
 	}
 
-    if scoreInput < 0 {
+    if scoreInput == "" {
 		ui.ScoreInput(anime.Id, selectedAnime.MyListStatus.Score, anime.Title, false)
     } else {
-    	resp := mal.SetAnimeScore(anime.Id, scoreInput)
+		score, err := validateScore(scoreInput, selectedAnime.MyListStatus.Score)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+    	resp := mal.SetAnimeScore(anime.Id, score)
     	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(anime.Title, currentScore, resp.Score))
     }
 }
 
-func setMangaScore(scoreInput int, searchInput string) {
+func setMangaScore(scoreInput, searchInput string) {
 	if searchInput == "" {
 	    var promptText string
 		if queryOnlyMode {
@@ -110,15 +129,20 @@ func setMangaScore(scoreInput int, searchInput string) {
 		os.Exit(0)
 	}
 
-    if scoreInput < 0 {
+    if scoreInput == "" {
 		ui.ScoreInput(manga.Id, selectedManga.MyListStatus.Score, manga.Title, true)
     } else {
-    	resp := mal.SetMangaScore(manga.Id, scoreInput)
+		score, err := validateScore(scoreInput, selectedManga.MyListStatus.Score)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+    	resp := mal.SetMangaScore(manga.Id, score)
     	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
     }
 }
 
 func init() {
 	rootCmd.AddCommand(scoreCmd)
-    scoreCmd.Flags().IntP("set-value", "s", -1, "Score to be set")
+    scoreCmd.Flags().StringP("set-value", "s", "", "Score to be set")
 }

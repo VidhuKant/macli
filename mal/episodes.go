@@ -21,28 +21,13 @@ package mal
 import (
   "fmt"
   "os"
-  "strconv"
   a "github.com/MikunoNaka/MAL2Go/v2/user/anime"
   m "github.com/MikunoNaka/MAL2Go/v2/user/manga"
+  "github.com/MikunoNaka/macli/util"
 )
 
 func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
-  epInt, err := strconv.Atoi(ep)
-  if err != nil {
-    fmt.Println("Error while parsing episode input", err)
-    os.Exit(1)
-  }
-
-  var epValue int
-  switch ep[0:1] {
-  case "+", "-":
-    // works both for increment and decrement
-    epValue = prevValue + epInt
-  default:
-    epValue = epInt
-  }
-
-  res, err := userAnimeClient.SetWatchedEpisodes(animeId, epValue)
+  res, err := userAnimeClient.SetWatchedEpisodes(animeId, util.ParseNumeric(ep, prevValue))
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating episodes:", err)
     os.Exit(1)
@@ -51,22 +36,7 @@ func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
 }
 
 func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
-  chInt, err := strconv.Atoi(ch)
-  if err != nil {
-    fmt.Println("Error while parsing chapter input", err)
-    os.Exit(1)
-  }
-
-  var chValue int
-  switch ch[0:1] {
-  case "+", "-":
-    // works both for increment and decrement
-    chValue = prevValue + chInt
-  default:
-    chValue = chInt
-  }
-
-  res, err := userMangaClient.SetChaptersRead(mangaId, chValue)
+  res, err := userMangaClient.SetChaptersRead(mangaId, util.ParseNumeric(ch, prevValue))
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating chapters:", err)
     os.Exit(1)

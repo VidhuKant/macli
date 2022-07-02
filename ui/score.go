@@ -24,6 +24,7 @@ import (
   "fmt"
   "os"
   "github.com/MikunoNaka/macli/mal"
+  "github.com/MikunoNaka/macli/util"
   // m "github.com/MikunoNaka/MAL2Go/v2/manga"
   p "github.com/manifoldco/promptui"
 )
@@ -70,8 +71,15 @@ func CreateScoreUpdateConfirmationMessage(title string, prevScore, score int) st
 func ScoreInput(id, currentScore int, title string, isManga bool) {
   validate := func(input string) error {
     i, err := strconv.ParseFloat(input, 64)
-    if err != nil || i < 0 || i > 10 {
+    if err != nil || i < -10 || i > 10 {
       return errors.New("Input must be a number within 0-10.")
+    }
+    newScore := util.ParseNumeric(input, currentScore)
+    if newScore < 0 {
+      return errors.New("Score out of range (" + strconv.Itoa(newScore) + " < 0)")
+    }
+    if newScore > 10 {
+      return errors.New("Score out of range (" + strconv.Itoa(newScore) + " > 10)")
     }
     return nil
   }
@@ -94,17 +102,13 @@ func ScoreInput(id, currentScore int, title string, isManga bool) {
     os.Exit(1)
   }
 
-  score, err := strconv.Atoi(res)
-  if err != nil {
-    fmt.Println("Error while parsing score input:", err)
-  }
-
   var newScore int
+  parsedScore := util.ParseNumeric(res, currentScore)
   if isManga {
-    resp := mal.SetMangaScore(id, score)
+    resp := mal.SetMangaScore(id, parsedScore)
     newScore = resp.Score
   } else {
-    resp := mal.SetAnimeScore(id, score)
+    resp := mal.SetAnimeScore(id, parsedScore)
     newScore = resp.Score
   }
 

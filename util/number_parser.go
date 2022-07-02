@@ -16,25 +16,26 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-package cmd
+package util
 
 import (
-	"fmt"
-  "runtime"
-	"github.com/spf13/cobra"
+  "fmt"
+  "os"
+  "strconv"
 )
 
-var version string = "v1.5.3"
+func ParseNumeric(input string, prevValue int) int {
+  inputInt, err := strconv.Atoi(input)
+  if err != nil {
+    fmt.Println("Error while parsing input", err)
+    os.Exit(1)
+  }
 
-var versionCmd = &cobra.Command {
-	Use:   "version",
-	Short: "Shows current version",
-	Long: "Shows current version of macli",
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("macli version", version, runtime.GOOS + "/" + runtime.GOARCH)
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(versionCmd)
+  switch input[0:1] {
+  case "+", "-":
+    // works both for increment and decrement
+    return prevValue + inputInt
+  default:
+    return inputInt
+  }
 }
