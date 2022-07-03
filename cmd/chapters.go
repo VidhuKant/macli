@@ -85,9 +85,9 @@ var chaptersCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(chaptersCmd)
     chaptersCmd.Flags().StringP("set-value", "s", "", "Number of chapters")
-    chaptersCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
-    chaptersCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
-    chaptersCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
-    chaptersCmd.PersistentFlags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
-    chaptersCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    chaptersCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    chaptersCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    chaptersCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    chaptersCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
+    chaptersCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }

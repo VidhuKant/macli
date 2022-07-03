@@ -77,10 +77,10 @@ func searchAnime(searchInput string) {
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-    searchCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
-    searchCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
-    searchCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
-    searchCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
-    searchCmd.PersistentFlags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
-    searchCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    searchCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    searchCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    searchCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    searchCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    searchCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
+    searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
