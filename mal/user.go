@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  u "github.com/MikunoNaka/MAL2Go/v2/user"
+  u "github.com/MikunoNaka/MAL2Go/v3/user"
   "fmt"
   "os"
 )

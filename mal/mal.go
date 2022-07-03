@@ -20,11 +20,11 @@ package mal
 
 import (
   "github.com/MikunoNaka/macli/auth"
-  a "github.com/MikunoNaka/MAL2Go/v2/anime"
-  m "github.com/MikunoNaka/MAL2Go/v2/manga"
-  u "github.com/MikunoNaka/MAL2Go/v2/user"
-  ua "github.com/MikunoNaka/MAL2Go/v2/user/anime"
-  um "github.com/MikunoNaka/MAL2Go/v2/user/manga"
+  a "github.com/MikunoNaka/MAL2Go/v3/anime"
+  m "github.com/MikunoNaka/MAL2Go/v3/manga"
+  u "github.com/MikunoNaka/MAL2Go/v3/user"
+  ua "github.com/MikunoNaka/MAL2Go/v3/user/anime"
+  um "github.com/MikunoNaka/MAL2Go/v3/user/manga"
 )
 
 var (
@@ -35,6 +35,7 @@ var (
   userMangaClient um.Client
 
   SearchLength, SearchOffset int
+  SearchNSFW bool
 )
 
 // init() would kill the program prematurely on `macli login` command

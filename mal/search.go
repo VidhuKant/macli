@@ -21,14 +21,14 @@ package mal
 import (
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v2/anime"
-  m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  a "github.com/MikunoNaka/MAL2Go/v3/anime"
+  m "github.com/MikunoNaka/MAL2Go/v3/manga"
 )
 
 func SearchAnime(searchString string) []a.Anime {
   fields := []string{"title", "id", "my_list_status"}
 
-  res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, fields)
+  res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)
@@ -40,7 +40,7 @@ func SearchAnime(searchString string) []a.Anime {
 func SearchManga(searchString string) []m.Manga {
   fields := []string{"title", "id", "my_list_status"}
 
-  res, err := mangaClient.SearchManga(searchString, SearchLength, SearchOffset, fields)
+  res, err := mangaClient.SearchManga(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)

@@ -3,7 +3,7 @@ module github.com/MikunoNaka/macli
 go 1.18
 
 require (
-	github.com/MikunoNaka/MAL2Go/v2 v2.0.3
+	github.com/MikunoNaka/MAL2Go/v3 v3.0.1
 	github.com/manifoldco/promptui v0.9.0
 	github.com/spf13/cobra v1.4.0
 	github.com/zalando/go-keyring v0.2.1

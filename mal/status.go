@@ -21,8 +21,8 @@ package mal
 import (
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v2/user/anime"
-  m "github.com/MikunoNaka/MAL2Go/v2/user/manga"
+  a "github.com/MikunoNaka/MAL2Go/v3/user/anime"
+  m "github.com/MikunoNaka/MAL2Go/v3/user/manga"
 )
 
 func SetAnimeStatus(animeId int, status string) a.UpdateResponse {

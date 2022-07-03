@@ -21,8 +21,8 @@ package mal
 import (
   "fmt"
   "os"
-  m "github.com/MikunoNaka/MAL2Go/v2/manga"
-  a "github.com/MikunoNaka/MAL2Go/v2/anime"
+  m "github.com/MikunoNaka/MAL2Go/v3/manga"
+  a "github.com/MikunoNaka/MAL2Go/v3/anime"
 )
 
 // because MAL2Go/Anime.SearchAnime won't give us all the data sometimes

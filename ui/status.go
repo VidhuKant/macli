@@ -23,8 +23,8 @@ import (
   "fmt"
   "os"
   "github.com/MikunoNaka/macli/mal"
-  a "github.com/MikunoNaka/MAL2Go/v2/anime"
-  m "github.com/MikunoNaka/MAL2Go/v2/manga"
+  a "github.com/MikunoNaka/MAL2Go/v3/anime"
+  m "github.com/MikunoNaka/MAL2Go/v3/manga"
   p "github.com/manifoldco/promptui"
 )
 
