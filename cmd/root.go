@@ -24,23 +24,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var queryOnlyMode bool
-var mangaMode bool
+var (
+	queryOnlyMode , mangaMode bool
+	entryId int
+)
 
 var rootCmd = &cobra.Command{
 	Use:   "macli",
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
-	Long: "macli is an unofficial MyAnimeClient for use inside the terminal.\n" +
-    "\n" +
-    "\x1b[34mmacli  Copyright (C) 2022  Vidhu Kant Sharma <vidhukant@vidhukant.xyz>\n" +
-    "This program comes with ABSOLUTELY NO WARRANTY;\n" +
-    "This is free software, and you are welcome to redistribute it\n" +
-    "under certain conditions; For details refer to the GNU General Public License.\n" +
-    "You should have received a copy of the GNU General Public License\n" +
-    "along with this program.  If not, see <https://www.gnu.org/licenses/>.\x1b[0m\n" +
-    "\n" +
-    "\x1b[35mPlease report any bugs on the GitHub page: https://github.com/MikunoNaka/macli\n" +
-    "or through email: vidhukant@vidhukant.xyz\x1b[0m\n",
+	Long: "macli is an unofficial MyAnimeClient for use inside the terminal.",
 }
 
 func Execute() {
@@ -51,6 +43,5 @@ func Execute() {
 }
 
 func init() {
-    rootCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
-    rootCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    rootCmd.PersistentFlags().IntVar(&entryId, "id", -1, "Manually specify the ID of anime/manga (overrides search)")
 }
