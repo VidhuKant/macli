@@ -26,7 +26,14 @@ import (
 )
 
 func SearchAnime(searchString string) []a.Anime {
-  fields := []string{"title", "id", "my_list_status"}
+  fields := []string{
+    "title", "id", "num_episodes",
+    "synopsis", "alternative_titles",
+    "start_date", "end_date", "mean",
+    "start_season", "rank", "media_type",
+    "status", "average_episode_duration",
+    "rating", "studios",
+  }
 
   res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {
