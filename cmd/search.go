@@ -81,5 +81,6 @@ func init() {
     searchCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     searchCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
     searchCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    searchCmd.PersistentFlags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     searchCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
