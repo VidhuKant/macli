@@ -124,4 +124,9 @@ func setMangaStatus(statusInput, searchInput string) {
 func init() {
 	rootCmd.AddCommand(statusCmd)
     statusCmd.Flags().StringP("set-value", "s", "", "status to be set")
+    statusCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    statusCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    statusCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    statusCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    statusCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }

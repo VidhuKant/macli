@@ -145,4 +145,9 @@ func setMangaScore(scoreInput, searchInput string) {
 func init() {
 	rootCmd.AddCommand(scoreCmd)
     scoreCmd.Flags().StringP("set-value", "s", "", "Score to be set")
+    scoreCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    scoreCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    scoreCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    scoreCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    scoreCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }

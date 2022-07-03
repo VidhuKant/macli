@@ -87,4 +87,8 @@ var episodesCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(episodesCmd)
     episodesCmd.Flags().StringP("set-value", "s", "", "Number of episodes")
+    episodesCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    episodesCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    episodesCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    episodesCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
 }

@@ -85,4 +85,8 @@ var chaptersCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(chaptersCmd)
     chaptersCmd.Flags().StringP("set-value", "s", "", "Number of chapters")
+    chaptersCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    chaptersCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    chaptersCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    chaptersCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
