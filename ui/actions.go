@@ -41,9 +41,6 @@ type MangaAction struct {
 }
 
 func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
-  // TODO: load promptLength from config
-  promptLength := 5
-
   options := []AnimeAction {
     {"Set Status",          "Set status for an anime (watching, dropped, etc)", AnimeStatusMenu},
     {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
@@ -83,7 +80,7 @@ func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
     Items: options,
     Templates: template,
     Searcher: searcher,
-    Size: promptLength,
+    Size: PromptLength,
   }
 
   res, _, err := prompt.Run()
@@ -96,9 +93,6 @@ func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
 }
 
 func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
-  // TODO: load promptLength from config
-  promptLength := 5
-
   options := []MangaAction {
     {"Set Status",        "Set status for a manga (reading, dropped, etc)", MangaStatusMenu},
     {"Set Chapters",      "Set number of chapters read", ChapterInput},
@@ -138,7 +132,7 @@ func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
     Items: options,
     Templates: template,
     Searcher: searcher,
-    Size: promptLength,
+    Size: PromptLength,
   }
 
   res, _, err := prompt.Run()

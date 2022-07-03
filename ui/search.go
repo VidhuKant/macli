@@ -30,8 +30,6 @@ import (
 
 // only search animes probably only now
 func AnimeSearch(label, searchString string) a.Anime {
-  // TODO: load promptLength from config
-  promptLength := 5
   animes := mal.SearchAnime(searchString)
 
   template := &p.SelectTemplates {
@@ -57,7 +55,7 @@ More Details To Be Added Later
     Items: animes,
     Templates: template,
     Searcher: searcher,
-    Size: promptLength,
+    Size: PromptLength,
   }
 
   animeIndex, _, err := prompt.Run()
@@ -70,8 +68,6 @@ More Details To Be Added Later
 }
 
 func MangaSearch(label, searchString string) m.Manga {
-  // TODO: load promptLength from config
-  promptLength := 5
   mangas := mal.SearchManga(searchString)
 
   template := &p.SelectTemplates {
@@ -97,7 +93,7 @@ More Details To Be Added Later
     Items: mangas,
     Templates: template,
     Searcher: searcher,
-    Size: promptLength,
+    Size: PromptLength,
   }
 
   mangaIndex, _, err := prompt.Run()

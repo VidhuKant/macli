@@ -27,11 +27,15 @@ import (
   um "github.com/MikunoNaka/MAL2Go/v2/user/manga"
 )
 
-var animeClient a.Client
-var mangaClient m.Client
-var userClient u.Client
-var userAnimeClient ua.Client
-var userMangaClient um.Client
+var (
+  animeClient a.Client
+  mangaClient m.Client
+  userClient u.Client
+  userAnimeClient ua.Client
+  userMangaClient um.Client
+
+  SearchLength, SearchOffset int
+)
 
 // init() would kill the program prematurely on `macli login` command
 func Init() {

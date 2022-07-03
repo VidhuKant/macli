@@ -26,11 +26,9 @@ import (
 )
 
 func SearchAnime(searchString string) []a.Anime {
-  // TODO: read limit, offset from flags
-  limit, offset := 10, 0
   fields := []string{"title", "id", "my_list_status"}
 
-  res, err := animeClient.SearchAnime(searchString, limit, offset, fields)
+  res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)
@@ -40,11 +38,9 @@ func SearchAnime(searchString string) []a.Anime {
 }
 
 func SearchManga(searchString string) []m.Manga {
-  // TODO: read limit, offset from flags
-  limit, offset := 10, 0
   fields := []string{"title", "id", "my_list_status"}
 
-  res, err := mangaClient.SearchManga(searchString, limit, offset, fields)
+  res, err := mangaClient.SearchManga(searchString, SearchLength, SearchOffset, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)
