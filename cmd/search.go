@@ -38,7 +38,7 @@ var searchCmd = &cobra.Command {
 	"\t\x1b[33m`macli search -m <manga-name>`\x1b[0m searches for a manga\n" +
 	"\t\x1b[33m`macli search`\x1b[0m interactively asks for an anime to search for (same for manga with -m/--manga flag)\n",
 	Run: func(cmd *cobra.Command, args []string) {
-    mal.Init()
+		mal.Init()
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
 		mangaMode, err := cmd.Flags().GetBool("manga")
@@ -77,4 +77,9 @@ func searchAnime(searchInput string) {
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
+    searchCmd.PersistentFlags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    searchCmd.PersistentFlags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    searchCmd.PersistentFlags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
+    searchCmd.PersistentFlags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    searchCmd.PersistentFlags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
