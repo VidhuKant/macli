@@ -24,6 +24,7 @@ import (
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
+	a "github.com/MikunoNaka/MAL2Go/v3/anime"
 
 	"github.com/spf13/cobra"
 )
@@ -41,8 +42,13 @@ var episodesCmd = &cobra.Command{
 	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
     mal.Init()
+		var selectedAnime a.Anime
+		if entryId > 0 {
+			selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status", "num_episodes"})
+		}
+
 		searchInput := strings.Join(args, " ")
-	    if searchInput == "" {
+	    if searchInput == "" && entryId < 1 {
 		    var promptText string
 			if queryOnlyMode {
 				promptText = "Search Anime to Get Amount of Episodes Watched for: "
@@ -64,23 +70,22 @@ var episodesCmd = &cobra.Command{
 		    }
 		}
 
-	    anime := ui.AnimeSearch("Select Anime:", searchInput)
-		selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status", "num_episodes"})
-		prevEpWatched := selectedAnime.MyListStatus.EpWatched
+		if entryId < 1 {
+			anime := ui.AnimeSearch("Select Anime:", searchInput)
+			selectedAnime = mal.GetAnimeData(anime.Id, []string{"my_list_status", "num_episodes"})
+		}
 
 		if queryOnlyMode {
-			fmt.Printf("\x1b[35m%s\x1b[0m Episodes :: \x1b[1;36m%d\x1b[0m / \x1b[1;33m%d\x1b[0m Watched\n", anime.Title, prevEpWatched, selectedAnime.NumEpisodes)
+		    fmt.Printf("%s / \x1b[1;33m%d\n", ui.CreateEpisodeUpdateConfirmationMessage(selectedAnime.Title, selectedAnime.MyListStatus.EpWatched, -1), selectedAnime.NumEpisodes)
 			os.Exit(0)
 		}
 
 		if epInput == "" {
 			ui.EpisodeInput(selectedAnime)
 		} else {
-			resp := mal.SetEpisodes(anime.Id, prevEpWatched, epInput)
-		    fmt.Println(ui.CreateEpisodeUpdateConfirmationMessage(anime.Title, prevEpWatched, resp.EpWatched))
+			resp := mal.SetEpisodes(selectedAnime.Id, selectedAnime.MyListStatus.EpWatched, epInput)
+		    fmt.Println(ui.CreateEpisodeUpdateConfirmationMessage(selectedAnime.Title, resp.EpWatched, selectedAnime.MyListStatus.EpWatched))
 		}
-
-
 	},
 }
 
@@ -92,4 +97,5 @@ func init() {
     episodesCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
     episodesCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     episodesCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    episodesCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
 }

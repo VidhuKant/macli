@@ -128,8 +128,7 @@ func setMangaStatus(statusInput, searchInput string) {
     	ui.MangaStatusMenu(selectedManga)
     } else {
     	resp := mal.SetMangaStatus(selectedManga.Id, statusInput)
-		fmt.Println(resp.Status)
-    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedManga.Title, resp.Status, selectedManga.MyListStatus.Status))
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedManga.Title, selectedManga.MyListStatus.Status, resp.Status))
     }
 }
 

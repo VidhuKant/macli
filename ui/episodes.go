@@ -30,12 +30,18 @@ import (
 )
 
 // very short name I know
-func CreateEpisodeUpdateConfirmationMessage(title string, prevEpNum, epNum int) string {
-  return fmt.Sprintf("\x1b[35m%s\x1b[0m Episodes Watched :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevEpNum, epNum)
+func CreateEpisodeUpdateConfirmationMessage(title string, epNum, prevEpNum int) string {
+  if prevEpNum >= 0 {
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Episodes Watched :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevEpNum, epNum)
+  }
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Episodes Watched :: \x1b[1;36m%d\x1b[0m", title, epNum)
 }
 
-func CreateChapterUpdateConfirmationMessage(title string, prevChNum, chNum int) string {
-  return fmt.Sprintf("\x1b[35m%s\x1b[0m Chapters Read :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevChNum, chNum)
+func CreateChapterUpdateConfirmationMessage(title string, chNum, prevChNum int) string {
+  if prevChNum >= 0 {
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Chapters Read :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevChNum, chNum)
+  }
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Chapters Read :: \x1b[1;36m%d\x1b[0m", title, chNum)
 }
 
 func EpisodeInput(anime a.Anime) {
@@ -68,7 +74,7 @@ func EpisodeInput(anime a.Anime) {
   }
 
   resp := mal.SetEpisodes(anime.Id, epWatchedNum, res)
-  fmt.Println(CreateEpisodeUpdateConfirmationMessage(anime.Title, epWatchedNum, resp.EpWatched))
+  fmt.Println(CreateEpisodeUpdateConfirmationMessage(anime.Title, resp.EpWatched, epWatchedNum))
 }
 
 func ChapterInput(manga m.Manga) {
@@ -101,5 +107,5 @@ func ChapterInput(manga m.Manga) {
   }
 
   resp := mal.SetChapters(manga.Id, chReadNum, res)
-  fmt.Println(CreateChapterUpdateConfirmationMessage(manga.Title, chReadNum, resp.ChaptersRead))
+  fmt.Println(CreateEpisodeUpdateConfirmationMessage(manga.Title, resp.ChaptersRead, chReadNum))
 }

@@ -24,6 +24,7 @@ import (
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
+	m "github.com/MikunoNaka/MAL2Go/v3/manga"
 
 	"github.com/spf13/cobra"
 )
@@ -41,8 +42,13 @@ var chaptersCmd = &cobra.Command{
 	" - \x1b[33m`macli chapters -s -2 <anime-name>`\x1b[0m to decrement the chapters by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
     mal.Init()
+		var selectedManga m.Manga
+		if entryId > 0 {
+			selectedManga = mal.GetMangaData(entryId, []string{"my_list_status", "num_chapters"})
+		}
+
 		searchInput := strings.Join(args, " ")
-	    if searchInput == "" {
+	    if searchInput == "" && entryId < 1 {
 		    var promptText string
 			if queryOnlyMode {
 				promptText = "Search Manga to Get Amount of Chapters Read For: "
@@ -64,20 +70,21 @@ var chaptersCmd = &cobra.Command{
 		  }
 		}
 
-	    manga := ui.MangaSearch("Select Manga:", searchInput)
-		selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status", "num_chapters"})
-		prevChRead := selectedManga.MyListStatus.ChaptersRead
+		if entryId < 1 {
+			manga := ui.MangaSearch("Select Manga:", searchInput)
+			selectedManga = mal.GetMangaData(manga.Id, []string{"my_list_status", "num_chapters"})
+		}
 
 		if queryOnlyMode {
-			fmt.Printf("\x1b[35m%s\x1b[0m Chapters :: \x1b[1;36m%d\x1b[0m / \x1b[1;33m%d\x1b[0m Read\n", manga.Title, prevChRead, selectedManga.NumChapters)
+		    fmt.Printf("%s / \x1b[1;33m%d\n", ui.CreateChapterUpdateConfirmationMessage(selectedManga.Title, selectedManga.MyListStatus.ChaptersRead, -1), selectedManga.NumChapters)
 			os.Exit(0)
 		}
 
 		if chInput == "" {
 			ui.ChapterInput(selectedManga)
 		} else {
-			resp := mal.SetChapters(manga.Id, prevChRead, chInput)
-		    fmt.Println(ui.CreateChapterUpdateConfirmationMessage(manga.Title, prevChRead, resp.ChaptersRead))
+			resp := mal.SetChapters(selectedManga.Id, selectedManga.MyListStatus.ChaptersRead, chInput)
+		    fmt.Println(ui.CreateChapterUpdateConfirmationMessage(selectedManga.Title, resp.ChaptersRead, selectedManga.MyListStatus.ChaptersRead))
 		}
 	},
 }
@@ -90,4 +97,5 @@ func init() {
     chaptersCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
     chaptersCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     chaptersCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    chaptersCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
 }
