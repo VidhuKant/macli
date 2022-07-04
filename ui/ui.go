@@ -18,4 +18,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 package ui
 
-var PromptLength int
+var (
+	PromptLength, SynopsisLength int
+)
