@@ -65,8 +65,11 @@ func FormatScore(score int) string {
 }
 
 // very short name I know
-func CreateScoreUpdateConfirmationMessage(title string, prevScore, score int) string {
-  return fmt.Sprintf("\x1b[35m%s\x1b[0m Score :: %s -> %s", title, FormatScore(prevScore), FormatScore(score))
+func CreateScoreUpdateConfirmationMessage(title string, score, prevScore int) string {
+  if prevScore >= 0 {
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Score :: %s -> %s", title, FormatScore(prevScore), FormatScore(score))
+  }
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Score :: %s", title, FormatScore(score))
 }
 
 func AnimeScoreInput(anime a.Anime) {
@@ -105,7 +108,7 @@ func AnimeScoreInput(anime a.Anime) {
   }
 
   resp := mal.SetAnimeScore(anime.Id, util.ParseNumeric(res, currentScore))
-  fmt.Println(CreateScoreUpdateConfirmationMessage(anime.Title, currentScore, resp.Score))
+  fmt.Println(CreateScoreUpdateConfirmationMessage(anime.Title, resp.Score ,currentScore))
 }
 
 func MangaScoreInput(manga m.Manga) {
@@ -145,5 +148,5 @@ func MangaScoreInput(manga m.Manga) {
   }
 
   resp := mal.SetMangaScore(manga.Id, util.ParseNumeric(res, currentScore))
-  fmt.Println(CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
+  fmt.Println(CreateScoreUpdateConfirmationMessage(manga.Title, resp.Score ,currentScore))
 }

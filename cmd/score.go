@@ -27,6 +27,8 @@ import (
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
 	"github.com/MikunoNaka/macli/util"
+	a "github.com/MikunoNaka/MAL2Go/v3/anime"
+	m "github.com/MikunoNaka/MAL2Go/v3/manga"
 
 	"github.com/spf13/cobra"
 )
@@ -77,7 +79,12 @@ func validateScore(input string, currentScore int) (int, error) {
 }
 
 func setAnimeScore(scoreInput, searchInput string) {
-	if searchInput == "" {
+	var selectedAnime a.Anime
+	if entryId > 0 {
+	    selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status"})
+	}
+
+	if searchInput == "" && entryId < 1 {
 	    var promptText string
 		if queryOnlyMode {
 			promptText = "Search Anime to Get Score of: "
@@ -87,12 +94,13 @@ func setAnimeScore(scoreInput, searchInput string) {
 	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
-	anime := ui.AnimeSearch("Select Anime: ", searchInput)
-	selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status"})
-	currentScore := selectedAnime.MyListStatus.Score
+	if entryId < 1 {
+		anime := ui.AnimeSearch("Select Anime: ", searchInput)
+		selectedAnime = mal.GetAnimeData(anime.Id, []string{"my_list_status"})
+	}
 
 	if queryOnlyMode {
-		fmt.Printf("\x1b[35m%s\x1b[0m Score :: %s\n", anime.Title, ui.FormatScore(currentScore))
+    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(selectedAnime.Title, selectedAnime.MyListStatus.Score, -1))
 		os.Exit(0)
 	}
 
@@ -104,13 +112,18 @@ func setAnimeScore(scoreInput, searchInput string) {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-    	resp := mal.SetAnimeScore(anime.Id, score)
-    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(anime.Title, currentScore, resp.Score))
+    	resp := mal.SetAnimeScore(selectedAnime.Id, score)
+    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(selectedAnime.Title, resp.Score, selectedAnime.MyListStatus.Score))
     }
 }
 
 func setMangaScore(scoreInput, searchInput string) {
-	if searchInput == "" {
+	var selectedManga m.Manga
+	if entryId > 0 {
+	    selectedManga = mal.GetMangaData(entryId, []string{"my_list_status"})
+	}
+
+	if searchInput == "" && entryId < 1 {
 	    var promptText string
 		if queryOnlyMode {
 			promptText = "Search Manga to Get Score of: "
@@ -120,12 +133,13 @@ func setMangaScore(scoreInput, searchInput string) {
 	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
-	manga := ui.MangaSearch("Select Manga: ", searchInput)
-	selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status"})
-	currentScore := selectedManga.MyListStatus.Score
+	if entryId < 1 {
+		manga := ui.MangaSearch("Select Manga: ", searchInput)
+		selectedManga = mal.GetMangaData(manga.Id, []string{"my_list_status"})
+	}
 
 	if queryOnlyMode {
-		fmt.Printf("\x1b[35m%s\x1b[0m Score :: %s\n", manga.Title, ui.FormatScore(currentScore))
+    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(selectedManga.Title, selectedManga.MyListStatus.Score, -1))
 		os.Exit(0)
 	}
 
@@ -137,8 +151,8 @@ func setMangaScore(scoreInput, searchInput string) {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-    	resp := mal.SetMangaScore(manga.Id, score)
-    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(manga.Title, currentScore, resp.Score))
+    	resp := mal.SetMangaScore(selectedManga.Id, score)
+    	fmt.Println(ui.CreateScoreUpdateConfirmationMessage(selectedManga.Title, resp.Score, selectedManga.MyListStatus.Score))
     }
 }
 
@@ -151,4 +165,5 @@ func init() {
     scoreCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     scoreCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     scoreCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    scoreCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
 }
