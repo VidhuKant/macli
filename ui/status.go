@@ -77,8 +77,11 @@ func FormatStatus(status string) string {
 }
 
 // very short name I know
-func CreateStatusUpdateConfirmationMessage(title, status string) string {
-  return "Set \x1b[35m" + title + "\x1b[0m status to " + GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
+func CreateStatusUpdateConfirmationMessage(title, status, prevStatus string) string {
+  if prevStatus != "" {
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Status :: %s%s\x1b[0m -> %s%s\x1b[0m", title, GetColorCodeByStatus(status), FormatStatus(status), GetColorCodeByStatus(prevStatus), FormatStatus(prevStatus))
+  }
+  return "\x1b[35m" + title + "\x1b[0m Status :: " + GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
 }
 
 func AnimeStatusMenu(anime a.Anime) {
@@ -134,7 +137,7 @@ func AnimeStatusMenu(anime a.Anime) {
   }
 
   resp := mal.SetAnimeStatus(anime.Id, options[res].Status)
-  fmt.Println(CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
+  fmt.Println(CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status, anime.MyListStatus.Status))
 }
 
 func MangaStatusMenu(manga m.Manga) {
@@ -190,5 +193,5 @@ func MangaStatusMenu(manga m.Manga) {
   }
 
   resp := mal.SetMangaStatus(manga.Id, options[res].Status)
-  fmt.Println(CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
+  fmt.Println(CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status, manga.MyListStatus.Status))
 }

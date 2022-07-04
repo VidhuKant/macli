@@ -56,6 +56,12 @@ var searchCmd = &cobra.Command {
 }
 
 func searchManga(searchInput string) {
+	if entryId > 0 {
+	    selectedManga := mal.GetMangaData(entryId, []string{"my_list_status", "title"})
+		fmt.Println("Selected: \x1b[35m" + selectedManga.Title + "\x1b[0m")
+		ui.MangaActionMenu(selectedManga.MyListStatus.Status != "")(selectedManga)
+		os.Exit(0)
+	}
 	if searchInput == "" {
 		searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
 	}
@@ -66,6 +72,12 @@ func searchManga(searchInput string) {
 }
 
 func searchAnime(searchInput string) {
+	if entryId > 0 {
+	    selectedAnime := mal.GetAnimeData(entryId, []string{"my_list_status"})
+		fmt.Println("Selected: \x1b[35m" + selectedAnime.Title + "\x1b[0m")
+		ui.AnimeActionMenu(selectedAnime.MyListStatus.Status != "")(selectedAnime)
+		os.Exit(0)
+	}
 	if searchInput == "" {
 		searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
 	}
@@ -83,4 +95,5 @@ func init() {
     searchCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
     searchCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    searchCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
 }

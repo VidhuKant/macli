@@ -24,6 +24,8 @@ import (
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
+	a "github.com/MikunoNaka/MAL2Go/v3/anime"
+	m "github.com/MikunoNaka/MAL2Go/v3/manga"
 
 	"github.com/spf13/cobra"
 )
@@ -63,7 +65,12 @@ var statusCmd = &cobra.Command{
 }
 
 func setAnimeStatus(statusInput, searchInput string) {
-	if searchInput == "" {
+	var selectedAnime a.Anime
+	if entryId > 0 {
+	    selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status"})
+	}
+
+	if searchInput == "" && entryId < 1 {
 	    var promptText string
 		if queryOnlyMode {
 			promptText = "Search Anime to Get Status of: "
@@ -73,26 +80,31 @@ func setAnimeStatus(statusInput, searchInput string) {
 	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
-	anime := ui.AnimeSearch("Select Anime:", searchInput)
-	selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status"})
+	if entryId < 1 {
+		anime := ui.AnimeSearch("Select Anime:", searchInput)
+		selectedAnime = mal.GetAnimeData(anime.Id, []string{"my_list_status"})
+	}
 
 	if queryOnlyMode {
-		status := selectedAnime.MyListStatus.Status
-		// fmt.Printf("Anime: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
-		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", anime.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedAnime.Title, selectedAnime.MyListStatus.Status, ""))
 		os.Exit(0)
 	}
 
     if statusInput == "" {
     	ui.AnimeStatusMenu(selectedAnime)
     } else {
-    	resp := mal.SetAnimeStatus(anime.Id, statusInput)
-    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status))
+    	resp := mal.SetAnimeStatus(selectedAnime.Id, statusInput)
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedAnime.Title, resp.Status, selectedAnime.MyListStatus.Status))
     }
 }
 
 func setMangaStatus(statusInput, searchInput string) {
-	if searchInput == "" {
+	var selectedManga m.Manga
+	if entryId > 0 {
+	    selectedManga = mal.GetMangaData(entryId, []string{"my_list_status"})
+	}
+
+	if searchInput == "" && entryId < 1 {
 	    var promptText string
 		if queryOnlyMode {
 			promptText = "Search Manga to Get Status of: "
@@ -102,13 +114,13 @@ func setMangaStatus(statusInput, searchInput string) {
 	   	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	}
 
-	manga := ui.MangaSearch("Select Manga:", searchInput)
-	selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status"})
+	if entryId < 1 {
+	  manga := ui.MangaSearch("Select Manga:", searchInput)
+	  selectedManga = mal.GetMangaData(manga.Id, []string{"my_list_status"})
+	}
 
 	if queryOnlyMode {
-		status := selectedManga.MyListStatus.Status
-		// fmt.Printf("Manga: \x1b[35m%s\x1b[0m, Status: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
-		fmt.Printf("\x1b[35m%s\x1b[0m :: %s%s\x1b[0m\n", manga.Title, ui.GetColorCodeByStatus(status), ui.FormatStatus(status))
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedManga.Title, selectedManga.MyListStatus.Status, ""))
 		os.Exit(0)
 	}
 
@@ -117,7 +129,7 @@ func setMangaStatus(statusInput, searchInput string) {
     } else {
     	resp := mal.SetMangaStatus(selectedManga.Id, statusInput)
 		fmt.Println(resp.Status)
-    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(manga.Title, resp.Status))
+    	fmt.Println(ui.CreateStatusUpdateConfirmationMessage(selectedManga.Title, resp.Status, selectedManga.MyListStatus.Status))
     }
 }
 
@@ -130,4 +142,5 @@ func init() {
     statusCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     statusCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     statusCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
+    statusCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
 }

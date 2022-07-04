@@ -41,7 +41,3 @@ func Execute() {
 		os.Exit(1)
 	}
 }
-
-func init() {
-    rootCmd.PersistentFlags().IntVar(&entryId, "id", -1, "Manually specify the ID of anime/manga (overrides search)")
-}
