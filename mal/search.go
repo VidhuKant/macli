@@ -25,15 +25,8 @@ import (
   m "github.com/MikunoNaka/MAL2Go/v3/manga"
 )
 
-func SearchAnime(searchString string) []a.Anime {
-  fields := []string{
-    "title", "id", "num_episodes",
-    "synopsis", "alternative_titles",
-    "start_date", "end_date", "mean",
-    "start_season", "rank", "media_type",
-    "status", "average_episode_duration",
-    "rating", "studios",
-  }
+func SearchAnime(searchString string, fields []string) []a.Anime {
+  fields = append([]string{"title", "id"}, fields...)
 
   res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {
@@ -44,8 +37,8 @@ func SearchAnime(searchString string) []a.Anime {
   return res
 }
 
-func SearchManga(searchString string) []m.Manga {
-  fields := []string{"title", "id", "my_list_status"}
+func SearchManga(searchString string, fields []string) []m.Manga {
+  fields = append([]string{"title", "id"}, fields...)
 
   res, err := mangaClient.SearchManga(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {

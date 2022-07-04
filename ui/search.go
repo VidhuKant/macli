@@ -28,9 +28,18 @@ import (
   m "github.com/MikunoNaka/MAL2Go/v3/manga"
 )
 
+var AnimeSearchFields []string = []string {
+  "num_episodes", "synopsis",
+  "alternative_titles", "start_date",
+  "end_date", "mean", "start_season",
+  "rank", "media_type", "status",
+  "average_episode_duration",
+  "rating", "studios",
+}
+
 // only search animes probably only now
 func AnimeSearch(label, searchString string) a.Anime {
-  animes := mal.SearchAnime(searchString)
+  animes := mal.SearchAnime(searchString, AnimeSearchFields)
 
   for i, anime := range animes {
     animes[i].DurationSeconds = anime.DurationSeconds / 60
@@ -79,17 +88,17 @@ func AnimeSearch(label, searchString string) a.Anime {
     // TODO: format and maybe color code details
     Details: `
 --------- {{ .Title }} ----------
-{{ "Number of Episodes:" | blue | bold }} {{ .NumEpisodes }}
-{{ "English Title:" | blue | bold }} {{ .AltTitles.En }}
-{{ "Japanese Title:" | blue | bold }} {{ .AltTitles.Ja }}
-{{ "Original Run:" | blue | bold }} {{ .StartDate }} - {{ .EndDate }} ({{ .StartSeason.Name }} {{ .StartSeason.Year }})
-{{ "Mean Score:" | blue | bold }} {{ .MeanScore }}
-{{ "Rank:" | blue | bold }} {{ .Rank }}
+{{ "Number of Episodes:" | blue | bold }} {{ if .NumEpisodes }}{{ .NumEpisodes }}{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "English Title:" | blue | bold }} {{ if .AltTitles.En }}{{ .AltTitles.En }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "Japanese Title:" | blue | bold }} {{ if .AltTitles.Ja }}{{ .AltTitles.Ja }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "Original Run:" | blue | bold }} {{ if .StartDate }}{{ .StartDate | cyan }}{{ else }}{{ "unknown" | faint }}{{ end }} - {{ if .EndDate }}{{ .EndDate | yellow }}{{ else }}{{ "unknown" | faint }}{{end}} {{ if .StartSeason.Year }}({{ .StartSeason.Name }} {{ .StartSeason.Year }}){{ else }}{{ end }}
+{{ "Mean Score:" | blue | bold }} {{ if .MeanScore }}{{ .MeanScore }}{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "Rank:" | blue | bold }} {{ if .Rank }}{{ .Rank }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Type:" | blue | bold }} {{ .MediaType }}
 {{ "Status:" | blue | bold }} {{ .Status }}
-{{ "Average Duration:" | blue | bold }} {{ .DurationSeconds }} minutes
-{{ "Rating:" | blue | bold }} {{ .Rating }}
-{{ "Studios:" | blue | bold }} {{ range .Studios }}{{ .Name }}{{ end }}
+{{ "Average Duration:" | blue | bold }} {{ if .DurationSeconds }}{{ .DurationSeconds }} minutes{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "Rating:" | blue | bold }} {{ if .Rating }}{{ .Rating }}{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "Studios:" | blue | bold }} {{ if .Studios }}{{ range .Studios }}{{ .Name }}{{ end }}{{ else }}{{ "unknown" | faint }}{{ end }}
 `,
   }
 
@@ -117,8 +126,15 @@ func AnimeSearch(label, searchString string) a.Anime {
   return animes[animeIndex]
 }
 
+var MangaSearchFields []string = []string {
+  "num_chapters", "num_volumes", "synopsis",
+  "alternative_titles", "start_date",
+  "end_date", "mean", "rank",
+  "media_type", "status",
+}
+
 func MangaSearch(label, searchString string) m.Manga {
-  mangas := mal.SearchManga(searchString)
+  mangas := mal.SearchManga(searchString, MangaSearchFields)
 
   template := &p.SelectTemplates {
     Label: "{{ . }}",
@@ -127,7 +143,15 @@ func MangaSearch(label, searchString string) m.Manga {
     Selected: "{{ .Title | blue }}",
     Details: `
 --------- {{ .Title }} ----------
-More Details To Be Added Later
+{{ "Number of Volumes:" | blue | bold }} {{ .NumVolumes }}
+{{ "Number of Chapters:" | blue | bold }} {{ .NumChapters }}
+{{ "English Title:" | blue | bold }} {{ .AltTitles.En }}
+{{ "Japanese Title:" | blue | bold }} {{ .AltTitles.Ja }}
+{{ "Original Run:" | blue | bold }} {{ .StartDate }} - {{ .EndDate }}
+{{ "Mean Score:" | blue | bold }} {{ .MeanScore }}
+{{ "Rank:" | blue | bold }} {{ .Rank }}
+{{ "Type:" | blue | bold }} {{ .MediaType }}
+{{ "Status:" | blue | bold }} {{ .Status }}
 `,
   }
 
