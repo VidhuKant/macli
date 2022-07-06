@@ -63,6 +63,8 @@ func askClientId() string {
       clientId = secretInput("Enter your Client ID: ", "Client ID Can't be blank")
       setClientId(clientId)
     }
+    fmt.Println("Error while reading Client ID from keychain:", err)
+    os.Exit(1)
   }
 
   return clientId
