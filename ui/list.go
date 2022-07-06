@@ -20,6 +20,7 @@ package ui
 
 import (
   a "github.com/MikunoNaka/MAL2Go/v4/anime"
+  m "github.com/MikunoNaka/MAL2Go/v4/manga"
   "github.com/jedib0t/go-pretty/v6/table"
   "fmt"
   "os"
@@ -50,5 +51,34 @@ func AnimeList(animes []a.Anime) {
 
   t.AppendSeparator()
   t.AppendFooter(table.Row{len(animes), "", "", ""})
+  t.Render()
+}
+
+func MangaList(mangas []m.Manga) {
+  t := table.NewWriter()
+  t.SetOutputMirror(os.Stdout)
+
+  t.AppendHeader(table.Row{"#", "Title", "ID", "Score", "Type", "Status", "Chapters", "Volumes"})
+
+  for index, manga := range mangas {
+    status := manga.ListStatus.Status
+    score := manga.ListStatus.Score
+
+    formattedStatus := GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
+    formattedScore := FormatScore(score)
+
+    // TODO: format it
+    formattedMediaType := manga.MediaType
+
+    chapterProgress := fmt.Sprintf("%d/%d", manga.ListStatus.ChaptersRead, manga.NumChapters)
+    volumeProgress := fmt.Sprintf("%d/%d", manga.ListStatus.VolumesRead, manga.NumVolumes)
+
+    t.AppendRow([]interface{}{
+      index + 1, manga.Title, manga.Id, formattedScore, formattedMediaType, formattedStatus, chapterProgress, volumeProgress,
+	})
+  }
+
+  t.AppendSeparator()
+  t.AppendFooter(table.Row{len(mangas), "", "", ""})
   t.Render()
 }

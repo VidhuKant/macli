@@ -66,8 +66,11 @@ var listCmd = &cobra.Command{
       os.Exit(1)
     }
 
-
-	ui.AnimeList(mal.AnimeList(user, status, sort, nsfw))
+	  if mangaMode {
+		  ui.MangaList(mal.MangaList(user, status, sort, nsfw))
+	  } else {
+		  ui.AnimeList(mal.AnimeList(user, status, sort, nsfw))
+	  }
 
 	},
 }
@@ -78,4 +81,5 @@ func init() {
     listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
     listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
     listCmd.Flags().BoolP("include-nsfw", "", false, "Include NSFW results")
+	listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
 }

@@ -3,7 +3,7 @@ module github.com/MikunoNaka/macli
 go 1.18
 
 require (
-	github.com/MikunoNaka/MAL2Go/v4 v4.0.0
+	github.com/MikunoNaka/MAL2Go/v4 v4.0.1
 	github.com/jedib0t/go-pretty/v6 v6.3.3
 	github.com/manifoldco/promptui v0.9.0
 	github.com/spf13/cobra v1.4.0
