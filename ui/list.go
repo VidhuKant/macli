@@ -46,10 +46,9 @@ func AnimeList(animes []a.Anime) {
 
     t.AppendRow([]interface{}{
       index + 1, anime.Title, anime.Id, formattedScore, formattedMediaType, formattedStatus, progress,
-	})
+    })
   }
 
-  t.AppendSeparator()
   t.AppendFooter(table.Row{len(animes), "", "", ""})
   t.Render()
 }
@@ -75,10 +74,9 @@ func MangaList(mangas []m.Manga) {
 
     t.AppendRow([]interface{}{
       index + 1, manga.Title, manga.Id, formattedScore, formattedMediaType, formattedStatus, chapterProgress, volumeProgress,
-	})
+    })
   }
 
-  t.AppendSeparator()
   t.AppendFooter(table.Row{len(mangas), "", "", ""})
   t.Render()
 }
