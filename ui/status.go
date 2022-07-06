@@ -79,7 +79,7 @@ func FormatStatus(status string) string {
 // very short name I know
 func CreateStatusUpdateConfirmationMessage(title, status, prevStatus string) string {
   if prevStatus != "" {
-    return fmt.Sprintf("\x1b[35m%s\x1b[0m Status :: %s%s\x1b[0m -> %s%s\x1b[0m", title, GetColorCodeByStatus(status), FormatStatus(status), GetColorCodeByStatus(prevStatus), FormatStatus(prevStatus))
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Status :: %s%s\x1b[0m -> %s%s\x1b[0m", title, GetColorCodeByStatus(prevStatus), FormatStatus(prevStatus), GetColorCodeByStatus(status), FormatStatus(status))
   }
   return "\x1b[35m" + title + "\x1b[0m Status :: " + GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
 }
