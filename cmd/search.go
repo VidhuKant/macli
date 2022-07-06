@@ -25,6 +25,7 @@ import (
 
 	"github.com/MikunoNaka/macli/mal"
 	"github.com/MikunoNaka/macli/ui"
+	"github.com/MikunoNaka/macli/util"
 	a "github.com/MikunoNaka/MAL2Go/v3/anime"
 	m "github.com/MikunoNaka/MAL2Go/v3/manga"
 	"github.com/spf13/cobra"
@@ -74,7 +75,7 @@ func searchManga(searchInput string) {
 	selectedManga = mal.GetMangaData(mangaId, fields)
 
 	if queryOnlyMode {
-		fmt.Println("coming soon", selectedManga)
+		util.PrintManga(selectedManga)
 		os.Exit(0)
 	}
 
@@ -101,7 +102,7 @@ func searchAnime(searchInput string) {
 	selectedAnime = mal.GetAnimeData(animeId, fields)
 
 	if queryOnlyMode {
-		fmt.Println("coming soon", selectedAnime)
+		util.PrintAnime(selectedAnime)
 		os.Exit(0)
 	}
 
