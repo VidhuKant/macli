@@ -25,6 +25,8 @@ import (
 
 	"github.com/MikunoNaka/macli/mal"
 	"github.com/MikunoNaka/macli/ui"
+	a "github.com/MikunoNaka/MAL2Go/v3/anime"
+	m "github.com/MikunoNaka/MAL2Go/v3/manga"
 	"github.com/spf13/cobra"
 )
 
@@ -56,35 +58,57 @@ var searchCmd = &cobra.Command {
 }
 
 func searchManga(searchInput string) {
-	if entryId > 0 {
-	    selectedManga := mal.GetMangaData(entryId, []string{"my_list_status", "title"})
-		fmt.Println("Selected: \x1b[35m" + selectedManga.Title + "\x1b[0m")
-		ui.MangaActionMenu(selectedManga.MyListStatus.Status != "")(selectedManga)
+	var selectedManga m.Manga
+	mangaId := entryId
+	fields := []string{}
+
+	if entryId < 1 {
+		if searchInput == "" {
+			searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
+		}
+		manga := ui.MangaSearch("Select Manga:", searchInput)
+		mangaId = manga.Id
+		fields = []string{"my_list_status", "num_chapters"}
+	}
+
+	selectedManga = mal.GetMangaData(mangaId, fields)
+
+	if queryOnlyMode {
+		fmt.Println("coming soon", selectedManga)
 		os.Exit(0)
 	}
-	if searchInput == "" {
-		searchInput = ui.TextInput("Search Manga: ", "Search can't be blank.")
+
+	if entryId > 1 {
+		fmt.Println("Selected: \x1b[35m" + selectedManga.Title + "\x1b[0m")
 	}
-    manga := ui.MangaSearch("Select Manga:", searchInput)
-	selectedManga := mal.GetMangaData(manga.Id, []string{"my_list_status", "num_chapters"})
-	mangaIsAdded := selectedManga.MyListStatus.Status != ""
-	ui.MangaActionMenu(mangaIsAdded)(selectedManga)
+	ui.MangaActionMenu(selectedManga.MyListStatus.Status != "")(selectedManga)
 }
 
 func searchAnime(searchInput string) {
-	if entryId > 0 {
-	    selectedAnime := mal.GetAnimeData(entryId, []string{"my_list_status"})
-		fmt.Println("Selected: \x1b[35m" + selectedAnime.Title + "\x1b[0m")
-		ui.AnimeActionMenu(selectedAnime.MyListStatus.Status != "")(selectedAnime)
+	var selectedAnime a.Anime
+	animeId := entryId
+	fields := []string{}
+
+	if entryId < 1 {
+		if searchInput == "" {
+			searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
+		}
+		anime := ui.AnimeSearch("Select Anime:", searchInput)
+		animeId = anime.Id
+		fields = []string{"my_list_status", "num_episodes"}
+	}
+
+	selectedAnime = mal.GetAnimeData(animeId, fields)
+
+	if queryOnlyMode {
+		fmt.Println("coming soon", selectedAnime)
 		os.Exit(0)
 	}
-	if searchInput == "" {
-		searchInput = ui.TextInput("Search Anime: ", "Search can't be blank.")
+
+	if entryId > 1 {
+		fmt.Println("Selected: \x1b[35m" + selectedAnime.Title + "\x1b[0m")
 	}
-	anime := ui.AnimeSearch("Select Anime:", searchInput)
-	selectedAnime := mal.GetAnimeData(anime.Id, []string{"my_list_status", "num_episodes"})
-	animeIsAdded := selectedAnime.MyListStatus.Status != ""
-	ui.AnimeActionMenu(animeIsAdded)(selectedAnime)
+	ui.AnimeActionMenu(selectedAnime.MyListStatus.Status != "")(selectedAnime)
 }
 
 func init() {
@@ -94,6 +118,6 @@ func init() {
     searchCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
     searchCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
     searchCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
-    searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     searchCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
+    searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
 }
