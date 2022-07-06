@@ -26,8 +26,8 @@ import (
 	"github.com/MikunoNaka/macli/mal"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/util"
-	a "github.com/MikunoNaka/MAL2Go/v3/anime"
-	m "github.com/MikunoNaka/MAL2Go/v3/manga"
+	a "github.com/MikunoNaka/MAL2Go/v4/anime"
+	m "github.com/MikunoNaka/MAL2Go/v4/manga"
 	"github.com/spf13/cobra"
 )
 

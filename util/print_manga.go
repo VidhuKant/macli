@@ -20,7 +20,7 @@ package util
 
 import (
   "fmt"
-  m "github.com/MikunoNaka/MAL2Go/v3/manga"
+  m "github.com/MikunoNaka/MAL2Go/v4/manga"
 )
 
 // formats and prints all the details about a manga

@@ -20,7 +20,7 @@ package util
 
 import (
   "fmt"
-  a "github.com/MikunoNaka/MAL2Go/v3/anime"
+  a "github.com/MikunoNaka/MAL2Go/v4/anime"
 )
 
 // formats and prints all the details about an anime

@@ -24,7 +24,7 @@ import (
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/mal"
-	a "github.com/MikunoNaka/MAL2Go/v3/anime"
+	a "github.com/MikunoNaka/MAL2Go/v4/anime"
 
 	"github.com/spf13/cobra"
 )

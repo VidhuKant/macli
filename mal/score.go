@@ -20,8 +20,8 @@ package mal
 
 import (
   "fmt"
-  a "github.com/MikunoNaka/MAL2Go/v3/user/anime"
-  m "github.com/MikunoNaka/MAL2Go/v3/user/manga"
+  a "github.com/MikunoNaka/MAL2Go/v4/user/anime"
+  m "github.com/MikunoNaka/MAL2Go/v4/user/manga"
 )
 
 func SetAnimeScore(animeId, score int) a.UpdateResponse {
