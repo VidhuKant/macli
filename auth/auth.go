@@ -25,6 +25,7 @@ import (
   "runtime"
   "errors"
   "fmt"
+  "github.com/zalando/go-keyring"
 )
 
 var serviceName string = "macli"
@@ -42,6 +43,17 @@ func init() {
 
 // asks for all the details
 func Login() {
+  /* check if an auth token already exists
+   * if there is an error with keyring, askClientId would handle it
+   * can safely ignore error here */
+  existingToken, _ := keyring.Get(serviceName, userName)
+  if existingToken != "" {
+    if !confirmInput("Already logged in. Log in again? [Y/n] ", true) {
+      fmt.Println("Login process aborted")
+      os.Exit(0)
+    }
+  }
+
   clientId := askClientId()
   challenge := codeChallenge()
   link := generateLink(clientId, challenge)
@@ -61,16 +73,12 @@ func openInBrowser(url string) {
   switch runtime.GOOS {
   case "linux":
     err = exec.Command("xdg-open", url).Start()
-    break
   case "windows":
     err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
-    break
   case "darwin":
     err = exec.Command("open", url).Start()
-    break
   default:
     err = errors.New("<failed to detect platform>")
-    break
   }
 
   if err != nil {
@@ -81,12 +89,18 @@ func openInBrowser(url string) {
 }
 
 func Logout() {
+  existingToken, _ := keyring.Get(serviceName, userName)
   deleteToken()
   deleteExpiresIn()
   deleteRefreshToken()
-  fmt.Println("Deleted user credentials.")
-  if confirmInput("Delete your Client ID? [y/N] ") {
-    fmt.Println("Deleting Client ID...")
+  if existingToken != "" {
+    fmt.Println("Deleted user credentials.")
+  }
+
+  // only ask to delete Client ID if it actually exists
+  existingClientId, _ := getClientId()
+  if existingClientId != "" && confirmInput("Delete your Client ID? [y/N] ", false) {
     deleteClientId()
+    fmt.Println("Deleted Client ID.")
   }
 }

@@ -54,11 +54,12 @@ func secretInput(label, errMessage string) string {
     os.Exit(1)
   }
 
-  return res
+  // trim leading and trailing whitespaces
+  return strings.TrimSpace(res)
 }
 
 // ask yes/no with no as default
-func confirmInput(label string) bool {
+func confirmInput(label string, def bool) bool {
   validResponses := []string{"y", "yes", "n", "no", ""}
 
   validate := func(input string) error {
@@ -89,8 +90,13 @@ func confirmInput(label string) bool {
     os.Exit(1)
   }
 
-  if res == "y" || res == "yes" {
+  resp := strings.TrimSpace(strings.ToLower(res))
+  if resp == "y" || resp == "yes" {
     return true
+  }
+
+  if resp == "" {
+    return def
   }
 
   return false

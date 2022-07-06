@@ -61,10 +61,28 @@ func askClientId() string {
 
       // get clientId from user input
       clientId = secretInput("Enter your Client ID: ", "Client ID Can't be blank")
+
+      /* I'm not sure if ALL client IDs are 32 characters
+       * but that's most likely the case */
+      if len(clientId) != 32 {
+        fmt.Println("\x1b[33mWarning:\x1b[0m The Client ID you have entered doesn't have 32 characters.")
+        fmt.Println("It's not confirmed but MyAnimeList Client IDs have 32 characters. If you think this is a mistake, you can manually verify your Client ID.")
+        fmt.Println("macli doesn't have a way to verify a Client ID. If you think you entered it correctly you can move on with the login process. If you have problems do consider re-entering the Client ID.")
+
+        if confirmInput("Show entered Client ID? [Y/n] ", true) {
+          fmt.Println("The Client ID you just entered:", clientId)
+          if !confirmInput("Is this correct? [Y/n] ", true) {
+            fmt.Println("Please verify your Client ID and run \x1b[33m`macli login`\x1b[0m again.")
+            os.Exit(1)
+          }
+        }
+      }
+
       setClientId(clientId)
+    } else {
+      fmt.Println("Error while reading Client ID from keychain:", err)
+      os.Exit(1)
     }
-    fmt.Println("Error while reading Client ID from keychain:", err)
-    os.Exit(1)
   }
 
   return clientId
