@@ -49,7 +49,6 @@ func AnimeList(animes []a.Anime) {
     })
   }
 
-  t.AppendFooter(table.Row{len(animes), "", "", ""})
   t.Render()
 }
 
@@ -77,6 +76,5 @@ func MangaList(mangas []m.Manga) {
     })
   }
 
-  t.AppendFooter(table.Row{len(mangas), "", "", ""})
   t.Render()
 }
