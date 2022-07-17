@@ -28,7 +28,6 @@ import (
 func GetSeasonalAnime(season a.Season, sort string) []a.Anime {
   year := strconv.Itoa(season.Year)
   fields := []string{"title", "id"}
-  fmt.Println(SearchLength, SearchOffset, SearchNSFW)
 
   res, err := animeClient.GetSeasonalAnime(year, season.Name, sort, SearchLength, SearchOffset, SearchNSFW, fields)
   if err != nil {

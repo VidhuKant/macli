@@ -39,9 +39,16 @@ var seasonalsCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		mal.Init()
-		currentSeason := util.GetCurrentSeason()
+		season := util.GetCurrentSeason()
 
-		res := mal.GetSeasonalAnime(currentSeason, "anime_score")
+		sort, _ := cmd.Flags().GetString("sort")
+		seasonInput, _ := cmd.Flags().GetString("season")
+		yearInput, _ := cmd.Flags().GetInt("year")
+
+		if seasonInput != "" {season.Name = seasonInput}
+		if yearInput > 0 {season.Year = yearInput}
+
+		res := mal.GetSeasonalAnime(season, sort)
 		for _, i := range res {
 			fmt.Println(i.Title)
 		}
@@ -57,4 +64,8 @@ func init() {
     seasonalsCmd.Flags().IntVarP(&mal.SearchLength, "results-length", "n", 10, "Amount of results to load")
     seasonalsCmd.Flags().BoolVarP(&mal.SearchNSFW, "include-nsfw", "", false, "Include NSFW-rated items in results")
     seasonalsCmd.Flags().IntVarP(&mal.SearchOffset, "results-offset", "o", 0, "Offset for the results")
+
+    seasonalsCmd.Flags().StringP("sort", "", "anime_num_list_users", "sort")
+    seasonalsCmd.Flags().StringP("season", "", "", "")
+    seasonalsCmd.Flags().IntP("year", "", 0, "")
 }
