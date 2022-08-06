@@ -43,3 +43,12 @@ func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
   }
   return res
 }
+
+func SetVolumes(mangaId, prevValue int, vol string) m.UpdateResponse {
+  res, err := userMangaClient.SetVolumesRead(mangaId, util.ParseNumeric(vol, prevValue))
+  if err != nil {
+    fmt.Println("MyAnimeList returned error while updating volumes:", err)
+    os.Exit(1)
+  }
+  return res
+}

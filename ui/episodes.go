@@ -44,6 +44,13 @@ func CreateChapterUpdateConfirmationMessage(title string, chNum, prevChNum int) 
   return fmt.Sprintf("\x1b[35m%s\x1b[0m Chapters Read :: \x1b[1;36m%d\x1b[0m", title, chNum)
 }
 
+func CreateVolumeUpdateConfirmationMessage(title string, volNum, prevVolNum int) string {
+  if prevVolNum >= 0 {
+    return fmt.Sprintf("\x1b[35m%s\x1b[0m Volumes Read :: \x1b[1;33m%d\x1b[0m -> \x1b[1;36m%d\x1b[0m", title, prevVolNum, volNum)
+  }
+  return fmt.Sprintf("\x1b[35m%s\x1b[0m Volumes Read :: \x1b[1;36m%d\x1b[0m", title, volNum)
+}
+
 func EpisodeInput(anime a.Anime) {
   epWatchedNum := anime.MyListStatus.EpWatched
   epTotalNum := anime.NumEpisodes
@@ -107,5 +114,38 @@ func ChapterInput(manga m.Manga) {
   }
 
   resp := mal.SetChapters(manga.Id, chReadNum, res)
-  fmt.Println(CreateEpisodeUpdateConfirmationMessage(manga.Title, resp.ChaptersRead, chReadNum))
+  fmt.Println(CreateChapterUpdateConfirmationMessage(manga.Title, resp.ChaptersRead, chReadNum))
+}
+
+func VolumeInput(manga m.Manga) {
+  volReadNum := manga.MyListStatus.VolumesRead
+  volTotalNum := manga.NumVolumes
+
+  validate := func(input string) error {
+    if _, err := strconv.ParseFloat(input, 64); err != nil {
+      return errors.New("Input must be a number.")
+    }
+    return nil
+  }
+
+  template := &p.PromptTemplates {
+    Valid: "\x1b[0m{{ . | magenta }}",
+    Invalid: "\x1b[0m{{ . | magenta }}\x1b[31m",
+    Success: "{{ . | cyan }}",
+  }
+
+  prompt := p.Prompt {
+    Label: fmt.Sprintf("Set Volume Number (%d/%d read): ", volReadNum, volTotalNum),
+    Templates: template,
+    Validate:  validate,
+  }
+
+  res, err := prompt.Run()
+  if err != nil {
+    fmt.Println("Error Running volume input Prompt.", err.Error())
+    os.Exit(1)
+  }
+
+  resp := mal.SetVolumes(manga.Id, volReadNum, res)
+  fmt.Println(CreateVolumeUpdateConfirmationMessage(manga.Title, resp.VolumesRead, volReadNum))
 }
