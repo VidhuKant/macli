@@ -98,4 +98,5 @@ func init() {
     volumesCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     volumesCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     volumesCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of manga (overrides search)")
+    volumesCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }

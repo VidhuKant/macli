@@ -142,4 +142,5 @@ func init() {
     statusCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     statusCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     statusCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
+    statusCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }

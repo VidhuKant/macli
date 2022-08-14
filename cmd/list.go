@@ -81,5 +81,6 @@ func init() {
     listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
     listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
     listCmd.Flags().BoolP("include-nsfw", "", false, "Include NSFW results")
-	listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+    listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }

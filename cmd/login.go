@@ -44,4 +44,6 @@ var loginCmd = &cobra.Command {
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
+	// TODO: save given token to keyring
+    // rootCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }

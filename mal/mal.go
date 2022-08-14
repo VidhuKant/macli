@@ -28,6 +28,7 @@ import (
 )
 
 var (
+  Secret string
   animeClient a.Client
   mangaClient m.Client
   userClient u.Client
@@ -40,8 +41,10 @@ var (
 
 // init() would kill the program prematurely on `macli login` command
 func Init() {
-  secret := auth.GetToken()
-  tk := "Bearer " + secret
+  if Secret == "" {
+    Secret = auth.GetToken()
+  }
+  tk := "Bearer " + Secret
 
   // initialise MAL2Go Client(s)
   animeClient.AuthToken = tk

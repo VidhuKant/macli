@@ -52,4 +52,5 @@ Currently, MyAnimeList doesn't allow reading of other users' profiles.
 
 func init() {
 	rootCmd.AddCommand(userInfoCmd)
+    userInfoCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }
