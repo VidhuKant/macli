@@ -1,0 +1,30 @@
+# sample macli configuration file
+# can be placed (and accessed in the same order) 
+# at ./macli.yaml, ~/.config/macli/macli.yaml or /etc/macli/macli.yaml
+#
+# https://vidhukant.xyz/docs/macli
+# https://github.com/MikunoNaka/macli
+#
+
+# AUTHENTICAITON INFO
+# macli defaults to the system keyring on windows or mac, 
+# or gnome-keyring on linux to store the login information
+# if none are available it can be set here 
+# but it is not recommended unless it's the only option
+#
+# if you're using termux, this is probably the only option
+auth:
+  # ~~can leave blank, macli will set this~~ TODO: make macli set this optionally
+  token: ""
+  # run `macli help` for instructions for creating one
+  client_id: ""
+  # save newly entered client id when logging in (yes/no)
+  save_client_id: "yes"
+
+# default settings (can be overridden by corresponding flags, `macli --help` for more details)
+defaults:
+  prompt_length: 5 # length of anime/manga selection prompt when searching (default: 5)
+  search_length: 10 # amount of search results to get (default: 10)
+  search_offset: 0 # offset for the search results (default is 0, changing it is not recommended)
+  search_nsfw: false # include NSFW rated search results (true/false)
+

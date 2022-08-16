@@ -40,6 +40,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	viper.SetConfigName("macli")
 	viper.SetConfigType("yaml")
+    viper.AddConfigPath(".")
     viper.AddConfigPath("$HOME/.config/macli")
     viper.AddConfigPath("/etc/macli")
 
@@ -53,9 +54,10 @@ func init() {
 	    }
 	}
 
-	name := viper.Get("name").(map[string]interface{})
+	authConfig := viper.Get("auth").(map[string]interface{})
+	defConfig := viper.Get("defaults").(map[string]interface{})
 
-	fmt.Println("Config File Contents:", name["last"])
+	fmt.Println("Config File Contents:", authConfig["token"], defConfig["prompt_length"])
 	os.Exit(0)
 }
 
