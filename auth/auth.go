@@ -28,7 +28,7 @@ import (
   "github.com/zalando/go-keyring"
 )
 
-var serviceName string = "macli"
+var serviceName string = "macliTesting" // "macli"
 var userName string
 
 func init() {
@@ -42,7 +42,7 @@ func init() {
 }
 
 // asks for all the details
-func Login() {
+func Login(tk, clientId string, storeClientId bool) {
   /* check if an auth token already exists
    * if there is an error with keyring, askClientId would handle it
    * can safely ignore error here */
@@ -54,7 +54,22 @@ func Login() {
     }
   }
 
-  clientId := askClientId()
+  if clientId == "" {
+    clientId = askClientId(storeClientId)
+  } else {
+    validateClientId(clientId)
+    if storeClientId {
+      setClientId(clientId)
+    }
+  }
+
+  if tk != "" {
+    setToken(tk)
+    fmt.Println("\x1b[32mYou have successfully logged into macli.\x1b[0m")
+    fmt.Println("\x1b[32mYou can close the web browser tab now.\x1b[0m")
+    return
+  }
+
   challenge := codeChallenge()
   link := generateLink(clientId, challenge)
 

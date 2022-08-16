@@ -19,6 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
+	"fmt"
+	"os"
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/auth"
 )
@@ -38,12 +40,29 @@ var loginCmd = &cobra.Command {
 	" - \x1b[31mIf after running `macli login` it opens a dialogue box in the browser asking for credentials,\n   and not the MyAnimeList login page, that means you have entered your Client ID wrong.\x1b[0m\n" +
 	"",
 	Run: func(cmd *cobra.Command, args []string) {
-		auth.Login()
+		var storeClientId bool
+
+		s, _ := cmd.Flags().GetString("store-client-id")
+		switch s {
+		case "yes":
+			storeClientId = true
+		case "no":
+			storeClientId = false
+		default:
+			fmt.Println("\x1b[33m`--store-client-id`\x1b[0m flag only accepts \x1b[33m\"yes\"\x1b[0m or \x1b[33m\"no\"\x1b[0m")
+			os.Exit(1)
+		}
+
+		tk, _ := cmd.Flags().GetString("authentication-token")
+		clientId, _ := cmd.Flags().GetString("client-id")
+
+		auth.Login(tk, clientId, storeClientId)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(loginCmd)
-	// TODO: save given token to keyring
-    // rootCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+    loginCmd.Flags().StringP("authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+    loginCmd.Flags().StringP("client-id", "c", "", "MyAnimeList Client ID")
+    loginCmd.Flags().StringP("store-client-id", "s", "yes", "Save Client ID to keyring (yes/no) (Default: yes)")
 }

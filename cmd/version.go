@@ -24,7 +24,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version string = "v1.11.0"
+const version string = "no-keyring test"
 
 var versionCmd = &cobra.Command {
 	Use:   "version",
