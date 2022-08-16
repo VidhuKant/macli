@@ -27,8 +27,15 @@ import (
 )
 
 var (
-	queryOnlyMode , mangaMode bool
+	queryOnlyMode, mangaMode bool
 	entryId int
+	authConfig, defConfig map[string]interface{}
+
+	// config vars
+	/* TODO: load config vars here
+	 * then set config file's values or default values
+	 * conditionally after loading the config file
+	 */
 )
 
 var rootCmd = &cobra.Command{
@@ -50,15 +57,14 @@ func init() {
 		// error if config file found but has errors
 	    if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			fmt.Println("Error while reading macli config file:", err)
+			fmt.Println("Exiting... Please check the macli config file.")
 			os.Exit(1)
 	    }
 	}
 
-	authConfig := viper.Get("auth").(map[string]interface{})
-	defConfig := viper.Get("defaults").(map[string]interface{})
-
-	fmt.Println("Config File Contents:", authConfig["token"], defConfig["prompt_length"])
-	os.Exit(0)
+	// load config file contents
+	authConfig = viper.Get("auth").(map[string]interface{})
+	defConfig = viper.Get("defaults").(map[string]interface{})
 }
 
 func Execute() {
