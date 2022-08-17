@@ -22,7 +22,7 @@ import (
 	// "os"
 	"fmt"
 	// "strings"
-	"github.com/MikunoNaka/macli/ui"
+	// "github.com/MikunoNaka/macli/ui"
 	"github.com/MikunoNaka/macli/util"
 	"github.com/MikunoNaka/macli/mal"
 
@@ -58,8 +58,6 @@ var seasonalsCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(seasonalsCmd)
-    seasonalsCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
-    seasonalsCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     seasonalsCmd.Flags().IntVarP(&mal.SearchLength, "results-length", "n", 10, "Amount of results to load")
     seasonalsCmd.Flags().BoolVarP(&mal.SearchNSFW, "include-nsfw", "", false, "Include NSFW-rated items in results")
     seasonalsCmd.Flags().IntVarP(&mal.SearchOffset, "results-offset", "o", 0, "Offset for the results")

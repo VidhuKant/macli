@@ -92,11 +92,11 @@ var episodesCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(episodesCmd)
     episodesCmd.Flags().StringP("set-value", "s", "", "Number of episodes")
-    episodesCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
+    episodesCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", promptLength, "Length of select prompt")
     episodesCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
-    episodesCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
-    episodesCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
-    episodesCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
+    episodesCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", searchLength, "Amount of search results to load")
+    episodesCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", searchNsfw, "Include NSFW-rated items in search results")
+    episodesCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", searchOffset, "Offset for the search results")
     episodesCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     episodesCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 }

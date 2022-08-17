@@ -20,6 +20,7 @@ package mal
 
 import (
   "github.com/MikunoNaka/macli/auth"
+  "github.com/spf13/viper"
   a "github.com/MikunoNaka/MAL2Go/v4/anime"
   m "github.com/MikunoNaka/MAL2Go/v4/manga"
   u "github.com/MikunoNaka/MAL2Go/v4/user"
@@ -45,6 +46,34 @@ func Init() {
     Secret = auth.GetToken()
   }
   tk := "Bearer " + Secret
+
+  /* NOTE: currently, macli is checking wether the specified
+   * search length, etc is the default value (5) or not. if it is not
+   * then it wont do anything. if it is, then if a config file
+   * exists the value in the config file will be used
+   * this works but flags won't be able to take precedence
+   *
+   * i.e if the value in config file is 6 but I want to set it to 5 through
+   * flags, it will see that the value is the default value so it'll use
+   * the value in the macli.yaml file which is 6. in this case the
+   * flags aren't taking precedence. fix that! */
+  // load config file vars (if any)
+  confSearchLength := viper.Get("searching.search_length")
+  confSearchOffset := viper.Get("searching.search_offset")
+  confSearchNsfw   := viper.Get("searching.search_nsfw")
+
+  // if SearchLength is the default value just use the one in config file if any
+  if confSearchLength != nil && SearchLength == 10 {
+    SearchLength = confSearchLength.(int)
+  }
+  // if SearchOffset is the default value just use the one in config file if any
+  if confSearchOffset != nil && SearchOffset == 0 {
+    SearchOffset = confSearchOffset.(int)
+  }
+  // if SearchNsfw is the default value just use the one in config file if any
+  if confSearchNsfw != nil && SearchNSFW == false {
+    SearchNSFW = confSearchNsfw.(bool)
+  }
 
   // initialise MAL2Go Client(s)
   animeClient.AuthToken = tk

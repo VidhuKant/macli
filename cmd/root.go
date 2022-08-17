@@ -29,22 +29,24 @@ import (
 var (
 	queryOnlyMode, mangaMode bool
 	entryId int
-	authConfig, defConfig map[string]interface{}
 
-	// config vars
-	/* TODO: load config vars here
-	 * then set config file's values or default values
-	 * conditionally after loading the config file
-	 */
+	// auth
+	saveClientId string = "yes"
+	// searching
+    promptLength, searchLength, searchOffset int = 5, 10, 0
+	searchNsfw bool = false
+	// lists
+	listOffset, listLength int = 0, 15
+	listIncludeNsfw bool = false
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "macli",
+	Use: "macli",
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
 	Long: "macli is an unofficial MyAnimeList Client for use inside the terminal.",
 }
 
-func init() {
+func Execute() {
 	viper.SetConfigName("macli")
 	viper.SetConfigType("yaml")
     viper.AddConfigPath(".")
@@ -62,12 +64,6 @@ func init() {
 	    }
 	}
 
-	// load config file contents
-	authConfig = viper.Get("auth").(map[string]interface{})
-	defConfig = viper.Get("defaults").(map[string]interface{})
-}
-
-func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

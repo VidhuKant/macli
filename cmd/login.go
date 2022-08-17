@@ -19,8 +19,8 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	"fmt"
 	"os"
+  "fmt"
 	"github.com/spf13/cobra"
 	"github.com/MikunoNaka/macli/auth"
 )
@@ -61,8 +61,8 @@ var loginCmd = &cobra.Command {
 }
 
 func init() {
-	rootCmd.AddCommand(loginCmd)
+    rootCmd.AddCommand(loginCmd)
     loginCmd.Flags().StringP("authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
     loginCmd.Flags().StringP("client-id", "c", "", "MyAnimeList Client ID")
-    loginCmd.Flags().StringP("store-client-id", "s", "yes", "Save Client ID to keyring (yes/no) (Default: yes)")
+    loginCmd.Flags().StringP("store-client-id", "s", saveClientId, "Save Client ID to keyring (yes/no) (Default: yes)")
 }
