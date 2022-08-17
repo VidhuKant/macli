@@ -61,6 +61,7 @@ func Init() {
   confSearchLength := viper.Get("searching.search_length")
   confSearchOffset := viper.Get("searching.search_offset")
   confSearchNsfw   := viper.Get("searching.search_nsfw")
+  confSecret       := viper.Get("auth.token")
 
   // if SearchLength is the default value just use the one in config file if any
   if confSearchLength != nil && SearchLength == 10 {
@@ -73,6 +74,12 @@ func Init() {
   // if SearchNsfw is the default value just use the one in config file if any
   if confSearchNsfw != nil && SearchNSFW == false {
     SearchNSFW = confSearchNsfw.(bool)
+  }
+
+  /* the secret stored in the config file
+   * takes precedence on the system keyring */
+  if confSecret != nil && confSecret != "" {
+    Secret = confSecret.(string)
   }
 
   // initialise MAL2Go Client(s)

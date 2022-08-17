@@ -113,7 +113,6 @@ func searchAnime(searchInput string) {
 }
 
 func init() {
-  fmt.Println("searchInit")
 	rootCmd.AddCommand(searchCmd)
     searchCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", promptLength, "Length of select prompt")
     searchCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")

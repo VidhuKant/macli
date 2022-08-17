@@ -28,7 +28,7 @@ import (
   "github.com/zalando/go-keyring"
 )
 
-var serviceName string = "macliTesting" // "macli"
+var serviceName string = "macli"
 var userName string
 
 func init() {

@@ -133,7 +133,6 @@ func setMangaStatus(statusInput, searchInput string) {
 }
 
 func init() {
-  fmt.Println("statusINit")
 	rootCmd.AddCommand(statusCmd)
     statusCmd.Flags().StringP("set-value", "s", "", "status to be set")
     statusCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")

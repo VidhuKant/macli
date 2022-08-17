@@ -76,14 +76,14 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(listCmd)
-    listCmd.Flags().StringP("status", "", "", "Status (leave blank for all)")
-    listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
-    listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
-    listCmd.Flags().BoolP("include-nsfw", "", listIncludeNsfw, "Include NSFW results")
-    listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
-    listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
-	  // TODO: implement below 2 flags
-	  // listCmd.Flags().IntVarP(&mal.SearchLength, "list-length", "n", listLength, "Amount of list items to load (default: all)")
-	  // listCmd.Flags().IntVarP(&mal.SearchOffset, "list-offset", "o", listOffset, "Offset for the list")
+  rootCmd.AddCommand(listCmd)
+  listCmd.Flags().StringP("status", "", "", "Status (leave blank for all)")
+  listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
+  listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
+  listCmd.Flags().BoolP("include-nsfw", "", listIncludeNsfw, "Include NSFW results")
+  listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
+  listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+  // TODO: implement below 2 flags
+  // listCmd.Flags().IntVarP(&mal.SearchLength, "list-length", "n", listLength, "Amount of list items to load (default: all)")
+  // listCmd.Flags().IntVarP(&mal.SearchOffset, "list-offset", "o", listOffset, "Offset for the list")
 }
