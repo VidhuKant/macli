@@ -45,7 +45,7 @@ Currently, MyAnimeList doesn't allow reading of other users' profiles.
 		fmt.Printf("\x1b[1;34mUser ID: \x1b[0m%d\n", userInfo.Id)
 
 		if userInfo.IsSupporter {
-		  fmt.Printf("\x1b[33mYou are a MyAnimeList Supporter.\n\x1b[0m")
+		  fmt.Printf("\x1b[33mYou are a MyAnimeList Supporter.\n\x1b[0m\n")
 		}
 	},
 }
