@@ -36,10 +36,18 @@ type SearchConfig struct {
 	SearchNSFW   bool
 }
 
+type ListConfig struct {
+	ResultsLength int
+	ResultsOffset int
+	IncludeNSFW   bool
+}
+
 // handles prompt-length, search-length, search-offset and search-nsfw
 func BindSearchConfig(flags *pflag.FlagSet) (SearchConfig, error) {
-	var conf SearchConfig
-	var err error
+	var (
+		conf SearchConfig
+		err error
+	)
 
 	if flags.Lookup("prompt-length").Changed {
 		conf.PromptLength, err = flags.GetInt("prompt-length")
@@ -67,6 +75,37 @@ func BindSearchConfig(flags *pflag.FlagSet) (SearchConfig, error) {
 		if err != nil {return conf, err}
 	} else {
 		conf.SearchNSFW = viper.GetBool("searching.search_nsfw")
+	}
+
+	return conf, nil
+}
+
+// handles results-length, results-offset, include-nsfw
+func BindListConfig(flags *pflag.FlagSet) (ListConfig, error) {
+	var (
+		conf ListConfig
+		err error
+	)
+
+	if flags.Lookup("results-length").Changed {
+		conf.ResultsLength, err = flags.GetInt("results-length")
+		if err != nil {return conf, err}
+	} else {
+		conf.ResultsLength = viper.GetInt("lists.list_length")
+	}
+
+	if flags.Lookup("results-offset").Changed {
+		conf.ResultsOffset, err = flags.GetInt("results-offset")
+		if err != nil {return conf, err}
+	} else {
+		conf.ResultsOffset = viper.GetInt("lists.list_offset")
+	}
+
+	if flags.Lookup("include-nsfw").Changed {
+		conf.IncludeNSFW, err = flags.GetBool("include-nsfw")
+		if err != nil {return conf, err}
+	} else {
+		conf.IncludeNSFW = viper.GetBool("lists.include_nsfw_results")
 	}
 
 	return conf, nil

@@ -34,6 +34,6 @@ searching:
 
 lists:
   # TODO: add default sort types, etc
-  list_offset: 0 # offset for the results (default is 0, changing it here is not recommended as it may cause confusion)
   list_length: 15 # amount of titles to show from user's list
+  list_offset: 0 # offset for the results (default is 0, changing it here is not recommended as it may cause confusion)
   include_nsfw_results: false # show NSFW rated items

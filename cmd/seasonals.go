@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package cmd
 
 import (
-	// "os"
+	"os"
 	"fmt"
 	// "strings"
 	// "github.com/MikunoNaka/macli/ui"
@@ -33,13 +33,22 @@ import (
 // statusCmd represents the status command
 var seasonalsCmd = &cobra.Command{
 	Use:   "seasonals",
-	Short: "Get seasonal animes",
-	Long: "" +
+	Short: "Get seasonal animes (under construction)",
+	Long: "under construction" +
     "" +
 	"",
 
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindListConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.ResultsLength
+		mal.SearchOffset = conf.ResultsOffset
+		mal.SearchNSFW = conf.IncludeNSFW
 		mal.Init()
+
 		season := util.GetCurrentSeason()
 
 		sort, _ := cmd.Flags().GetString("sort")
@@ -59,15 +68,12 @@ var seasonalsCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(seasonalsCmd)
-    seasonalsCmd.Flags().IntVarP(&mal.SearchLength, "results-length", "n", 15, "Amount of results to load")
-    seasonalsCmd.Flags().BoolVarP(&mal.SearchNSFW, "include-nsfw", "", false, "Include NSFW-rated items in results")
-    seasonalsCmd.Flags().IntVarP(&mal.SearchOffset, "results-offset", "o", 0, "Offset for the results")
     seasonalsCmd.Flags().StringP("sort", "", "anime_num_list_users", "sort")
     seasonalsCmd.Flags().StringP("season", "", "", "")
     seasonalsCmd.Flags().IntP("year", "", 0, "")
     seasonalsCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 
-    viper.BindPFlag("lists.list_length", seasonalsCmd.Flags().Lookup("results-length"))
-    viper.BindPFlag("lists.list_offset", seasonalsCmd.Flags().Lookup("results-offset"))
-    viper.BindPFlag("lists.include_nsfw_results", seasonalsCmd.Flags().Lookup("include-nsfw"))
+    seasonalsCmd.Flags().IntP("results-length", "n", 10, "Amount of results to load")
+    seasonalsCmd.Flags().IntP("results-offset", "o", 0, "Offset for the results")
+    seasonalsCmd.Flags().BoolP("include-nsfw", "", false, "Include NSFW-rated items in search results")
 }

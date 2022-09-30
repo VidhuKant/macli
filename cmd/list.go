@@ -22,11 +22,10 @@ import (
 	"os"
 	"fmt"
 	"github.com/MikunoNaka/macli/ui"
+	"github.com/MikunoNaka/macli/util"
 	"github.com/MikunoNaka/macli/mal"
-	// m "github.com/MikunoNaka/MAL2Go/v4/manga"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // statusCmd represents the status command
@@ -41,6 +40,14 @@ var listCmd = &cobra.Command{
 	// " - \x1b[33m`macli chapters -s +1 <anime-name>`\x1b[0m to increment the chapters by 1\n" +
 	// " - \x1b[33m`macli chapters -s -2 <anime-name>`\x1b[0m to decrement the chapters by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindListConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.ResultsLength
+		mal.SearchOffset = conf.ResultsOffset
+		mal.SearchNSFW = conf.IncludeNSFW
     mal.Init()
 
     status, err := cmd.Flags().GetString("status")
@@ -61,16 +68,10 @@ var listCmd = &cobra.Command{
       os.Exit(1)
     }
 
-    nsfw, err := cmd.Flags().GetBool("include-nsfw")
-    if err != nil {
-      fmt.Println("error while reading \x1b[33m--include-nsfw\x1b[0m flag:", err)
-      os.Exit(1)
-    }
-
 	  if mangaMode {
-		  ui.MangaList(mal.MangaList(user, status, sort, nsfw))
+		  ui.MangaList(mal.MangaList(user, status, sort, conf.IncludeNSFW))
 	  } else {
-		  ui.AnimeList(mal.AnimeList(user, status, sort, nsfw))
+		  ui.AnimeList(mal.AnimeList(user, status, sort, conf.IncludeNSFW))
 	  }
 
 	},
@@ -81,13 +82,11 @@ func init() {
   listCmd.Flags().StringP("status", "", "", "Status (leave blank for all)")
   listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
   listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
-  listCmd.Flags().BoolP("include-nsfw", "", false, "Include NSFW results")
   listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
   listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
   listCmd.Flags().IntVarP(&mal.SearchLength, "list-length", "n", 15, "Amount of list items to load (default: all)")
-  listCmd.Flags().IntVarP(&mal.SearchOffset, "list-offset", "o", 0, "Offset for the list")
 
-  viper.BindPFlag("lists.list_offset", listCmd.Flags().Lookup("list-offset"))
-  viper.BindPFlag("lists.list_length", listCmd.Flags().Lookup("list-length"))
-  viper.BindPFlag("lists.include_nsfw_results", listCmd.Flags().Lookup("include-nsfw"))
+  listCmd.Flags().IntP("results-length", "n", 10, "Amount of results to load")
+  listCmd.Flags().IntP("results-offset", "o", 0, "Offset for the results")
+  listCmd.Flags().BoolP("include-nsfw", "", false, "Include NSFW-rated items in search results")
 }
