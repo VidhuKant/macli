@@ -25,6 +25,8 @@ import (
   u "github.com/MikunoNaka/MAL2Go/v4/user"
   ua "github.com/MikunoNaka/MAL2Go/v4/user/anime"
   um "github.com/MikunoNaka/MAL2Go/v4/user/manga"
+  "github.com/spf13/viper"
+  "strings"
 )
 
 var (
@@ -41,10 +43,13 @@ var (
 
 // init() would kill the program prematurely on `macli login` command
 func Init() {
-  if Secret == "" {
-    Secret = auth.GetToken()
+  // Secret preference: flag -> conf file -> system keyring
+  if strings.TrimSpace(Secret) == "" {
+    if Secret = viper.GetString("auth.token"); strings.TrimSpace(Secret) == "" {
+      Secret = auth.GetToken()
+    }
   }
-  tk := "Bearer " + Secret
+  tk := "Bearer " + strings.TrimSpace(Secret)
 
   // initialise MAL2Go Client(s)
   animeClient.AuthToken = tk
