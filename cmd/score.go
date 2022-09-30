@@ -43,7 +43,17 @@ var scoreCmd = &cobra.Command{
 	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
 	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindSearchConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.SearchLength
+		mal.SearchOffset = conf.SearchOffset
+		mal.SearchNSFW = conf.SearchNSFW
+		ui.PromptLength = conf.PromptLength
 		mal.Init()
+
 		searchInput := strings.Join(args, " ")
 
 		scoreInput, err := cmd.Flags().GetString("set-value")
@@ -159,12 +169,13 @@ func setMangaScore(scoreInput, searchInput string) {
 func init() {
 	rootCmd.AddCommand(scoreCmd)
     scoreCmd.Flags().StringP("set-value", "s", "", "Score to be set")
-    scoreCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", promptLength, "Length of select prompt")
-    scoreCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", searchLength, "Amount of search results to load")
-    scoreCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", searchOffset, "Offset for the search results")
-    scoreCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", searchNsfw, "Include NSFW-rated items in search results")
     scoreCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     scoreCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     scoreCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     scoreCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+
+    scoreCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
+    scoreCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
+    scoreCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")
+    scoreCmd.Flags().BoolP("search-nsfw", "", false, "Include NSFW-rated items in search results")
 }

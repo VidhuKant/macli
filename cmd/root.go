@@ -30,14 +30,14 @@ var (
 	queryOnlyMode, mangaMode bool
 	entryId int
 
-	// auth
-	saveClientId string = "yes"
-	// searching
-    promptLength, searchLength, searchOffset int = 5, 10, 0
-	searchNsfw bool = false
-	// lists
-	listOffset, listLength int = 0, 15
-	listIncludeNsfw bool = false
+	// // auth
+	// saveClientId string = "yes"
+	// // searching
+    // promptLength, searchLength, searchOffset int = 5, 10, 0
+	// searchNsfw bool = false
+	// // lists
+	// listOffset, listLength int = 0, 15
+	// listIncludeNsfw bool = false
 )
 
 var rootCmd = &cobra.Command{
@@ -46,12 +46,16 @@ var rootCmd = &cobra.Command{
 	Long: "macli is an unofficial MyAnimeList Client for use inside the terminal.",
 }
 
-func Execute() {
+func init() {
+	cobra.OnInitialize(initConfig)
+}
+
+func initConfig() {
 	viper.SetConfigName("macli")
-	viper.SetConfigType("yaml")
+	//viper.SetConfigType("yaml")
     viper.AddConfigPath(".")
-    viper.AddConfigPath("$HOME/.config/macli")
-    viper.AddConfigPath("/etc/macli")
+    // viper.AddConfigPath("$HOME/.config/macli")
+    // viper.AddConfigPath("/etc/macli")
 
 	// dont show error if file not found
 	// macli doesnt need a config file to work properly
@@ -64,6 +68,19 @@ func Execute() {
 	    }
 	}
 
+	viper.SetDefault("searching.prompt_length", 5)
+	viper.SetDefault("searching.search_length", 10)
+	viper.SetDefault("searching.search_offset", 0)
+	viper.SetDefault("searching.search_nsfw", false)
+
+	viper.SetDefault("lists.list_offset", 0)
+	viper.SetDefault("lists.list_length", 15)
+	viper.SetDefault("lists.include_nsfw_results", false)
+
+	viper.SetDefault("auth.save_client_id", "yes")
+}
+
+func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
+	"github.com/MikunoNaka/macli/util"
 	"github.com/MikunoNaka/macli/mal"
 	a "github.com/MikunoNaka/MAL2Go/v4/anime"
 
@@ -41,7 +42,17 @@ var episodesCmd = &cobra.Command{
 	" - \x1b[33m`macli episodes -s +1 <anime-name>`\x1b[0m to increment the episodes by 1\n" +
 	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindSearchConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.SearchLength
+		mal.SearchOffset = conf.SearchOffset
+		mal.SearchNSFW = conf.SearchNSFW
+		ui.PromptLength = conf.PromptLength
     mal.Init()
+
 		var selectedAnime a.Anime
 		if entryId > 0 {
 			selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status", "num_episodes"})
@@ -58,10 +69,7 @@ var episodesCmd = &cobra.Command{
 	    	searchInput = ui.TextInput(promptText, "Search can't be blank.")
 	    }
 
-		var (
-			epInput string
-			err error
-		)
+		var epInput string
 		if !queryOnlyMode {
 		    epInput, err = cmd.Flags().GetString("set-value")
 		    if err != nil {
@@ -92,11 +100,12 @@ var episodesCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(episodesCmd)
     episodesCmd.Flags().StringP("set-value", "s", "", "Number of episodes")
-    episodesCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", promptLength, "Length of select prompt")
     episodesCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
-    episodesCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", searchLength, "Amount of search results to load")
-    episodesCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", searchNsfw, "Include NSFW-rated items in search results")
-    episodesCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", searchOffset, "Offset for the search results")
     episodesCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     episodesCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+
+    episodesCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
+    episodesCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
+    episodesCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")
+    episodesCmd.Flags().BoolP("search-nsfw", "", false, "Include NSFW-rated items in search results")
 }

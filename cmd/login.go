@@ -64,5 +64,5 @@ func init() {
     rootCmd.AddCommand(loginCmd)
     loginCmd.Flags().StringP("authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
     loginCmd.Flags().StringP("client-id", "c", "", "MyAnimeList Client ID")
-    loginCmd.Flags().StringP("store-client-id", "s", saveClientId, "Save Client ID to keyring (yes/no) (Default: yes)")
+    loginCmd.Flags().StringP("store-client-id", "s", "yes", "Save Client ID to keyring")
 }

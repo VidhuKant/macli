@@ -41,7 +41,17 @@ var searchCmd = &cobra.Command {
 	"\t\x1b[33m`macli search -m <manga-name>`\x1b[0m searches for a manga\n" +
 	"\t\x1b[33m`macli search`\x1b[0m interactively asks for an anime to search for (same for manga with -m/--manga flag)\n",
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindSearchConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.SearchLength
+		mal.SearchOffset = conf.SearchOffset
+		mal.SearchNSFW = conf.SearchNSFW
+		ui.PromptLength = conf.PromptLength
 		mal.Init()
+
 		// read searchInput from command
 		searchInput := strings.Join(args, " ")
 		mangaMode, err := cmd.Flags().GetBool("manga")
@@ -114,12 +124,13 @@ func searchAnime(searchInput string) {
 
 func init() {
 	rootCmd.AddCommand(searchCmd)
-    searchCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", promptLength, "Length of select prompt")
     searchCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
-    searchCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", searchLength, "Amount of search results to load")
-    searchCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", searchOffset, "Offset for the search results")
-    searchCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", searchNsfw, "Include NSFW-rated items in search results")
     searchCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     searchCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+
+    searchCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
+    searchCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
+    searchCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")
+    searchCmd.Flags().BoolP("search-nsfw", "", false, "Include NSFW-rated items in search results")
 }

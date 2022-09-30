@@ -23,6 +23,7 @@ import (
 	"os"
 	"strings"
 	"github.com/MikunoNaka/macli/ui"
+	"github.com/MikunoNaka/macli/util"
 	"github.com/MikunoNaka/macli/mal"
 	a "github.com/MikunoNaka/MAL2Go/v4/anime"
 	m "github.com/MikunoNaka/MAL2Go/v4/manga"
@@ -40,7 +41,17 @@ var statusCmd = &cobra.Command{
 	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
 	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
 	Run: func(cmd *cobra.Command, args []string) {
+		conf, err := util.BindSearchConfig(cmd.Flags())
+		if err != nil {
+			fmt.Println("Error while parsing flags.", err.Error())
+			os.Exit(1)
+		}
+		mal.SearchLength = conf.SearchLength
+		mal.SearchOffset = conf.SearchOffset
+		mal.SearchNSFW = conf.SearchNSFW
+		ui.PromptLength = conf.PromptLength
     mal.Init()
+
 		searchInput := strings.Join(args, " ")
 
 		statusInput, err := cmd.Flags().GetString("set-value")
@@ -135,12 +146,13 @@ func setMangaStatus(statusInput, searchInput string) {
 func init() {
 	rootCmd.AddCommand(statusCmd)
     statusCmd.Flags().StringP("set-value", "s", "", "status to be set")
-    statusCmd.Flags().IntVarP(&ui.PromptLength, "prompt-length", "l", 5, "Length of select prompt")
-    statusCmd.Flags().IntVarP(&mal.SearchLength, "search-length", "n", 10, "Amount of search results to load")
-    statusCmd.Flags().IntVarP(&mal.SearchOffset, "search-offset", "o", 0, "Offset for the search results")
-    statusCmd.Flags().BoolVarP(&mal.SearchNSFW, "search-nsfw", "", false, "Include NSFW-rated items in search results")
     statusCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
     statusCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     statusCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     statusCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
+
+    statusCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
+    statusCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
+    statusCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")
+    statusCmd.Flags().BoolP("search-nsfw", "", false, "Include NSFW-rated items in search results")
 }
