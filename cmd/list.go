@@ -73,7 +73,6 @@ var listCmd = &cobra.Command{
 	  } else {
 		  ui.AnimeList(mal.AnimeList(user, status, sort, conf.IncludeNSFW))
 	  }
-
 	},
 }
 
@@ -84,7 +83,6 @@ func init() {
   listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
   listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
   listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
-  listCmd.Flags().IntVarP(&mal.SearchLength, "list-length", "n", 15, "Amount of list items to load (default: all)")
 
   listCmd.Flags().IntP("results-length", "n", 10, "Amount of results to load")
   listCmd.Flags().IntP("results-offset", "o", 0, "Offset for the results")

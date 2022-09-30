@@ -54,8 +54,8 @@ func initConfig() {
 	viper.SetConfigName("macli")
 	//viper.SetConfigType("yaml")
     viper.AddConfigPath(".")
-    // viper.AddConfigPath("$HOME/.config/macli")
-    // viper.AddConfigPath("/etc/macli")
+    viper.AddConfigPath("$HOME/.config")
+    viper.AddConfigPath("/etc")
 
 	// dont show error if file not found
 	// macli doesnt need a config file to work properly

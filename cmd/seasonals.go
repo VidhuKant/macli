@@ -27,7 +27,6 @@ import (
 	"github.com/MikunoNaka/macli/mal"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 // statusCmd represents the status command
