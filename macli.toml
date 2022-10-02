@@ -1,0 +1,36 @@
+# sample macli configuration file
+# can be placed (and accessed in the same order) 
+# at ./macli.yaml, ~/.config/macli/macli.yaml or /etc/macli/macli.yaml
+#
+# https://vidhukant.xyz/docs/macli
+# https://github.com/MikunoNaka/macli
+
+# AUTHENTICAITON INFO
+# macli defaults to the system keyring on windows or mac, 
+# or gnome-keyring (optional) on linux to store the login information
+# if none are available it can be set here 
+# but it is not recommended unless it's the only option
+#
+# if you're using something like termux, this is probably the only option
+[auth]
+# TODO: add option to ignore system keyring
+# ~~can leave blank, macli will set this~~ TODO: make macli set this optionally
+token = ""
+# run `macli help` for instructions for creating one
+client_id = ""
+# save newly entered client id when logging in (yes/no)
+save_client_id = "yes"
+
+# default settings (can be overridden by corresponding flags, `macli --help` for more details)
+[searching]
+prompt_length = 5 # length of anime/manga selection prompt when searching (default: 5)
+search_length = 10 # amount of search results to get (default: 10)
+search_offset = 0 # offset for the search results (default is 0, changing it is here not recommended as it may cause confusion)
+search_nsfw = false # include NSFW rated search results (true/false)
+auto_select_n = 0 # automatically select nth option while searching (0 means disabled)
+
+[lists]
+# TODO: add default sort types, etc
+list_length = 15 # amount of titles to show from user's list
+list_offset = 0 # offset for the results (default is 0, changing it here is not recommended as it may cause confusion)
+include_nsfw_results = false # show NSFW rated items
