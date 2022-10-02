@@ -40,6 +40,15 @@ var AnimeSearchFields []string = []string {
 // only search animes probably only now
 func AnimeSearch(label, searchString string) a.Anime {
   animes := mal.SearchAnime(searchString, AnimeSearchFields)
+  // don't show selection prompt if --auto-select is passed
+  if mal.AutoSel > 0 {
+    if len(animes) > 0 {
+      return animes[0]
+    } else {
+      fmt.Println("Error: Empty response from MyAnimeList while searching for anime.")
+      os.Exit(1)
+    }
+  }
 
   for i, anime := range animes {
     animes[i].DurationSeconds = anime.DurationSeconds / 60
@@ -148,6 +157,15 @@ var MangaSearchFields []string = []string {
 
 func MangaSearch(label, searchString string) m.Manga {
   mangas := mal.SearchManga(searchString, MangaSearchFields)
+  // don't show selection prompt if --auto-select is passed
+  if mal.AutoSel > 0 {
+    if len(mangas) > 0 {
+      return mangas[0]
+    } else {
+      fmt.Println("Error: Empty response from MyAnimeList while searching for manga.")
+      os.Exit(1)
+    }
+  }
 
   for i, manga := range mangas {
     /* I cant find a way to add functions to the details template

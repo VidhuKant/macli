@@ -39,6 +39,7 @@ var (
 
   SearchLength, SearchOffset int
   SearchNSFW bool
+  AutoSel int
 )
 
 // init() would kill the program prematurely on `macli login` command

@@ -33,6 +33,7 @@ type SearchConfig struct {
 	PromptLength int
 	SearchLength int
 	SearchOffset int
+	AutoSel      int
 	SearchNSFW   bool
 }
 
@@ -48,6 +49,13 @@ func BindSearchConfig(flags *pflag.FlagSet) (SearchConfig, error) {
 		conf SearchConfig
 		err error
 	)
+
+	if flags.Lookup("auto-select").Changed {
+		conf.AutoSel, err = flags.GetInt("auto-select")
+		if err != nil {return conf, err}
+	} else {
+		conf.AutoSel = viper.GetInt("searching.auto_select_n")
+	}
 
 	if flags.Lookup("prompt-length").Changed {
 		conf.PromptLength, err = flags.GetInt("prompt-length")

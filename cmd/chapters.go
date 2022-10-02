@@ -50,6 +50,7 @@ var chaptersCmd = &cobra.Command{
 		mal.SearchLength = conf.SearchLength
 		mal.SearchOffset = conf.SearchOffset
 		mal.SearchNSFW = conf.SearchNSFW
+ 		mal.AutoSel = conf.AutoSel
 		ui.PromptLength = conf.PromptLength
     mal.Init()
 
@@ -104,6 +105,7 @@ func init() {
     chaptersCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     chaptersCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 
+    chaptersCmd.Flags().IntP("auto-select", "S", 0, "Automatically select nth value")
     chaptersCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
     chaptersCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
     chaptersCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")

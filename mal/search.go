@@ -28,7 +28,13 @@ import (
 func SearchAnime(searchString string, fields []string) []a.Anime {
   fields = append([]string{"title", "id"}, fields...)
 
-  res, err := animeClient.SearchAnime(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
+  searchLength, searchOffset := SearchLength, SearchOffset
+  if AutoSel > 0 {
+    searchLength = 1
+    searchOffset = AutoSel - 1
+  }
+
+  res, err := animeClient.SearchAnime(searchString, searchLength, searchOffset, SearchNSFW, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)
@@ -40,7 +46,13 @@ func SearchAnime(searchString string, fields []string) []a.Anime {
 func SearchManga(searchString string, fields []string) []m.Manga {
   fields = append([]string{"title", "id"}, fields...)
 
-  res, err := mangaClient.SearchManga(searchString, SearchLength, SearchOffset, SearchNSFW, fields)
+  searchLength, searchOffset := SearchLength, SearchOffset
+  if AutoSel > 0 {
+    searchLength = 1
+    searchOffset = AutoSel - 1
+  }
+
+  res, err := mangaClient.SearchManga(searchString, searchLength, searchOffset, SearchNSFW, fields)
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)

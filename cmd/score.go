@@ -51,6 +51,7 @@ var scoreCmd = &cobra.Command{
 		mal.SearchLength = conf.SearchLength
 		mal.SearchOffset = conf.SearchOffset
 		mal.SearchNSFW = conf.SearchNSFW
+ 		mal.AutoSel = conf.AutoSel
 		ui.PromptLength = conf.PromptLength
 		mal.Init()
 
@@ -174,6 +175,7 @@ func init() {
     scoreCmd.Flags().IntVarP(&entryId, "id", "i", -1, "Manually specify the ID of anime/manga (overrides search)")
     scoreCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 
+    scoreCmd.Flags().IntP("auto-select", "S", 0, "Automatically select nth value")
     scoreCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
     scoreCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
     scoreCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")

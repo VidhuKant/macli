@@ -49,6 +49,7 @@ var searchCmd = &cobra.Command {
 		mal.SearchLength = conf.SearchLength
 		mal.SearchOffset = conf.SearchOffset
 		mal.SearchNSFW = conf.SearchNSFW
+		mal.AutoSel = conf.AutoSel
 		ui.PromptLength = conf.PromptLength
 		mal.Init()
 
@@ -129,6 +130,7 @@ func init() {
     searchCmd.Flags().BoolVarP(&queryOnlyMode, "query", "q", false, "Query only (don't update data)")
     searchCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 
+    searchCmd.Flags().IntP("auto-select", "S", 0, "Automatically select nth value")
     searchCmd.Flags().IntP("prompt-length", "l", 5, "Length of select prompt")
     searchCmd.Flags().IntP("search-length", "n", 10, "Amount of search results to load")
     searchCmd.Flags().IntP("search-offset", "o", 0, "Offset for the search results")
