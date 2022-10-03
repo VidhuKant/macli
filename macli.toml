@@ -20,6 +20,8 @@ token = ""
 client_id = ""
 # save newly entered client id when logging in (yes/no)
 save_client_id = "yes"
+# set this to true if you do not wanna use the system kerying (unsafe)
+no_system_keyring = false # `macli login -k` works similarly
 
 # default settings (can be overridden by corresponding flags, `macli --help` for more details)
 [searching]

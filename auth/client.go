@@ -22,15 +22,36 @@ import (
   "os"
   "fmt"
   "github.com/zalando/go-keyring"
+  "github.com/spf13/viper"
+  "errors"
 )
 
 var clientSuffix string = "-client-id"
 
 func getClientId() (string, error) {
-  return keyring.Get(serviceName + clientSuffix, userName)
+  var id string
+  var err error
+
+
+  if NoSysKeyring {
+    id = viper.GetString("auth.client_id")
+    if id == "" {
+      err = errors.New("secret not found in keyring")
+    }
+  } else {
+    id, err = keyring.Get(serviceName + clientSuffix, userName)
+  }
+
+  return id, err
 }
 
 func setClientId(clientId string) {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.client_id", clientId)
+    return
+  }
+
   err := keyring.Set(serviceName + clientSuffix, userName, clientId)
   if err != nil {
     fmt.Println("Error while writing Client ID to keychain", err)
@@ -39,9 +60,14 @@ func setClientId(clientId string) {
 }
 
 func deleteClientId() {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.client_id", "")
+  }
+
   err := keyring.Delete(serviceName + clientSuffix, userName)
   // if secret doesnt exist dont show error
-  if err != nil {
+  if err != nil && !NoSysKeyring {
     if err.Error() != "secret not found in keyring" {
       fmt.Println("Error while deleting Client ID", err.Error())
       os.Exit(1)

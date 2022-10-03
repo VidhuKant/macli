@@ -22,10 +22,12 @@ import (
   "os"
   "fmt"
   "github.com/zalando/go-keyring"
+  "github.com/spf13/viper"
 )
 
 var refreshPrefix string = "-refresh-token"
 var expiresPrefix string = "-expires-in"
+var NoSysKeyring bool
 
 func GetToken() string {
   secret, err := keyring.Get(serviceName, userName)
@@ -39,17 +41,29 @@ func GetToken() string {
 }
 
 func setToken(secret string) {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.token", secret)
+    viper.Set("auth.no_system_keyring", true)
+    return
+  }
+
   err := keyring.Set(serviceName, userName, secret)
   if err != nil {
-    fmt.Println("Error while writing access token to keychain", err)
+    fmt.Println("Error while writing access token to keychain", err.Error())
     os.Exit(1)
   }
 }
 
 func deleteToken() {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.token", "")
+  }
+
   err := keyring.Delete(serviceName, userName)
   // if secret doesnt exist dont show error
-  if err != nil {
+  if err != nil && !NoSysKeyring {
     if err.Error() != "secret not found in keyring" {
       fmt.Println("Error while deleting authentication token", err.Error())
       os.Exit(1)
@@ -59,6 +73,12 @@ func deleteToken() {
 
 // currently refreshtoken has no use
 func setRefreshToken(secret string) {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.refresh", secret)
+    return
+  }
+
   err := keyring.Set(serviceName + refreshPrefix, userName, secret)
   if err != nil {
     fmt.Println("Error while writing access token to keychain", err)
@@ -78,9 +98,14 @@ func getRefreshToken() string {
 }
 
 func deleteRefreshToken() {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.refresh", "")
+  }
+
   err := keyring.Delete(serviceName + refreshPrefix, userName)
   // if secret doesnt exist dont show error
-  if err != nil {
+  if err != nil && !NoSysKeyring {
     if err.Error() != "secret not found in keyring" {
       fmt.Println("Error while deleting refresh token", err.Error())
       os.Exit(1)
@@ -89,6 +114,12 @@ func deleteRefreshToken() {
 }
 
 func setExpiresIn(secret string) {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.refresh", secret)
+    return
+  }
+
   err := keyring.Set(serviceName + expiresPrefix, userName, secret)
   if err != nil {
     fmt.Println("Error while writing token expire time to keychain", err)
@@ -108,9 +139,14 @@ func getExpiresIn() string {
 }
 
 func deleteExpiresIn() {
+  if NoSysKeyring {
+    defer viper.WriteConfig()
+    viper.Set("auth.refresh", "")
+  }
+
   err := keyring.Delete(serviceName + expiresPrefix, userName)
   // if secret doesnt exist dont show error
-  if err != nil {
+  if err != nil && !NoSysKeyring {
     if err.Error() != "secret not found in keyring" {
       fmt.Println("Error while deleting token expires in data", err.Error())
       os.Exit(1)

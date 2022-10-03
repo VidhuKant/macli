@@ -26,6 +26,7 @@ import (
   "errors"
   "fmt"
   "github.com/zalando/go-keyring"
+  "github.com/spf13/viper"
 )
 
 var serviceName string = "macli"
@@ -43,10 +44,16 @@ func init() {
 
 // asks for all the details
 func Login(tk, clientId string, storeClientId bool) {
-  /* check if an auth token already exists
-   * if there is an error with keyring, askClientId would handle it
-   * can safely ignore error here */
-  existingToken, _ := keyring.Get(serviceName, userName)
+  // check if an auth token already exists
+  var existingToken string
+  if NoSysKeyring {
+    existingToken = viper.GetString("auth.token")
+  } else {
+    /* if there is an error with keyring, askClientId would handle it
+     * can safely ignore error here */
+    existingToken, _ = keyring.Get(serviceName, userName)
+  }
+
   if existingToken != "" {
     if !confirmInput("Already logged in. Log in again? [Y/n] ", true) {
       fmt.Println("Login process aborted")

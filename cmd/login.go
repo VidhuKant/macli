@@ -22,6 +22,7 @@ import (
 	"os"
   "fmt"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 	"github.com/MikunoNaka/macli/auth"
 )
 
@@ -42,15 +43,36 @@ var loginCmd = &cobra.Command {
 	Run: func(cmd *cobra.Command, args []string) {
 		var storeClientId bool
 
-		s, _ := cmd.Flags().GetString("store-client-id")
+		var err error
+        if cmd.Flags().Lookup("no-sys-keyring").Changed {
+            auth.NoSysKeyring, err = cmd.Flags().GetBool("no-sys-keyring")
+            if err != nil {
+				fmt.Println("Error reading \x1b[33m`--no-sys-keyring`\x1b[0m flag:", err.Error())
+			}
+        } else {
+            auth.NoSysKeyring = viper.GetBool("auth.no_system_keyring")
+        }
+
+		var s, errmsg string
+        if cmd.Flags().Lookup("store-client-id").Changed {
+		    s, _ = cmd.Flags().GetString("store-client-id")
+			errmsg = "\x1b[33m`--store-client-id`\x1b[0m flag only accepts \x1b[33m\"yes\"\x1b[0m or \x1b[33m\"no\"\x1b[0m"
+		} else {
+			s = viper.GetString("auth.save_client_id")
+			errmsg = fmt.Sprintf("%s: \x1b[33m`auth.save_client_id`\x1b[0m option only accepts \x1b[33m\"yes\"\x1b[0m or \x1b[33m\"no\"\x1b[0m", viper.ConfigFileUsed())
+		}
 		switch s {
-		case "yes":
+		case "yes", "":
 			storeClientId = true
 		case "no":
 			storeClientId = false
 		default:
-			fmt.Println("\x1b[33m`--store-client-id`\x1b[0m flag only accepts \x1b[33m\"yes\"\x1b[0m or \x1b[33m\"no\"\x1b[0m")
+			fmt.Println(errmsg)
 			os.Exit(1)
+		}
+
+		if auth.NoSysKeyring {
+			viper.WriteConfigAs(viper.ConfigFileUsed())
 		}
 
 		tk, _ := cmd.Flags().GetString("authentication-token")
@@ -65,4 +87,5 @@ func init() {
     loginCmd.Flags().StringP("authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
     loginCmd.Flags().StringP("client-id", "c", "", "MyAnimeList Client ID")
     loginCmd.Flags().StringP("store-client-id", "s", "yes", "Save Client ID to keyring")
+    loginCmd.Flags().BoolP("no-sys-keyring", "k", false, "Don't use system keyring to store login info")
 }
