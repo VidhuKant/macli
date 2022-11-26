@@ -40,7 +40,8 @@ var volumesCmd = &cobra.Command{
 	" - \x1b[33m`macli volumes <manga-name>`\x1b[0m For interactive prompt (manga-name can be omitted)\n" +
 	" - \x1b[33m`macli volumes -s 4 <manga-name>`\x1b[0m to set the volumes to 4\n" +
 	" - \x1b[33m`macli volumes -s +1 <manga-name>`\x1b[0m to increment the volumes by 1\n" +
-	" - \x1b[33m`macli volumes -s -2 <manga-name>`\x1b[0m to decrement the volumes by 2\n",
+	" - \x1b[33m`macli volumes -s -2 <manga-name>`\x1b[0m to decrement the volumes by 2\n" +
+	" - \x1b[33m`macli volumes <manga-name> -S 1`\x1b[0m automatically selects the first search result\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := util.BindSearchConfig(cmd.Flags())
 		if err != nil {

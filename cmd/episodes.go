@@ -40,7 +40,8 @@ var episodesCmd = &cobra.Command{
 	" - \x1b[33m`macli episodes <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
 	" - \x1b[33m`macli episodes -s 4 <anime-name>`\x1b[0m to set the episodes to 4\n" +
 	" - \x1b[33m`macli episodes -s +1 <anime-name>`\x1b[0m to increment the episodes by 1\n" +
-	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n",
+	" - \x1b[33m`macli episodes -s -2 <anime-name>`\x1b[0m to decrement the episodes by 2\n" +
+	" - \x1b[33m`macli episodes <anime-name> -S 1`\x1b[0m automatically selects the first search result\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := util.BindSearchConfig(cmd.Flags())
 		if err != nil {
@@ -52,7 +53,7 @@ var episodesCmd = &cobra.Command{
 		mal.SearchNSFW = conf.SearchNSFW
  		mal.AutoSel = conf.AutoSel
 		ui.PromptLength = conf.PromptLength
-    mal.Init()
+		mal.Init()
 
 		var selectedAnime a.Anime
 		if entryId > 0 {

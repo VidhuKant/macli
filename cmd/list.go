@@ -31,14 +31,12 @@ import (
 // statusCmd represents the status command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "Print out user's animelist",
-	Long: "To be added", // +
-	// "\n" +
-  //   "Example Usage:\n" +
-	// " - \x1b[33m`macli chapters <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
-	// " - \x1b[33m`macli chapters -s 4 <anime-name>`\x1b[0m to set the chapters to 4\n" +
-	// " - \x1b[33m`macli chapters -s +1 <anime-name>`\x1b[0m to increment the chapters by 1\n" +
-	// " - \x1b[33m`macli chapters -s -2 <anime-name>`\x1b[0m to decrement the chapters by 2\n",
+	Short: "Print out any user's animelist",
+	Long:  "List any user's public anime/manga list." +
+	  "\n" +
+    "Example Usage:\n" +
+	  " - \x1b[33m`macli list`\x1b[0m prints your anime list (or manga list with \x1b[33m`-m`\x1b[0m switch) \n" +
+	  " - Specify list status and user, etc with \x1b[33m`--status=dropped --user=0ZeroTsu --sort=list_score`\x1b[0m",
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := util.BindListConfig(cmd.Flags())
 		if err != nil {
@@ -69,18 +67,18 @@ var listCmd = &cobra.Command{
     }
 
 	  if mangaMode {
-		  ui.MangaList(mal.MangaList(user, status, sort, conf.IncludeNSFW))
+			ui.MangaList(mal.MangaList(user, status, sort))
 	  } else {
-		  ui.AnimeList(mal.AnimeList(user, status, sort, conf.IncludeNSFW))
+			ui.AnimeList(mal.AnimeList(user, status, sort))
 	  }
 	},
 }
 
 func init() {
   rootCmd.AddCommand(listCmd)
-  listCmd.Flags().StringP("status", "", "", "Status (leave blank for all)")
+  listCmd.Flags().StringP("status", "", "", "Status (leave blank for all, possible values: watching, completed, on_hold, dropped, plan_to_watch)")
   listCmd.Flags().StringP("user", "", "@me", "User (@me or blank for self)")
-  listCmd.Flags().StringP("sort", "", "list_score", "Sort the list")
+  listCmd.Flags().StringP("sort", "", "list_score", "Sort the list (possible values: list_score, list_updated_at, anime_title, anime_start_date, anime_id)")
   listCmd.Flags().BoolVarP(&mangaMode, "manga", "m", false, "Use manga mode")
   listCmd.Flags().StringVarP(&mal.Secret, "authentication-token", "t", "", "MyAnimeList authentication token to use (overrides system keyring if any)")
 

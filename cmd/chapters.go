@@ -37,10 +37,11 @@ var chaptersCmd = &cobra.Command{
 	Long: "Set the number of chapters read" +
 	"\n" +
     "Example Usage:\n" +
-	" - \x1b[33m`macli chapters <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
-	" - \x1b[33m`macli chapters -s 4 <anime-name>`\x1b[0m to set the chapters to 4\n" +
-	" - \x1b[33m`macli chapters -s +1 <anime-name>`\x1b[0m to increment the chapters by 1\n" +
-	" - \x1b[33m`macli chapters -s -2 <anime-name>`\x1b[0m to decrement the chapters by 2\n",
+	" - \x1b[33m`macli chapters <manga-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
+	" - \x1b[33m`macli chapters -s 4 <manga-name>`\x1b[0m to set the chapters to 4\n" +
+	" - \x1b[33m`macli chapters -s +1 <manga-name>`\x1b[0m to increment the chapters by 1\n" +
+	" - \x1b[33m`macli chapters -s -2 <manga-name>`\x1b[0m to decrement the chapters by 2\n" +
+	" - \x1b[33m`macli chapters <manga-name> -S 1`\x1b[0m automatically selects the first search result\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := util.BindSearchConfig(cmd.Flags())
 		if err != nil {

@@ -26,8 +26,8 @@ import (
 )
 
 // TODO: return all the list items using loop
-func AnimeList(user, status, sort string, nsfw bool) []a.Anime {
-  res, _, err := userAnimeClient.GetAnimeList(user, status, sort, 1000, 0, nsfw, []string{"title", "num_episodes", "media_type"})
+func AnimeList(user, status, sort string) []a.Anime {
+  res, _, err := userAnimeClient.GetAnimeList(user, status, sort, 1000, 0, SearchNSFW, []string{"title", "num_episodes", "media_type"})
   if err != nil {
     fmt.Println(err)
     os.Exit(1)
@@ -36,8 +36,8 @@ func AnimeList(user, status, sort string, nsfw bool) []a.Anime {
 }
 
 // TODO: return all the list items using loop
-func MangaList(user, status, sort string, nsfw bool) []m.Manga {
-  res, _, err := userMangaClient.GetMangaList(user, status, sort, 1000, 0, nsfw, []string{"title", "num_chapters", "num_volumes", "media_type"})
+func MangaList(user, status, sort string) []m.Manga {
+  res, _, err := userMangaClient.GetMangaList(user, status, sort, 1000, 0, SearchNSFW, []string{"title", "num_chapters", "num_volumes", "media_type"})
   if err != nil {
     fmt.Println(err)
     os.Exit(1)

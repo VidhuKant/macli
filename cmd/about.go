@@ -40,7 +40,7 @@ var aboutCmd = &cobra.Command{
 			"\x1b[35mPlease report any bugs on the GitHub page: https://github.com/MikunoNaka/macli\n" +
 			"or through email: vidhukant@vidhukant.xyz\x1b[0m\n\n",
 		)
-		fmt.Println("Visit \x1b[36mhttps://www.vidhukant.xyz/projects/macli/\x1b[0m for more info.")
+		fmt.Println("Visit \x1b[36mhttps://www.vidhukant.xyz/docs/macli/\x1b[0m for more info.")
 		fmt.Println("Run \x1b[33m`macli --help`\x1b[0m for instructions.")
 	},
 }

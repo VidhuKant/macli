@@ -40,8 +40,8 @@ var scoreCmd = &cobra.Command{
 	Long: "Set an anime's status\n" +
 	"\n" +
     "Example Usage:\n" +
-	" - \x1b[33m`macli status <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
-	" - \x1b[33m`macli status -s \x1b[34mwatching|plan_to_watch|dropped|on_hold|completed\x1b[33m <anime-name>`\x1b[0m to specify status from command\n",
+	" - \x1b[33m`macli score <anime-name>`\x1b[0m For interactive prompt (anime-name can be omitted)\n" +
+	" - \x1b[33m`macli score -s 10 <anime-name>`\x1b[0m to set score to 10 (use \x1b[33m-m\x1b[0m switch to set manga score instead)\n",
 	Run: func(cmd *cobra.Command, args []string) {
 		conf, err := util.BindSearchConfig(cmd.Flags())
 		if err != nil {

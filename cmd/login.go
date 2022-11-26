@@ -20,7 +20,7 @@ package cmd
 
 import (
 	"os"
-  "fmt"
+	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/MikunoNaka/macli/auth"
@@ -38,7 +38,7 @@ var loginCmd = &cobra.Command {
 	" - Inside the form you can set all the details to whatever you'd like\n" +
 	" - For macli to work properly, you only need to set \x1b[33m\"App Redirect Url\"\x1b[0m to \x1b[36mhttp://localhost:8000\x1b[0m\n" +
 	" - After that, hit submit, then copy your Client ID, run `macli login` and paste in your Client ID.\n" +
-	" - \x1b[31mIf after running `macli login` it opens a dialogue box in the browser asking for credentials,\n   and not the MyAnimeList login page, that means you have entered your Client ID wrong.\x1b[0m\n" +
+	" - \x1b[31mIf after running `macli login` it opens a dialogue box in the browser asking for credentials,\n   and not the MyAnimeList login page, that means you have entered your Client ID wrong. \n   (you might need to wait for a few minutes after creating a new ID)\x1b[0m\n" +
 	"",
 	Run: func(cmd *cobra.Command, args []string) {
 		var storeClientId bool
