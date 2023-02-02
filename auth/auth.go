@@ -35,7 +35,6 @@ var serviceName string = "macli"
 var userName string
 
 func init() {
-	fmt.Println(VendoredClientId)
 	// get user and set username
 	currentUser, err := user.Current()
 	if err != nil {
