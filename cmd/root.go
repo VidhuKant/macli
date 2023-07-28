@@ -21,6 +21,7 @@ package cmd
 import (
 	"os"
 	"fmt"
+  "runtime"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -29,21 +30,13 @@ import (
 var (
 	queryOnlyMode, mangaMode bool
 	entryId int
-
-	// // auth
-	// saveClientId string = "yes"
-	// // searching
-    // promptLength, searchLength, searchOffset int = 5, 10, 0
-	// searchNsfw bool = false
-	// // lists
-	// listOffset, listLength int = 0, 15
-	// listIncludeNsfw bool = false
 )
 
 var rootCmd = &cobra.Command{
 	Use: "macli",
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
 	Long: "macli is an unofficial MyAnimeList Client for use inside the terminal.",
+  Version: "v1.17.1" + " " + runtime.GOOS + "/" + runtime.GOARCH,
 }
 
 func init() {
@@ -51,33 +44,34 @@ func init() {
 }
 
 func initConfig() {
-	viper.SetConfigName("macli")
-	//viper.SetConfigType("yaml")
-    viper.AddConfigPath(".")
-    viper.AddConfigPath("$HOME/.config")
-    viper.AddConfigPath("/etc")
+  viper.SetConfigName("macli")
+  viper.AddConfigPath(".")
+  viper.AddConfigPath("$HOME/.config")
+  viper.AddConfigPath("/etc")
 
 	// dont show error if file not found
 	// macli doesnt need a config file to work properly
-    if err := viper.ReadInConfig(); err != nil {
-		// error if config file found but has errors
-	    if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			fmt.Println("Error while reading macli config file:", err)
-			fmt.Println("Exiting... Please check the macli config file.")
-			os.Exit(1)
-	    }
+  if err := viper.ReadInConfig(); err != nil {
+    // error if config file found but has errors
+
+    if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+      // if config file isn't found
+      fmt.Println("Error while reading macli config file:", err)
+      fmt.Println("Exiting... Please check the macli config file.")
+      os.Exit(1)
+    }
 	}
 
-	viper.SetDefault("searching.prompt_length", 5)
-	viper.SetDefault("searching.search_length", 10)
-	viper.SetDefault("searching.search_offset", 0)
-	viper.SetDefault("searching.search_nsfw", false)
+  viper.SetDefault("searching.prompt_length", 5)
+  viper.SetDefault("searching.search_length", 10)
+  viper.SetDefault("searching.search_offset", 0)
+  viper.SetDefault("searching.search_nsfw", false)
 
-	viper.SetDefault("lists.list_offset", 0)
-	viper.SetDefault("lists.list_length", 15)
-	viper.SetDefault("lists.include_nsfw_results", false)
+  viper.SetDefault("lists.list_offset", 0)
+  viper.SetDefault("lists.list_length", 15)
+  viper.SetDefault("lists.include_nsfw_results", false)
 
-	viper.SetDefault("auth.save_client_id", "yes")
+  viper.SetDefault("auth.save_client_id", "yes")
 }
 
 func Execute() {
