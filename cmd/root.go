@@ -1,6 +1,6 @@
 /*
 macli - Unofficial CLI-Based MyAnimeList Client
-Copyright © 2022 Vidhu Kant Sharma <vidhukant@vidhukant.xyz>
+Copyright © 2022-2023 Vidhu Kant Sharma <vidhukant@vidhukant.com>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,9 +34,20 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use: "macli",
-	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
-	Long: "macli is an unofficial MyAnimeList Client for use inside the terminal.",
   Version: "v1.18.0" + " " + runtime.GOOS + "/" + runtime.GOARCH,
+	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
+	Long:
+      "macli is an unofficial MyAnimeClient for use inside the terminal.\n" +
+      "Run \x1b[33m`macli --help`\x1b[0m for instructions.\n\n" +
+      "\x1b[34mmacli  Copyright (C) 2022-2023  Vidhu Kant Sharma <vidhukant@vidhukant.com>\n" +
+      "This program comes with ABSOLUTELY NO WARRANTY;\n" +
+      "This is free software, and you are welcome to redistribute it\n" +
+      "under certain conditions; For details refer to the GNU General Public License.\n" +
+      "You should have received a copy of the GNU General Public License\n" +
+      "along with this program.  If not, see <https://www.gnu.org/licenses/>.\x1b[0m\n" +
+      "\n" +
+      "\x1b[35mPlease report any bugs on the GitHub page: https://github.com/MikunoNaka/macli\n" +
+      "or through email: vidhukant@vidhukant.com\x1b[0m\n\n",
 }
 
 func init() {
