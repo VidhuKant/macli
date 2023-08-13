@@ -1,4 +1,4 @@
-module github.com/MikunoNaka/macli
+module vidhukant.com/macli
 
 go 1.18
 
