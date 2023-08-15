@@ -24,12 +24,10 @@ import (
 	"strings"
 	"strconv"
 	"errors"
-	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/mal"
-	"github.com/MikunoNaka/macli/util"
-	a "github.com/MikunoNaka/MAL2Go/v4/anime"
-	m "github.com/MikunoNaka/MAL2Go/v4/manga"
-
+	"vidhukant.com/macli/ui"
+	"vidhukant.com/macli/mal"
+	"vidhukant.com/macli/util"
+  "vidhukant.com/mg"
 	"github.com/spf13/cobra"
 )
 
@@ -90,7 +88,7 @@ func validateScore(input string, currentScore int) (int, error) {
 }
 
 func setAnimeScore(scoreInput, searchInput string) {
-	var selectedAnime a.Anime
+	var selectedAnime mg.Anime
 	if entryId > 0 {
 	    selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status"})
 	}
@@ -129,7 +127,7 @@ func setAnimeScore(scoreInput, searchInput string) {
 }
 
 func setMangaScore(scoreInput, searchInput string) {
-	var selectedManga m.Manga
+	var selectedManga mg.Manga
 	if entryId > 0 {
 	    selectedManga = mal.GetMangaData(entryId, []string{"my_list_status"})
 	}

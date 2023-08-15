@@ -20,11 +20,11 @@ package util
 
 import (
   "fmt"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
+  "vidhukant.com/mg"
 )
 
 // formats and prints all the details about an anime
-func PrintAnime(anime a.Anime) {
+func PrintAnime(anime mg.Anime) {
   fmt.Println(anime.Id)
   fmt.Println(anime.Title)
 }

@@ -22,10 +22,10 @@ import (
 	"os"
 	"fmt"
 	"strings"
-	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/util"
-	"github.com/MikunoNaka/macli/mal"
-	a "github.com/MikunoNaka/MAL2Go/v4/anime"
+	"vidhukant.com/macli/ui"
+	"vidhukant.com/macli/util"
+	"vidhukant.com/macli/mal"
+  "vidhukant.com/mg"
 
 	"github.com/spf13/cobra"
 )
@@ -55,7 +55,7 @@ var episodesCmd = &cobra.Command{
 		ui.PromptLength = conf.PromptLength
 		mal.Init()
 
-		var selectedAnime a.Anime
+		var selectedAnime mg.Anime
 		if entryId > 0 {
 			selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status", "num_episodes"})
 		}

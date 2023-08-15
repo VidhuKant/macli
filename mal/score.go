@@ -19,23 +19,24 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
-  a "github.com/MikunoNaka/MAL2Go/v4/user/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/user/manga"
 )
 
-func SetAnimeScore(animeId, score int) a.UpdateResponse {
-  resp, err := userAnimeClient.SetScore(animeId, score)
+func SetAnimeScore(animeId, score int) mg.AnimeUpdateResponse {
+	var res mg.AnimeUpdateResponse
+  err := MALClient.UpdateAnime(&res, animeId, map[string]interface{}{mg.Score: score})
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating anime score:", err)
   }
-  return resp
+  return res
 }
 
-func SetMangaScore(mangaId, score int) m.UpdateResponse {
-  resp, err := userMangaClient.SetScore(mangaId, score)
+func SetMangaScore(mangaId, score int) mg.MangaUpdateResponse {
+	var res mg.MangaUpdateResponse
+  err := MALClient.UpdateManga(&res, mangaId, map[string]interface{}{mg.Score: score})
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating manga score:", err)
   }
-  return resp
+  return res
 }

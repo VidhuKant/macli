@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package ui
 
 import (
-    "github.com/spf13/viper"
+  "github.com/spf13/viper"
 )
 
 var PromptLength int

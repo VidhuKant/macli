@@ -19,28 +19,49 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
 )
 
 // TODO: return all the list items using loop
-func AnimeList(user, status, sort string) []a.Anime {
-  res, _, err := userAnimeClient.GetAnimeList(user, status, sort, 1000, 0, SearchNSFW, []string{"title", "num_episodes", "media_type"})
+func AnimeList(user, status, sort string) []mg.Anime {
+	var res []mg.Anime
+  _, err := MALClient.GetAnimeList(&res, &mg.ListParams{
+		Username: user,
+		Status: status,
+		Sort: sort,
+		Limit: 1000,
+		Offset: 0,
+		NSFW: SearchNSFW,
+		Fields: []string{"title", "num_episodes", "media_type"},
+	})
+
   if err != nil {
     fmt.Println(err)
     os.Exit(1)
   }
+
   return res
 }
 
 // TODO: return all the list items using loop
 func MangaList(user, status, sort string) []m.Manga {
-  res, _, err := userMangaClient.GetMangaList(user, status, sort, 1000, 0, SearchNSFW, []string{"title", "num_chapters", "num_volumes", "media_type"})
+	var res []mg.Manga
+  _, err := MALClient.GetMangaList(&res, &mg.ListParams{
+		Username: user,
+		Status: status,
+		Sort: sort,
+		Limit: 1000,
+		Offset: 0,
+		NSFW: SearchNSFW,
+		Fields: []string{"title", "num_chapters", "num_volumes", "media_type"},
+	})
+
   if err != nil {
     fmt.Println(err)
     os.Exit(1)
   }
+
   return res
 }

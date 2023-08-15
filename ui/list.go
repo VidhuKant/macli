@@ -19,14 +19,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package ui
 
 import (
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
+  "vidhukant.com/mg"
   "github.com/jedib0t/go-pretty/v6/table"
   "fmt"
   "os"
 )
 
-func AnimeList(animes []a.Anime) {
+func AnimeList(animes []mg.Anime) {
   t := table.NewWriter()
   t.SetOutputMirror(os.Stdout)
 
@@ -52,7 +51,7 @@ func AnimeList(animes []a.Anime) {
   t.Render()
 }
 
-func MangaList(mangas []m.Manga) {
+func MangaList(mangas []mg.Manga) {
   t := table.NewWriter()
   t.SetOutputMirror(os.Stdout)
 

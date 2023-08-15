@@ -23,9 +23,8 @@ import (
   "fmt"
   "os"
   p "github.com/manifoldco/promptui"
-  mal "github.com/MikunoNaka/macli/mal"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
+  "vidhukant.com/macli/mal"
+  "vidhukant.com/mg"
 )
 
 var AnimeSearchFields []string = []string {
@@ -38,7 +37,7 @@ var AnimeSearchFields []string = []string {
 }
 
 // only search animes probably only now
-func AnimeSearch(label, searchString string) a.Anime {
+func AnimeSearch(label, searchString string) mg.Anime {
   animes := mal.SearchAnime(searchString, AnimeSearchFields)
   // don't show selection prompt if --auto-select is passed
   if mal.AutoSel > 0 {
@@ -155,7 +154,7 @@ var MangaSearchFields []string = []string {
   "media_type", "status", "authors",
 }
 
-func MangaSearch(label, searchString string) m.Manga {
+func MangaSearch(label, searchString string) mg.Manga {
   mangas := mal.SearchManga(searchString, MangaSearchFields)
   // don't show selection prompt if --auto-select is passed
   if mal.AutoSel > 0 {

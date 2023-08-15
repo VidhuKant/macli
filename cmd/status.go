@@ -22,12 +22,10 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/util"
-	"github.com/MikunoNaka/macli/mal"
-	a "github.com/MikunoNaka/MAL2Go/v4/anime"
-	m "github.com/MikunoNaka/MAL2Go/v4/manga"
-
+	"vidhukant.com/macli/ui"
+	"vidhukant.com/macli/util"
+	"vidhukant.com/macli/mal"
+  "vidhukant.com/mg"
 	"github.com/spf13/cobra"
 )
 
@@ -78,7 +76,7 @@ var statusCmd = &cobra.Command{
 }
 
 func setAnimeStatus(statusInput, searchInput string) {
-	var selectedAnime a.Anime
+	var selectedAnime mg.Anime
 	if entryId > 0 {
 	    selectedAnime = mal.GetAnimeData(entryId, []string{"my_list_status"})
 	}
@@ -112,7 +110,7 @@ func setAnimeStatus(statusInput, searchInput string) {
 }
 
 func setMangaStatus(statusInput, searchInput string) {
-	var selectedManga m.Manga
+	var selectedManga mg.Manga
 	if entryId > 0 {
 	    selectedManga = mal.GetMangaData(entryId, []string{"my_list_status"})
 	}

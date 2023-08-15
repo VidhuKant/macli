@@ -24,7 +24,6 @@ import (
   "encoding/json"
   "os"
   "fmt"
-	// "io/ioutil"
 )
 
 func listen(clientId, verifier string) {

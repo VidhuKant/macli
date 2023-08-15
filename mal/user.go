@@ -19,16 +19,17 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  u "github.com/MikunoNaka/MAL2Go/v4/user"
+	"vidhukant.com/mg"
   "fmt"
   "os"
 )
 
-func GetUserInfo() u.UserInfo {
-  userInfo, err := userClient.GetSelfUserInfo()
+func GetUserInfo() mg.User {
+	var user mg.User
+  err := MALClient.GetSelfInfo(&user, true)
   if err != nil {
     fmt.Println("Error fetching User Information:", err)
     os.Exit(1)
   }
-  return userInfo
+  return user
 }

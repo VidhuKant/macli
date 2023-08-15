@@ -23,10 +23,9 @@ import (
   "errors"
   "fmt"
   "os"
-  "github.com/MikunoNaka/macli/mal"
-  "github.com/MikunoNaka/macli/util"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
+  "vidhukant.com/macli/mal"
+  "vidhukant.com/macli/util"
+  "vidhukant.com/mg"
   p "github.com/manifoldco/promptui"
 )
 
@@ -72,7 +71,7 @@ func CreateScoreUpdateConfirmationMessage(title string, score, prevScore int) st
   return fmt.Sprintf("\x1b[35m%s\x1b[0m Score :: %s", title, FormatScore(score))
 }
 
-func AnimeScoreInput(anime a.Anime) {
+func AnimeScoreInput(anime mg.Anime) {
   currentScore := anime.MyListStatus.Score
   validate := func(input string) error {
     i, err := strconv.ParseFloat(input, 64)
@@ -111,7 +110,7 @@ func AnimeScoreInput(anime a.Anime) {
   fmt.Println(CreateScoreUpdateConfirmationMessage(anime.Title, resp.Score ,currentScore))
 }
 
-func MangaScoreInput(manga m.Manga) {
+func MangaScoreInput(manga mg.Manga) {
   currentScore := manga.MyListStatus.Score
 
   validate := func(input string) error {

@@ -22,12 +22,10 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/MikunoNaka/macli/mal"
-	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/util"
-	a "github.com/MikunoNaka/MAL2Go/v4/anime"
-	m "github.com/MikunoNaka/MAL2Go/v4/manga"
+	"vidhukant.com/macli/mal"
+	"vidhukant.com/macli/ui"
+	"vidhukant.com/macli/util"
+  "vidhukant.com/mg"
 	"github.com/spf13/cobra"
 )
 
@@ -70,7 +68,7 @@ var searchCmd = &cobra.Command {
 }
 
 func searchManga(searchInput string) {
-	var selectedManga m.Manga
+	var selectedManga mg.Manga
 	mangaId := entryId
 	fields := []string{}
 
@@ -97,7 +95,7 @@ func searchManga(searchInput string) {
 }
 
 func searchAnime(searchInput string) {
-	var selectedAnime a.Anime
+	var selectedAnime mg.Anime
 	animeId := entryId
 	fields := []string{}
 

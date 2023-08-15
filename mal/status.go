@@ -19,26 +19,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v4/user/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/user/manga"
 )
 
-func SetAnimeStatus(animeId int, status string) a.UpdateResponse {
-  resp, err := userAnimeClient.SetStatus(animeId, status)
+func SetAnimeStatus(animeId int, status string) mg.AnimeUpdateResponse {
+	var res mg.AnimeUpdateResponse
+  err := MALClient.UpdateAnime(&res, animeId, map[string]interface{}{mg.Status: status})
   if err != nil {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  return resp
+  return res
 }
 
-func SetMangaStatus(mangaId int, status string) m.UpdateResponse {
-  resp, err := userMangaClient.SetStatus(mangaId, status)
+func SetMangaStatus(mangaId int, status string) mg.MangaUpdateResponse {
+	var res mg.MangaUpdateResponse
+  err := MALClient.UpdateManga(&res, mangaId, map[string]interface{}{mg.Status: status})
   if err != nil {
     fmt.Println("Error while parsing status:", err.Error())
     os.Exit(1)
   }
-  return resp
+  return res
 }

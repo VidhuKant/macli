@@ -20,7 +20,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/MikunoNaka/macli/auth"
+	"vidhukant.com/macli/auth"
 )
 
 var logoutCmd = &cobra.Command {

@@ -21,7 +21,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"github.com/MikunoNaka/macli/mal"
+	"vidhukant.com/macli/mal"
 )
 
 var userInfoCmd = &cobra.Command {

@@ -22,9 +22,8 @@ import (
   "strings"
   "fmt"
   "os"
-  "github.com/MikunoNaka/macli/mal"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
+  "vidhukant.com/macli/mal"
+  "vidhukant.com/mg"
   p "github.com/manifoldco/promptui"
 )
 
@@ -84,7 +83,7 @@ func CreateStatusUpdateConfirmationMessage(title, status, prevStatus string) str
   return "\x1b[35m" + title + "\x1b[0m Status :: " + GetColorCodeByStatus(status) + FormatStatus(status) + "\x1b[0m"
 }
 
-func AnimeStatusMenu(anime a.Anime) {
+func AnimeStatusMenu(anime mg.Anime) {
   options := []StatusOption {
     {"Watching", "watching"},
     {"Completed", "completed"},
@@ -140,7 +139,7 @@ func AnimeStatusMenu(anime a.Anime) {
   fmt.Println(CreateStatusUpdateConfirmationMessage(anime.Title, resp.Status, anime.MyListStatus.Status))
 }
 
-func MangaStatusMenu(manga m.Manga) {
+func MangaStatusMenu(manga mg.Manga) {
   options := []StatusOption {
     {"Reading", "reading"},
     {"Completed", "completed"},

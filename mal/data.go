@@ -19,15 +19,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
   "os"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
 )
 
-// because MAL2Go/Anime.SearchAnime won't give us all the data sometimes
-func GetAnimeData(animeId int, fields []string) a.Anime {
-  data, err := animeClient.GetAnimeById(animeId, fields)
+// because mg.SearchAnime won't give us all the data sometimes
+func GetAnimeData(animeId int, fields []string) mg.Anime {
+	var data mg.Anime
+  err := MALClient.GetAnimeById(&data, animeId, fields)
   if err != nil {
     fmt.Println("Error while fetching data about anime:", err)
     os.Exit(1)
@@ -35,9 +35,10 @@ func GetAnimeData(animeId int, fields []string) a.Anime {
   return data
 }
 
-// because MAL2Go/Manga.SearchManga won't give us all the data sometimes
-func GetMangaData(mangaId int, fields []string) m.Manga {
-  data, err := mangaClient.GetMangaById(mangaId, fields)
+// because mg.SearchManga won't give us all the data sometimes
+func GetMangaData(mangaId int, fields []string) mg.Manga {
+	var data mg.Manga
+  err := MALClient.GetMangaById(&data, mangaId, fields)
   if err != nil {
     fmt.Println("Error while fetching data about manga:", err)
     os.Exit(1)

@@ -23,24 +23,23 @@ import (
   "fmt"
   "os"
   p "github.com/manifoldco/promptui"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
-  "github.com/MikunoNaka/macli/mal"
+  "vidhukant.com/mg"
+  "vidhukant.com/macli/mal"
 )
 
 type AnimeAction struct {
   Label       string
   Description string
-  Method      func(a.Anime)
+  Method      func(mg.Anime)
 }
 
 type MangaAction struct {
   Label       string
   Description string
-  Method      func(m.Manga)
+  Method      func(mg.Manga)
 }
 
-func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
+func AnimeActionMenu(animeIsAdded bool) func(mg.Anime) {
   options := []AnimeAction {
     {"Set Status",          "Set status for an anime (watching, dropped, etc)", AnimeStatusMenu},
     {"Set Episodes",        "Set number of episodes watched", EpisodeInput},
@@ -92,7 +91,7 @@ func AnimeActionMenu(animeIsAdded bool) func(a.Anime) {
   return options[res].Method
 }
 
-func MangaActionMenu(mangaIsAdded bool) func(m.Manga) {
+func MangaActionMenu(mangaIsAdded bool) func(mg.Manga) {
   options := []MangaAction {
     {"Set Status",        "Set status for a manga (reading, dropped, etc)", MangaStatusMenu},
     {"Set Chapters",      "Set number of chapters read", ChapterInput},

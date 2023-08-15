@@ -20,7 +20,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/MikunoNaka/macli/auth"
+	"vidhukant.com/macli/auth"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"

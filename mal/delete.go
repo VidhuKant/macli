@@ -19,28 +19,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
-  // "os"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
 )
 
-func DeleteAnime(anime a.Anime) {
-  res, err := userAnimeClient.DeleteAnime(anime.Id)
+func DeleteAnime(anime mg.Anime) {
+  err := MALClient.DeleteAnime(anime.Id)
   if err != nil {
     fmt.Println("Error While Deleting " + anime.Title + ":", err)
   }
-  if res != "200" {
-    fmt.Println("Error: MyAnimeList Returned " + res + " while deleting " + anime.Title)
-  }
 }
 
-func DeleteManga(manga m.Manga) {
-  res, err := userMangaClient.DeleteManga(manga.Id)
+func DeleteManga(manga mg.Manga) {
+  err := MALClient.DeleteManga(manga.Id)
   if err != nil {
     fmt.Println("Error While Deleting " + manga.Title + ":", err)
-  }
-  if res != "200" {
-    fmt.Println("Error: MyAnimeList Returned " + res + " while deleting " + manga.Title)
   }
 }

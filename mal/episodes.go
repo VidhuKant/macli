@@ -19,15 +19,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/macli/util"
+	"vidhukant.com/mg"
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v4/user/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/user/manga"
-  "github.com/MikunoNaka/macli/util"
 )
 
-func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
-  res, err := userAnimeClient.SetWatchedEpisodes(animeId, util.ParseNumeric(ep, prevValue))
+func SetEpisodes(animeId, prevValue int, ep string) mg.AnimeUpdateResponse {
+	var res mg.AnimeUpdateResponse
+  err := MALClient.UpdateAnime(&res, animeId, map[string]interface{}{mg.EpisodesWatched: util.ParseNumeric(ep, prevValue)})
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating episodes:", err)
     os.Exit(1)
@@ -35,8 +35,9 @@ func SetEpisodes(animeId, prevValue int, ep string) a.UpdateResponse {
   return res
 }
 
-func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
-  res, err := userMangaClient.SetChaptersRead(mangaId, util.ParseNumeric(ch, prevValue))
+func SetChapters(mangaId, prevValue int, ch string) mg.MangaUpdateResponse {
+	var res mg.MangaUpdateResponse
+  err := MALClient.UpdateManga(&res, mangaId, map[string]interface{}{mg.ChaptersRead: util.ParseNumeric(ch, prevValue)})
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating chapters:", err)
     os.Exit(1)
@@ -44,8 +45,9 @@ func SetChapters(mangaId, prevValue int, ch string) m.UpdateResponse {
   return res
 }
 
-func SetVolumes(mangaId, prevValue int, vol string) m.UpdateResponse {
-  res, err := userMangaClient.SetVolumesRead(mangaId, util.ParseNumeric(vol, prevValue))
+func SetVolumes(mangaId, prevValue int, vol string) mg.MangaUpdateResponse {
+	var res mg.MangaUpdateResponse
+  err := MALClient.UpdateManga(&res, mangaId, map[string]interface{}{mg.VolumesRead: util.ParseNumeric(vol, prevValue)})
   if err != nil {
     fmt.Println("MyAnimeList returned error while updating volumes:", err)
     os.Exit(1)

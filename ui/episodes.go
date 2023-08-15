@@ -23,9 +23,8 @@ import (
   "fmt"
   "os"
   "errors"
-  "github.com/MikunoNaka/macli/mal"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
+  "vidhukant.com/macli/mal"
+  "vidhukant.com/mg"
   p "github.com/manifoldco/promptui"
 )
 
@@ -51,7 +50,7 @@ func CreateVolumeUpdateConfirmationMessage(title string, volNum, prevVolNum int)
   return fmt.Sprintf("\x1b[35m%s\x1b[0m Volumes Read :: \x1b[1;36m%d\x1b[0m", title, volNum)
 }
 
-func EpisodeInput(anime a.Anime) {
+func EpisodeInput(anime mg.Anime) {
   epWatchedNum := anime.MyListStatus.EpWatched
   epTotalNum := anime.NumEpisodes
 
@@ -84,7 +83,7 @@ func EpisodeInput(anime a.Anime) {
   fmt.Println(CreateEpisodeUpdateConfirmationMessage(anime.Title, resp.EpWatched, epWatchedNum))
 }
 
-func ChapterInput(manga m.Manga) {
+func ChapterInput(manga mg.Manga) {
   chReadNum := manga.MyListStatus.ChaptersRead
   chTotalNum := manga.NumChapters
 
@@ -117,7 +116,7 @@ func ChapterInput(manga m.Manga) {
   fmt.Println(CreateChapterUpdateConfirmationMessage(manga.Title, resp.ChaptersRead, chReadNum))
 }
 
-func VolumeInput(manga m.Manga) {
+func VolumeInput(manga mg.Manga) {
   volReadNum := manga.MyListStatus.VolumesRead
   volTotalNum := manga.NumVolumes
 

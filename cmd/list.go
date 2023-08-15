@@ -21,9 +21,9 @@ package cmd
 import (
 	"os"
 	"fmt"
-	"github.com/MikunoNaka/macli/ui"
-	"github.com/MikunoNaka/macli/util"
-	"github.com/MikunoNaka/macli/mal"
+	"vidhukant.com/macli/ui"
+	"vidhukant.com/macli/util"
+	"vidhukant.com/macli/mal"
 
 	"github.com/spf13/cobra"
 )

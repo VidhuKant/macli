@@ -19,22 +19,27 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
+	"vidhukant.com/mg"
   "fmt"
   "os"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
 )
 
-func SearchAnime(searchString string, fields []string) []a.Anime {
-  fields = append([]string{"title", "id"}, fields...)
-
+func SearchAnime(searchString string, fields []string) []mg.Anime {
   searchLength, searchOffset := SearchLength, SearchOffset
   if AutoSel > 0 {
     searchLength = 1
     searchOffset = AutoSel - 1
   }
 
-  res, err := animeClient.SearchAnime(searchString, searchLength, searchOffset, SearchNSFW, fields)
+	var res []mg.Anime
+  err := MALClient.SearchAnime(&res, &mg.SearchParams{
+		Limit: searchLength,
+		Offset: searchOffset,
+		NSFW: SearchNSFW,
+		SearchString: searchString,
+		Fields: append([]string{"title", "id"}, fields...),
+  })
+
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)
@@ -43,16 +48,22 @@ func SearchAnime(searchString string, fields []string) []a.Anime {
   return res
 }
 
-func SearchManga(searchString string, fields []string) []m.Manga {
-  fields = append([]string{"title", "id"}, fields...)
-
+func SearchManga(searchString string, fields []string) []mg.Manga {
   searchLength, searchOffset := SearchLength, SearchOffset
   if AutoSel > 0 {
     searchLength = 1
     searchOffset = AutoSel - 1
   }
 
-  res, err := mangaClient.SearchManga(searchString, searchLength, searchOffset, SearchNSFW, fields)
+	var res []mg.Manga
+  err := MALClient.SearchManga(&res, &mg.SearchParams{
+		Limit: searchLength,
+		Offset: searchOffset,
+		NSFW: SearchNSFW,
+		SearchString: searchString,
+		Fields: append([]string{"title", "id"}, fields...),
+  })
+
   if err != nil {
     fmt.Println("MyAnimeList reported error while searching:", err.Error())
     os.Exit(1)

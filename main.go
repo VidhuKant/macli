@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 package main
 
-import "github.com/MikunoNaka/macli/cmd"
+import "vidhukant.com/macli/cmd"
 
 func main() {
   cmd.Execute()

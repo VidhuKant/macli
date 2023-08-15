@@ -20,11 +20,11 @@ package util
 
 import (
   "fmt"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
+  "vidhukant.com/mg"
 )
 
 // formats and prints all the details about a manga
-func PrintManga(manga m.Manga) {
+func PrintManga(manga mg.Manga) {
   fmt.Println(manga.Id)
   fmt.Println(manga.Title)
 }

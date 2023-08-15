@@ -21,11 +21,11 @@ package util
 import (
   "time"
   "strconv"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
+  "vidhukant.com/mg"
 )
 
 
-func GetCurrentSeason() a.Season {
+func GetCurrentSeason() mg.Season {
   today := time.Now()
 
   month := today.Format("01")
@@ -43,7 +43,7 @@ func GetCurrentSeason() a.Season {
       season = "fall"
   }
 
-  return a.Season {
+  return mg.Season {
     Name: season,
     Year: year,
   }

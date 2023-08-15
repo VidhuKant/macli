@@ -19,23 +19,15 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package mal
 
 import (
-  "github.com/MikunoNaka/macli/auth"
-  a "github.com/MikunoNaka/MAL2Go/v4/anime"
-  m "github.com/MikunoNaka/MAL2Go/v4/manga"
-  u "github.com/MikunoNaka/MAL2Go/v4/user"
-  ua "github.com/MikunoNaka/MAL2Go/v4/user/anime"
-  um "github.com/MikunoNaka/MAL2Go/v4/user/manga"
+  "vidhukant.com/macli/auth"
+	"vidhukant.com/mg"
   "github.com/spf13/viper"
   "strings"
 )
 
 var (
   Secret string
-  animeClient a.Client
-  mangaClient m.Client
-  userClient u.Client
-  userAnimeClient ua.Client
-  userMangaClient um.Client
+	MALClient mg.Client
 
   SearchLength, SearchOffset int
   SearchNSFW bool
@@ -52,10 +44,5 @@ func Init() {
   }
   tk := "Bearer " + strings.TrimSpace(Secret)
 
-  // initialise MAL2Go Client(s)
-  animeClient.AuthToken = tk
-  mangaClient.AuthToken = tk
-  userClient.AuthToken = tk
-  userAnimeClient.AuthToken = tk
-  userMangaClient.AuthToken = tk
+  MALClient.MainAuth = tk
 }
