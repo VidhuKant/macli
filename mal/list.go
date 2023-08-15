@@ -46,7 +46,7 @@ func AnimeList(user, status, sort string) []mg.Anime {
 }
 
 // TODO: return all the list items using loop
-func MangaList(user, status, sort string) []m.Manga {
+func MangaList(user, status, sort string) []mg.Manga {
 	var res []mg.Manga
   _, err := MALClient.GetMangaList(&res, &mg.ListParams{
 		Username: user,

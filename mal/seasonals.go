@@ -25,7 +25,7 @@ import (
   "strconv"
 )
 
-func GetSeasonalAnime(season a.Season, sort string) []mg.Anime {
+func GetSeasonalAnime(season mg.Season, sort string) []mg.Anime {
 	var res []mg.Anime
   err := MALClient.GetSeasonalAnime(&res, &mg.SeasonalParams{
 		Year: strconv.Itoa(season.Year),

@@ -82,7 +82,7 @@ func AnimeSearch(label, searchString string) mg.Anime {
     }
 
     var ratingFormatted string
-    switch anime.Rating {
+    switch anime.ParentalRating {
       case "g":
         ratingFormatted = "G - All Ages"
       case "pg":
@@ -96,9 +96,9 @@ func AnimeSearch(label, searchString string) mg.Anime {
       case "rx":
         ratingFormatted = "Rx - Hentai"
       default:
-        ratingFormatted = anime.Rating
+        ratingFormatted = anime.ParentalRating
     }
-    animes[i].Rating = ratingFormatted
+    animes[i].ParentalRating = ratingFormatted
   }
 
   template := &p.SelectTemplates {
@@ -117,7 +117,7 @@ func AnimeSearch(label, searchString string) mg.Anime {
 {{ "Type:" | blue | bold }} {{ .MediaType }}
 {{ "Status:" | blue | bold }} {{ .Status }}
 {{ "Average Duration:" | blue | bold }} {{ if .DurationSeconds }}{{ .DurationSeconds }} minutes{{ else }}{{ "unknown" | faint }}{{ end }}
-{{ "Rating:" | blue | bold }} {{ if .Rating }}{{ .Rating }}{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "Parental Rating:" | blue | bold }} {{ if .ParentalRating }}{{ .ParentalRating }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Studios:" | blue | bold }} {{ if .Studios }}{{ range .Studios }}{{ .Name }}{{ end }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Genres:" | blue | bold }} {{ if .Genres }}{{ range .Genres }}{{ .Name }}{{ end }}{{ else }}{{ "unknown" | faint }}{{ end }}
 `,
