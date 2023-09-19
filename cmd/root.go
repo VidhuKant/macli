@@ -34,7 +34,7 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use: "macli",
-  Version: "v1.20.3" + " " + runtime.GOOS + "/" + runtime.GOARCH,
+  Version: "v1.20.4" + " " + runtime.GOOS + "/" + runtime.GOARCH,
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
 	Long:
       "macli is an unofficial MyAnimeClient for use inside the terminal.\n" +
@@ -45,9 +45,7 @@ var rootCmd = &cobra.Command{
       "under certain conditions; For details refer to the GNU General Public License.\n" +
       "You should have received a copy of the GNU General Public License\n" +
       "along with this program.  If not, see <https://www.gnu.org/licenses/>.\x1b[0m\n" +
-      "\n" +
-      "\x1b[35mPlease report any bugs on the GitHub page: https://github.com/MikunoNaka/macli\n" +
-      "or through email: vidhukant@vidhukant.com\x1b[0m\n\n",
+      "\n",
 }
 
 func init() {
