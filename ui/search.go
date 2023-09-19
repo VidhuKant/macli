@@ -67,6 +67,7 @@ func AnimeSearch(label, searchString string) mg.Anime {
       }
       animes[i].Studios[0].Name = studiosFormatted
     }
+
     // same with genres
     if len(anime.Genres) > 0 {
       var genresFormatted string
@@ -109,9 +110,9 @@ func AnimeSearch(label, searchString string) mg.Anime {
     Details: `
 --------- {{ .Title }} ----------
 {{ "Number of Episodes:" | blue | bold }} {{ if .NumEpisodes }}{{ .NumEpisodes }}{{ else }}{{ "unknown" | faint }}{{ end }}
-{{ "English Title:" | blue | bold }} {{ if .AltTitles.En }}{{ .AltTitles.En }}{{ else }}{{ "none" | faint }}{{ end }}
-{{ "Japanese Title:" | blue | bold }} {{ if .AltTitles.Ja }}{{ .AltTitles.Ja }}{{ else }}{{ "none" | faint }}{{ end }}
-{{ "Original Run:" | blue | bold }} {{ if .StartDate }}{{ .StartDate | cyan }}{{ else }}{{ "unknown" | faint }}{{ end }} - {{ if .EndDate }}{{ .EndDate | yellow }}{{ else }}{{ "unknown" | faint }}{{end}} {{ if .StartSeason.Year }}({{ .StartSeason.Name }} {{ .StartSeason.Year }}){{ else }}{{ end }}
+{{ "English Title:" | blue | bold }} {{ if .AltTitles.EnglishTitle }}{{ .AltTitles.EnglishTitle }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "Japanese Title:" | blue | bold }} {{ if .AltTitles.JapaneseTitle }}{{ .AltTitles.JapaneseTitle }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "Original Run:" | blue | bold }} {{ if .StartDate }}{{ .StartDate | cyan }}{{ else }}{{ "unknown" | faint }}{{ end }} - {{ if .EndDate }}{{ .EndDate | yellow }}{{ else }}{{ "unknown" | faint }}{{end}} {{ if .Season.Year }}({{ .Season.Name }} {{ .Season.Year }}){{ else }}{{ end }}
 {{ "Mean Score:" | blue | bold }} {{ if .MeanScore }}{{ .MeanScore }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Rank:" | blue | bold }} {{ if .Rank }}{{ .Rank }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Type:" | blue | bold }} {{ .MediaType }}
@@ -150,7 +151,7 @@ func AnimeSearch(label, searchString string) mg.Anime {
 var MangaSearchFields []string = []string {
   "num_chapters", "num_volumes",
   "alternative_titles", "start_date",
-  "end_date", "mean", "rank",
+  "end_date", "mean", "rank", "genres",
   "media_type", "status", "authors",
 }
 
@@ -169,20 +170,29 @@ func MangaSearch(label, searchString string) mg.Manga {
   for i, manga := range mangas {
     /* I cant find a way to add functions to the details template
      * So I am formatting the authors as one string
-     * and setting as the first studio name. pretty hacky. */
-    // TODO: uncomment this when MAL2Go is ready to handle author data
-    // if len(manga.Authors) > 0 {
-    //   var authorsFormatted string
-    //   for j, author := range manga.Authors {
-    //     authorsFormatted = authorsFormatted + author.Name
-    //     // setting other author names as ""
-    //     mangas[i].Authors[j].Name = ""
-    //     if j != len(manga.Authors) - 1 {
-    //       authorsFormatted = authorsFormatted + ", "
-    //     }
-    //   }
-    //   mangas[i].Authors[0].Name = authorsFormatted
-    // }
+     * and setting as the first author name. pretty hacky. */
+    if len(manga.Authors) > 0 {
+      var authorsFormatted string
+      for j, author := range manga.Authors {
+        authorsFormatted = authorsFormatted + author.Details.FirstName
+				if author.Details.LastName != "" {
+					authorsFormatted = authorsFormatted + " " + author.Details.LastName
+				}
+
+				if author.Role != "" {
+					authorsFormatted = authorsFormatted + " (" + author.Role + ")"
+				}
+
+        // setting other author names as ""
+        mangas[i].Authors[j].Details.FirstName = ""
+        mangas[i].Authors[j].Details.LastName = ""
+        if j != len(manga.Authors) - 1 {
+          authorsFormatted = authorsFormatted + ", "
+        }
+      }
+      mangas[i].Authors[0].Details.FirstName = authorsFormatted
+    }
+
     // same with genres
     if len(manga.Genres) > 0 {
       var genresFormatted string
@@ -207,14 +217,15 @@ func MangaSearch(label, searchString string) mg.Manga {
 --------- {{ .Title }} ----------
 {{ "Number of Volumes:" | blue | bold }} {{ if .NumVolumes }}{{ .NumVolumes }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Number of Chapters:" | blue | bold }} {{ if .NumChapters }}{{ .NumChapters }}{{ else }}{{ "unknown" | faint }}{{ end }}
-{{ "English Title:" | blue | bold }} {{ if .AltTitles.En }}{{ .AltTitles.En }}{{ else }}{{ "none" | faint }}{{ end }}
-{{ "Japanese Title:" | blue | bold }} {{ if .AltTitles.Ja }}{{ .AltTitles.Ja }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "English Title:" | blue | bold }} {{ if .AltTitles.EnglishTitle }}{{ .AltTitles.EnglishTitle }}{{ else }}{{ "none" | faint }}{{ end }}
+{{ "Japanese Title:" | blue | bold }} {{ if .AltTitles.JapaneseTitle }}{{ .AltTitles.JapaneseTitle }}{{ else }}{{ "none" | faint }}{{ end }}
 {{ "Original Run:" | blue | bold }} {{ if .StartDate }}{{ .StartDate | cyan }}{{ else }}{{ "unknown" | faint }}{{ end }} - {{ if .EndDate }}{{ .EndDate | yellow }}{{ else }}{{ "unknown" | faint }}{{end}}
 {{ "Mean Score:" | blue | bold }} {{ if .MeanScore }}{{ .MeanScore }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Rank:" | blue | bold }} {{ if .Rank }}{{ .Rank }}{{ else }}{{ "unknown" | faint }}{{ end }}
 {{ "Type:" | blue | bold }} {{ .MediaType }}
 {{ "Status:" | blue | bold }} {{ .Status }}
-{{ "Authors:" | blue | bold }} {{ "coming soon" | faint }}
+{{ "Authors:" | blue | bold }} {{ if .Authors }}{{ range .Authors }}{{ .Details.FirstName }}{{ end }}{{ else }}{{ "unknown" | faint }}{{ end }}
+{{ "Genres:" | blue | bold }} {{ if .Genres }}{{ range .Genres }}{{ .Name }}{{ end }}{{ else }}{{ "unknown" | faint }}{{ end }}
 `,
   }
 
