@@ -34,7 +34,7 @@ var (
 
 var rootCmd = &cobra.Command{
 	Use: "macli",
-  Version: "v1.20.6" + " " + runtime.GOOS + "/" + runtime.GOARCH,
+  Version: "v1.21.0" + " " + runtime.GOOS + "/" + runtime.GOARCH,
 	Short: "macli - Unofficial CLI-Based MyAnimeList Client.",
 	Long:
       "macli is an unofficial MyAnimeClient for use inside the terminal.\n" +
